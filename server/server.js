@@ -18,7 +18,17 @@ app.get("/api", (req, res) => {
   });
 });
 
+app.get("/name", (req, res) => {
+  res.json({
+    name: "niko",
+  });
+});
 app.use(express.static(path.join(__dirname, "../client/build")));
+
+// Define the catch-all route at the end
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"));
+});
 
 app.listen(port, () => {
   console.log(`server started on port ${port}`);
