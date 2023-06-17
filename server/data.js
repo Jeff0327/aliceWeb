@@ -37,8 +37,8 @@ const data = {
       description: "high quality product",
     },
     {
-      name: "포르쉐 911",
-      slug: "포르쉐 911",
+      name: "포르쉐 mos",
+      slug: "포르쉐 mos",
       category: "Pants",
       image: "/images/p4.jpeg",
       price: 1000,
