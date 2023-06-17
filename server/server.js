@@ -1,14 +1,10 @@
 const express = require("express");
 const path = require("path");
 require("dotenv").config();
-
+const data = require("./data.js");
 const app = express();
 
-const port = process.env.PORT || process.env.DEFAULT_PORT;
-if (!port) {
-  console.error("No port specified in the .env file.");
-  process.exit(1);
-}
+const port = process.env.PORT || 5001;
 
 app.get("/api", (req, res) => {
   res.setHeader("Content-Type", "application/json");
@@ -22,6 +18,10 @@ app.get("/name", (req, res) => {
   res.json({
     name: "niko",
   });
+});
+
+app.get("/api/products", (req, res) => {
+  res.send(data.products);
 });
 app.use(express.static(path.join(__dirname, "../client/build")));
 
