@@ -1,8 +1,8 @@
 const data = {
   products: [
     {
-      name: "포르쉐 911",
-      slug: "포르쉐 911",
+      name: "포르쉐911",
+      slug: "포르쉐911",
       category: "Shirts",
       image: "/images/p1.jpeg", // 679px × 829px
       price: 120,
@@ -13,8 +13,8 @@ const data = {
       description: "포르쉐 911",
     },
     {
-      name: "포르쉐 박스터",
-      slug: "포르쉐 박스터",
+      name: "포르쉐박스터",
+      slug: "포르쉐박스터",
       category: "Shirts",
       image: "/images/p2.jpeg",
       price: 250,
@@ -25,8 +25,8 @@ const data = {
       description: "high quality product",
     },
     {
-      name: "포르쉐 카이렌",
-      slug: "포르쉐 카이렌",
+      name: "포르쉐카이렌",
+      slug: "포르쉐카이렌",
       category: "Pants",
       image: "/images/p3.jpeg",
       price: 25,
@@ -37,8 +37,8 @@ const data = {
       description: "high quality product",
     },
     {
-      name: "포르쉐 mos",
-      slug: "포르쉐 mos",
+      name: "포르쉐mos",
+      slug: "포르쉐mos",
       category: "Pants",
       image: "/images/p4.jpeg",
       price: 1000,
