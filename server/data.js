@@ -1,7 +1,7 @@
 const data = {
   products: [
     {
-      _id: "1",
+      // _id: "1",
       name: "포르쉐911",
       slug: "포르쉐911",
       category: "Shirts",
@@ -14,7 +14,7 @@ const data = {
       description: "포르쉐 911",
     },
     {
-      _id: "2",
+      // _id: "2",
       name: "포르쉐박스터",
       slug: "포르쉐박스터",
       category: "Shirts",
@@ -27,7 +27,7 @@ const data = {
       description: "high quality product",
     },
     {
-      _id: "3",
+      // _id: "3",
       name: "포르쉐카이렌",
       slug: "포르쉐카이렌",
       category: "Pants",
@@ -40,7 +40,7 @@ const data = {
       description: "high quality product",
     },
     {
-      _id: "4",
+      // _id: "4",
       name: "포르쉐mos",
       slug: "포르쉐mos",
       category: "Pants",
