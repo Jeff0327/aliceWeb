@@ -3,10 +3,9 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const data = require("./data.js");
 const seedRouter = require("./routes/seedRoutes.js");
-const app = express();
 const productRouter = require("./routes/productRoutes.js");
 const port = process.env.PORT || 5001;
-
+const app = express();
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => {
