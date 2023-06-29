@@ -30,10 +30,10 @@ app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
 
-const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, "/front/build")));
+const dirname = path.resolve();
+app.use(express.static(path.join(dirname, "/front/build")));
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "/front/build/index.html"));
+  res.sendFile(path.join(dirname, "/front/build/index.html"));
 });
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
