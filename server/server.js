@@ -1,5 +1,4 @@
 const express = require("express");
-const path = require("path");
 require("dotenv").config();
 const mongoose = require("mongoose");
 const seedRouter = require("./routes/seedRoutes.js");
@@ -30,11 +29,6 @@ app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
 
-const dirname = path.resolve();
-app.use(express.static(path.join(dirname, "/front/build")));
-app.get("*", (req, res) => {
-  res.sendFile(path.join(dirname, "/front/build/index.html"));
-});
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
 });
