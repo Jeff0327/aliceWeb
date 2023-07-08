@@ -102,7 +102,7 @@ export default function OrderScreen() {
           }
         );
         dispatch({ type: "PAY_SUCCESS", payload: data });
-        toast.success("주문이 완료되었습니다.");
+        toast.success("결제가 완료되었습니다.");
       } catch (err) {
         dispatch({ type: "PAY_FAIL", payload: getError(err) });
         toast.error(getError(err));
