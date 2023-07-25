@@ -191,7 +191,9 @@ function ProductScreen() {
                 {product.countInStock > 0 && (
                   <ListGroup.Item>
                     <div className="d-grid">
-                      <Button variant="primary">카트에 담기</Button>
+                      <Button onClick={addToCartHandler} variant="primary">
+                        카트에 담기
+                      </Button>
                     </div>
                   </ListGroup.Item>
                 )}
