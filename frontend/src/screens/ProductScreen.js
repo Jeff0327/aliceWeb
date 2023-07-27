@@ -89,20 +89,6 @@ function ProductScreen() {
             src={product.image}
             alt={product.name}
           ></img>
-          {/* <Row>
-            <Col md={6}>
-              {product.image.map((image, index) => (
-                <img
-                  key={index}
-                  src={image}
-                  alt={`Image ${index}`}
-                  className="img-thumbnail"
-                />
-              ))}
-            </Col>
-          </Row> 
-          //second images here
-          */}
         </Col>
 
         <Col md={3}>
@@ -165,6 +151,17 @@ function ProductScreen() {
           </Card>
         </Col>
       </Row>
+      <div className="container-sec">
+        <div className="container">
+          <Col md={5}>
+            <img
+              className="img-large"
+              src={product.image}
+              alt={product.name}
+            ></img>
+          </Col>
+        </div>
+      </div>
     </div>
   );
 }

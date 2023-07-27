@@ -150,3 +150,8 @@ button.thumbnail {
 .text-bold{
   font-weight: bold;
 }
+.container-sec{
+  margin:10px;
+  justify-content: center;
+  align-self: center;
+}

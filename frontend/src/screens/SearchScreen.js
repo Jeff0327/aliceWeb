@@ -74,7 +74,7 @@ export const ratings = [
 export default function SearchScreen() {
   const navigate = useNavigate();
   const { search } = useLocation();
-  const sp = new URLSearchParams(search); // /search?category=Shirts
+  const sp = new URLSearchParams(search);
   const category = sp.get("category") || "all";
   const query = sp.get("query") || "all";
   const price = sp.get("price") || "all";
@@ -132,11 +132,11 @@ export default function SearchScreen() {
   return (
     <div>
       <Helmet>
-        <title>Search Products</title>
+        <title>검색</title>
       </Helmet>
       <Row>
         <Col md={3}>
-          <h3>Department</h3>
+          <h3>목록</h3>
           <div>
             <ul>
               <li>
@@ -160,14 +160,14 @@ export default function SearchScreen() {
             </ul>
           </div>
           <div>
-            <h3>Price</h3>
+            <h3>가격</h3>
             <ul>
               <li>
                 <Link
                   className={"all" === price ? "text-bold" : ""}
                   to={getFilterUrl({ price: "all" })}
                 >
-                  Any
+                  전체
                 </Link>
               </li>
               {prices.map((p) => (
