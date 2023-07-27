@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext, useEffect, useReducer, useRef, useState } from "react";
+import { useContext, useEffect, useReducer, useRef } from "react";
 import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
@@ -8,7 +8,6 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Row from "react-bootstrap/Row";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
 import Rating from "../components/Rating";
 import { Store } from "../Store";
 import { getError } from "../utils";
@@ -36,10 +35,6 @@ const reducer = (state, action) => {
 
 function ProductScreen() {
   let reviewsRef = useRef();
-
-  const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState("");
-  const [selectedImage, setSelectedImage] = useState("");
 
   const navigate = useNavigate();
   const params = useParams();
@@ -81,38 +76,6 @@ function ProductScreen() {
     navigate("/cart");
   };
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    if (!comment || !rating) {
-      toast.error("Please enter comment and rating");
-      return;
-    }
-    try {
-      const { data } = await axios.post(
-        `/api/products/${product._id}/reviews`,
-        { rating, comment, name: userInfo.name },
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
-
-      dispatch({
-        type: "CREATE_SUCCESS",
-      });
-      toast.success("Review submitted successfully");
-      product.reviews.unshift(data.review);
-      product.numReviews = data.numReviews;
-      product.rating = data.rating;
-      dispatch({ type: "REFRESH_PRODUCT", payload: product });
-      window.scrollTo({
-        behavior: "smooth",
-        top: reviewsRef.current.offsetTop,
-      });
-    } catch (error) {
-      toast.error(getError(error));
-      dispatch({ type: "CREATE_FAIL" });
-    }
-  };
   return loading ? (
     <div>Loading...</div>
   ) : error ? (
