@@ -59,7 +59,7 @@ const data = {
       // _id: "4",
       name: "포르쉐mos",
       slug: "포르쉐mos",
-      category: "Pants",
+      category: "short",
       image: "/images/p4.jpeg",
       price: 1000,
       countInStock: 5,
