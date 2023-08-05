@@ -156,9 +156,9 @@ export default function ProductEditScreen() {
   return (
     <Container className="small-container">
       <Helmet>
-        <title>Edit Product ${productId}</title>
+        <title>Alice</title>
       </Helmet>
-      <h1>Edit Product {productId}</h1>
+      <h1>상품수정 {productId}</h1>
 
       {loading ? (
         <LoadingBox></LoadingBox>
