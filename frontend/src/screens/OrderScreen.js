@@ -226,7 +226,7 @@ export default function OrderScreen() {
               </Card.Text>
               {order.isDelivered ? (
                 <MessageBox variant="success">
-                  Delivered at {order.deliveredAt}
+                  배송시작: {order.deliveredAt}
                 </MessageBox>
               ) : (
                 <MessageBox variant="danger">배송 전</MessageBox>
@@ -327,7 +327,7 @@ export default function OrderScreen() {
                     {loadingDeliver && <LoadingBox></LoadingBox>}
                     <div className="d-grid">
                       <Button type="button" onClick={deliverOrderHandler}>
-                        주문하기
+                        배송하기
                       </Button>
                     </div>
                   </ListGroup.Item>

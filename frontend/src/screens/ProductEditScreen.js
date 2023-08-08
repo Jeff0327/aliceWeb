@@ -114,7 +114,7 @@ export default function ProductEditScreen() {
       dispatch({
         type: "UPDATE_SUCCESS",
       });
-      toast.success("Product updated successfully");
+      toast.success("상품이 업데이트 되었습니다.");
       navigate("/admin/products");
     } catch (err) {
       toast.error(getError(err));
@@ -140,7 +140,9 @@ export default function ProductEditScreen() {
       } else {
         setImage(data.secure_url);
       }
-      toast.success("Image uploaded successfully. click Update to apply it");
+      toast.success(
+        "이미지가 성공적으로 업로드되었습니다. 업데이트를 클릭하여 적용하세요"
+      );
     } catch (err) {
       toast.error(getError(err));
       dispatch({ type: "UPLOAD_FAIL", payload: getError(err) });
@@ -158,7 +160,7 @@ export default function ProductEditScreen() {
       <Helmet>
         <title>Alice</title>
       </Helmet>
-      <h1>상품수정 {productId}</h1>
+      <h1>상품수정{productId}</h1>
 
       {loading ? (
         <LoadingBox></LoadingBox>

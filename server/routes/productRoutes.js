@@ -29,6 +29,43 @@ productRouter.post(
     res.send({ message: "Product Created", product });
   })
 );
+productRouter.put(
+  `/:id`,
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
+    if (product) {
+      product.name = req.body.name;
+      product.slug = req.body.slug;
+      product.price = req.body.price;
+      product.image = req.body.image;
+      product.category = req.body.category;
+      product.brand = req.body.brand;
+      product.countInStock = req.body.countInStock;
+      product.description = req.body.description;
+      await product.save();
+      res.send({ message: "상품이 업데이트되었습니다." });
+    } else {
+      res.status(404).send({ message: "상품을 찾을 수 없습니다." });
+    }
+  })
+);
+productRouter.delete(
+  "/:id",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const product = await Product.findById(req.params.id);
+    if (product) {
+      await product.deleteOne();
+      res.send({ message: "상품이 삭제되었습니다." });
+    } else {
+      res.status(404).send({ message: "상품을 찾을 수 없습니다." });
+    }
+  })
+);
 const PAGE_SIZE = 3;
 
 productRouter.get(

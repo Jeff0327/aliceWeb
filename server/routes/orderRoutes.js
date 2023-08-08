@@ -5,6 +5,17 @@ const Order = require("../models/orderModel.js");
 const User = require("../models/userModel.js");
 const Product = require("../models/productModel.js");
 const orderRouter = express.Router();
+
+orderRouter.get(
+  "/",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const orders = await Order.find().populate("user", "name");
+    res.send(orders);
+  })
+);
+
 orderRouter.post(
   "/",
   isAuth,
@@ -89,6 +100,21 @@ orderRouter.get(
 );
 
 orderRouter.put(
+  "/:id/deliver",
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+    if (order) {
+      order.isDelivered = true;
+      order.deliveredAt = Date.now();
+      await order.save();
+      res.send({ message: "주문한 상품이 배송되었습니다." });
+    } else {
+      res.status(404).send({ message: "주문을 찾을 수 없습니다." });
+    }
+  })
+);
+orderRouter.put(
   "/:id/pay",
   isAuth,
   expressAsyncHandler(async (req, res) => {
@@ -104,6 +130,21 @@ orderRouter.put(
       };
       const updateOrder = await order.save();
       res.send({ message: "주문 완료", order: updateOrder });
+    } else {
+      res.status(404).send({ message: "주문을 찾을 수 없습니다." });
+    }
+  })
+);
+
+orderRouter.delete(
+  "/:id",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+    if (order) {
+      await order.deleteOne();
+      res.send({ message: "주문이 삭제되었습니다." });
     } else {
       res.status(404).send({ message: "주문을 찾을 수 없습니다." });
     }

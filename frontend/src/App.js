@@ -17,6 +17,7 @@ import CartScreen from "./screens/CartScreen";
 import DashboardScreen from "./screens/DashboardScreen";
 import HomeScreen from "./screens/HomeScreen";
 import OrderHistoryScreen from "./screens/OrderHistoryScreen";
+import OrderListScreen from "./screens/OrderListScreen";
 import OrderScreen from "./screens/OrderScreen";
 import PaymentMethodScreen from "./screens/PaymentMethodScreen";
 import PlaceOrderScreen from "./screens/PlaceOrderScreen";
@@ -217,14 +218,14 @@ function App() {
                   </AdminRoute>
                 }
               ></Route>
-              {/* <Route
+              <Route
                 path="/admin/orders"
                 element={
                   <AdminRoute>
                     <OrderListScreen />
                   </AdminRoute>
                 }
-              ></Route> */}
+              ></Route>
               {/* <Route
                 path="/admin/users"
                 element={
