@@ -148,12 +148,9 @@ export default function ProductEditScreen() {
       dispatch({ type: "UPLOAD_FAIL", payload: getError(err) });
     }
   };
-  const deleteFileHandler = async (fileName, f) => {
-    console.log(fileName, f);
-    console.log(images);
-    console.log(images.filter((x) => x !== fileName));
+  const deleteFileHandler = async (fileName) => {
     setImages(images.filter((x) => x !== fileName));
-    toast.success("Image removed successfully. click Update to apply it");
+    toast.success("이미지가 제거되었습니다. 업데이트를 클릭하여 적용하세요.");
   };
   return (
     <Container className="small-container">
@@ -228,7 +225,6 @@ export default function ProductEditScreen() {
             />
             {loadingUpload && <LoadingBox></LoadingBox>}
           </Form.Group>
-
           <Form.Group className="mb-3" controlId="category">
             <Form.Label>Category</Form.Label>
             <Form.Control
