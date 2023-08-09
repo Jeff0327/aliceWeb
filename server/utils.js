@@ -41,6 +41,74 @@ const isAdmin = (req, res, next) => {
 const mailgun = () =>
   mg({
     apiKey: process.env.MAILGUN_API_KEY,
-    domain: process.env.MAILGUN_DOMIAN,
+    domain: process.env.MAILGUN_DOMAIN,
   });
-module.exports = { isAuth, generateToken, isAdmin, mailgun };
+
+const payOrderEmailTemplate = (order) => {
+  return `<h1>구매해주셔서 감사합니다.</h1>
+  <p>안녕하세요 ${order.user.name}님,</p>
+  <p>주문이 완료되었습니다.</p>
+  <h2>[주문번호: ${order._id}] </h2>
+  <table>
+  <thead>
+  <tr>
+  <td><strong>상품명</strong></td>
+  <td><strong>개수</strong></td>
+  <td><strong align="right">상품가</strong></td>
+  </thead>
+  <tbody>
+  ${order.orderItems
+    .map(
+      (item) => `
+      <tr>
+    <td>${item.name}</td>
+    <td align="center">${item.quantity}</td>
+    <td align="right">${item.price.toLocaleString()}원</td>
+    </p>
+    <hr/>
+    <p>
+    </tr>
+    `
+    )
+    .join("\n")}
+    
+  </tbody>
+  <tfoot>
+  <tr>
+  <td colspan="2">상품가격:</td>
+  <td align="right"> ${order.itemsPrice.toLocaleString()}원</td>
+  </tr>
+  <tr>
+  <td colspan="2">배송료:</td>
+  <td align="right"> ${order.shippingPrice.toLocaleString()}원</td>
+  </tr>
+  <tr>
+  <td colspan="2">합계:</td>
+  <td align="right"><strong> ${order.totalPrice.toLocaleString()}원</strong></td>
+  </tr>
+  <tr>
+  <td colspan="2">결제방식:</td>
+  <td align="right"> ${order.paymentMethod}</td>
+  </tr>
+  </table>
+
+  <h2>배송정보</h2>
+  <p>
+  받을사람:${order.shippingAddress.fullName}<br/>
+  주소:${order.shippingAddress.address}<br/>
+  연락처:${order.shippingAddress.phoneNumber}<br/>
+  우편번호:${order.shippingAddress.postalCode}<br/>
+  </p>
+  <hr/>
+  <p>
+  주문해주셔서 감사합니다.
+  </p>
+ `;
+};
+module.exports = {
+  isAuth,
+  generateToken,
+  isAdmin,
+  mailgun,
+  payOrderEmailTemplate,
+};

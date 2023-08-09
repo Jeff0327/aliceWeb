@@ -29,6 +29,8 @@ import SearchScreen from "./screens/SearchScreen";
 import ShippingAddressScreen from "./screens/ShippingAddressScreen";
 import SigninScreen from "./screens/SigninScreen";
 import SignupScreen from "./screens/SignupScreen";
+import UserEditScreen from "./screens/UserEditScreen";
+import UserListScreen from "./screens/UserListScreen";
 import { Store } from "./Store";
 import { getError } from "./utils";
 function App() {
@@ -114,7 +116,7 @@ function App() {
                   {userInfo && userInfo.isAdmin && (
                     <NavDropdown title="Admin" id="admin-nav-dropdown">
                       <LinkContainer to="/admin/dashboard">
-                        <NavDropdown.Item>목록</NavDropdown.Item>
+                        <NavDropdown.Item>통계</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/admin/products">
                         <NavDropdown.Item>상품목록</NavDropdown.Item>
@@ -123,7 +125,7 @@ function App() {
                         <NavDropdown.Item>주문목록</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/admin/users">
-                        <NavDropdown.Item>주문자</NavDropdown.Item>
+                        <NavDropdown.Item>유저목록</NavDropdown.Item>
                       </LinkContainer>
                     </NavDropdown>
                   )}
@@ -226,23 +228,23 @@ function App() {
                   </AdminRoute>
                 }
               ></Route>
-              {/* <Route
+              <Route
                 path="/admin/users"
                 element={
                   <AdminRoute>
                     <UserListScreen />
                   </AdminRoute>
                 }
-              ></Route> */}
+              ></Route>
 
-              {/* <Route
+              <Route
                 path="/admin/user/:id"
                 element={
                   <AdminRoute>
                     <UserEditScreen />
                   </AdminRoute>
                 }
-              ></Route> */}
+              ></Route>
               <Route path="/" element={<HomeScreen />} />
             </Routes>
           </Container>

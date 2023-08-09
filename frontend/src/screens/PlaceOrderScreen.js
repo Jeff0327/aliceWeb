@@ -41,8 +41,8 @@ export default function PlaceOrderScreen() {
     cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
   );
   cart.shippingPrice = cart.itemsPrice > 100 ? round2(0) : round2(10);
-  cart.taxPrice = round2(0.15 * cart.itemsPrice);
-  cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
+
+  cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
 
   const placeOrderHandler = async () => {
     try {
@@ -56,7 +56,6 @@ export default function PlaceOrderScreen() {
           paymentMethod: cart.paymentMethod,
           itemsPrice: cart.itemsPrice,
           shippingPrice: cart.shippingPrice,
-          taxPrice: cart.taxPrice,
           totalPrice: cart.totalPrice,
         },
         {
@@ -138,7 +137,7 @@ export default function PlaceOrderScreen() {
                       <Col md={3}>
                         <span>{item.quantity}</span>
                       </Col>
-                      <Col md={3}>${item.price}</Col>
+                      <Col md={3}>{item.price.toLocaleString()}</Col>
                     </Row>
                   </ListGroup.Item>
                 ))}
@@ -162,12 +161,6 @@ export default function PlaceOrderScreen() {
                   <Row>
                     <Col>배송료</Col>
                     <Col>{cart.shippingPrice.toLocaleString()}원</Col>
-                  </Row>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Row>
-                    <Col>세금</Col>
-                    <Col>{cart.taxPrice.toLocaleString()}원</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>

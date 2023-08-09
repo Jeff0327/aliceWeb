@@ -3,7 +3,66 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/userModel.js");
 const expressAsyncHandler = require("express-async-handler");
 const userRouter = express.Router();
-const { isAuth, generateToken } = require("../utils.js");
+const { isAuth, isAdmin, generateToken } = require("../utils.js");
+
+userRouter.get(
+  "/",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const users = await User.find({});
+    res.send(users);
+  })
+);
+userRouter.get(
+  "/:id",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (user) {
+      res.send(user);
+    } else {
+      res.status(404).send({ message: "유저를 찾을 수 없습니다." });
+    }
+  })
+);
+userRouter.put(
+  "/:id",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (user) {
+      user.name = req.body.name || user.name;
+      user.email = req.body.email || user.email;
+      user.isAdmin = Boolean(req.body.isAdmin);
+      const updatedUser = await user.save();
+      res.send({ message: "유저가 업데이트되었습니다.", user: updatedUser });
+    } else {
+      res.status(404).send({ message: "유저를 찾을 수 없습니다." });
+    }
+  })
+);
+
+userRouter.delete(
+  "/:id",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (user) {
+      if (user.email === process.env.ADMIN_ID) {
+        res.status(400).send({ message: "관리자 계정은 삭제할 수 없습니다." });
+        return;
+      }
+      await user.deleteOne();
+      res.send({ message: "유저가 삭제되었습니다." });
+    } else {
+      res.status(404).send({ message: "유저를 찾을 수 없습니다." });
+    }
+  })
+);
 userRouter.post(
   "/signin",
   expressAsyncHandler(async (req, res) => {

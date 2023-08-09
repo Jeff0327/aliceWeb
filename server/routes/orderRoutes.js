@@ -1,11 +1,15 @@
 const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
-const { isAuth, isAdmin } = require("../utils.js");
+const {
+  isAuth,
+  isAdmin,
+  mailgun,
+  payOrderEmailTemplate,
+} = require("../utils.js");
 const Order = require("../models/orderModel.js");
 const User = require("../models/userModel.js");
 const Product = require("../models/productModel.js");
 const orderRouter = express.Router();
-
 orderRouter.get(
   "/",
   isAuth,
@@ -26,7 +30,6 @@ orderRouter.post(
       paymentMethod: req.body.paymentMethod,
       itemsPrice: req.body.itemsPrice,
       shippingPrice: req.body.shippingPrice,
-      taxPrice: req.body.taxPrice,
       totalPrice: req.body.totalPrice,
       user: req.user._id,
     });
@@ -118,7 +121,10 @@ orderRouter.put(
   "/:id/pay",
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id);
+    const order = await Order.findById(req.params.id).populate(
+      "user",
+      "email name"
+    );
     if (order) {
       order.isPaid = true;
       order.paidAt = Date.now();
@@ -128,8 +134,27 @@ orderRouter.put(
         update_time: req.body.update_time,
         email_address: req.body.email_address,
       };
-      const updateOrder = await order.save();
-      res.send({ message: "주문 완료", order: updateOrder });
+
+      const updatedOrder = await order.save();
+      mailgun()
+        .messages()
+        .send(
+          {
+            from: `Alice <coca12@gmail.com>`,
+            to: `${order.user.name} <${order.user.email}>`,
+            subject: `구매해주셔서 감사합니다.  주문번호:[${order._id}]`,
+            html: payOrderEmailTemplate(order),
+          },
+          (error, body) => {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log(body);
+            }
+          }
+        );
+
+      res.send({ message: "주문 완료", order: updatedOrder });
     } else {
       res.status(404).send({ message: "주문을 찾을 수 없습니다." });
     }

@@ -292,12 +292,6 @@ export default function OrderScreen() {
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
-                    <Col>세금</Col>
-                    <Col>{order.taxPrice.toLocaleString()}원</Col>
-                  </Row>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Row>
                     <Col>
                       <strong>합계</strong>
                     </Col>

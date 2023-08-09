@@ -1,17 +1,21 @@
 import axios from "axios";
-import { useContext, useEffect, useReducer, useRef } from "react";
+import { useContext, useEffect, useReducer, useRef, useState } from "react";
 import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
+import FloatingLabel from "react-bootstrap/FloatingLabel";
+import Form from "react-bootstrap/Form";
 import ListGroup from "react-bootstrap/ListGroup";
 import Row from "react-bootstrap/Row";
 import { Helmet } from "react-helmet-async";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import LoadingBox from "../components/LoadingBox";
+import MessageBox from "../components/MessageBox";
 import Rating from "../components/Rating";
 import { Store } from "../Store";
 import { getError } from "../utils";
-
 const reducer = (state, action) => {
   switch (action.type) {
     case "REFRESH_PRODUCT":
@@ -36,6 +40,8 @@ const reducer = (state, action) => {
 function ProductScreen() {
   let reviewsRef = useRef();
 
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
   const navigate = useNavigate();
   const params = useParams();
   const { slug } = params;
@@ -76,6 +82,40 @@ function ProductScreen() {
     navigate("/cart");
   };
 
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    if (!comment || !rating) {
+      toast.error("댓글과 평가를 입력해주세요");
+      return;
+    }
+    try {
+      dispatch({ type: "CREATE_REQUEST" });
+      const { data } = await axios.post(
+        `/api/products/${product._id}/reviews`,
+        {
+          rating,
+          comment,
+          name: userInfo.name,
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      dispatch({ type: "CREATE_SUCCESS" });
+      toast.success("리뷰가 입력되었습니다.");
+      product.reviews.unshift(data.review);
+      product.numReviews = data.numReviews;
+      product.rating = data.rating;
+      dispatch({ type: "REFRESH_PRODUCT", payload: product });
+      window.scrollTo({
+        behavior: "smooth",
+        top: reviewsRef.current.offsetTop,
+      });
+    } catch (err) {
+      toast.error(getError(err));
+      dispatch({ type: "CREATE_FAIL" });
+    }
+  };
   return loading ? (
     <div>Loading...</div>
   ) : error ? (
@@ -151,15 +191,72 @@ function ProductScreen() {
           </Card>
         </Col>
       </Row>
-      <div className="container-sec">
-        <div className="container">
-          <Col md={5}>
-            <img
-              className="img-large"
-              src={product.image}
-              alt={product.name}
-            ></img>
-          </Col>
+      <div className="my-3">
+        <h2 ref={reviewsRef}>리뷰</h2>
+        <div className="mb-3">
+          {product.reviews.length === 0 && (
+            <MessageBox>리뷰가 없습니다.</MessageBox>
+          )}
+        </div>
+        <ListGroup>
+          {product.reviews.map((review) => (
+            <ListGroup.Item key={review._id}>
+              <strong>{review.name}</strong>
+              <Rating rating={review.rating} caption=" "></Rating>
+              <p>{review.createdAt.substring(0, 10)}</p>
+              <p>{review.comment}</p>
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+        <div className="my-3">
+          {userInfo ? (
+            <form onSubmit={submitHandler}>
+              <h2>리뷰 작성</h2>
+              <Form.Group className="mb-3" contorlId="rating">
+                <Form.Label>평가</Form.Label>
+                <Form.Select
+                  aria-label="평가"
+                  value={rating}
+                  onChange={(e) => setRating(e.target.value)}
+                >
+                  <option value="">선택</option>
+                  <option value="1">⭑</option>
+                  <option value="2">⭑⭑</option>
+                  <option value="3">⭑⭑⭑</option>
+                  <option value="4">⭑⭑⭑⭑</option>
+                  <option value="5">⭑⭑⭑⭑⭑</option>
+                </Form.Select>
+              </Form.Group>
+              <FloatingLabel
+                contorlId="floatingTextarea"
+                label="댓글"
+                className="mb-3"
+              >
+                <Form.Control
+                  as="textarea"
+                  placeholder="여기에 댓글을 남겨주세요"
+                  value={comment}
+                  onChange={(e) => {
+                    setComment(e.target.value);
+                  }}
+                />
+              </FloatingLabel>
+              <div className="mb-3">
+                <Button disabled={loadingCreateReview} type="submit">
+                  댓글달기
+                </Button>
+                {loadingCreateReview && <LoadingBox></LoadingBox>}
+              </div>
+            </form>
+          ) : (
+            <MessageBox>
+              {" "}
+              <Link to={`/signin?redirect=/product/${product.slug}`}>
+                로그인
+              </Link>{" "}
+              리뷰를 작성해주세요
+            </MessageBox>
+          )}
         </div>
       </div>
     </div>
