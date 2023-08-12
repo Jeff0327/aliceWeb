@@ -195,7 +195,7 @@ export default function OrderScreen() {
       <Helmet>
         <title>Alice</title>
       </Helmet>
-      <h1 className="my-3">주문번호 {orderId}</h1>
+      <h1 className="my-3">주문번호 [{orderId}]</h1>
       <Row>
         <Col md={8}>
           <Card className="mb-3">
