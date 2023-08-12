@@ -26,7 +26,7 @@ productRouter.post(
       description: "sample description",
     });
     const product = await newProduct.save();
-    res.send({ message: "Product Created", product });
+    res.send({ message: "상품이 생성되었습니다.", product });
   })
 );
 productRouter.put(
@@ -212,7 +212,7 @@ productRouter.get("/slug/:slug", async (req, res) => {
   if (product) {
     res.send(product);
   } else {
-    res.status(404).send({ message: "product not found" });
+    res.status(404).send({ message: "상품을 찾을 수 없습니다." });
   }
 });
 
@@ -221,7 +221,7 @@ productRouter.get("/:id", async (req, res) => {
   if (product) {
     res.send(product);
   } else {
-    res.status(404).send({ message: "product not found" });
+    res.status(404).send({ message: "상품을 찾을 수 없습니다." });
   }
 });
 module.exports = productRouter;

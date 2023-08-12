@@ -35,7 +35,7 @@ orderRouter.post(
       user: req.user._id,
     });
     const order = await newOrder.save();
-    res.status(201).send({ message: "New Order Created", order });
+    res.status(201).send({ message: "주문되었습니다.", order });
   })
 );
 orderRouter.get(

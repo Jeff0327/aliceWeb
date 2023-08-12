@@ -84,7 +84,7 @@ userRouter.post(
             console.log(body);
           }
         );
-      res.send({ message: "패스워드 초기화 링크를 이메일로 보냈습니다." });
+      res.send({ message: "패스워드 변경 링크를 이메일로 보냈습니다." });
     } else {
       res.status(404).send({ message: "유저를 찾을 수 없습니다." });
     }
@@ -96,7 +96,7 @@ userRouter.post(
   expressAsyncHandler(async (req, res) => {
     jwt.verify(req.body.token, process.env.JWT_SECRET, async (err, decode) => {
       if (err) {
-        res.status(401).send({ message: "유효하지 않은 토큰입니다." });
+        res.status(401).send({ message: "인증이 만료되었습니다." });
       } else {
         const user = await User.findOne({ resetToken: req.body.token });
         if (user) {
@@ -131,7 +131,7 @@ userRouter.post(
         return;
       }
     }
-    res.status(401).send({ message: "Invalid email or password" });
+    res.status(401).send({ message: "이메일 또는 비밀번호가 틀립니다." });
   })
 );
 
@@ -175,7 +175,9 @@ userRouter.put(
         token: generateToken(updatedUser),
       });
     } else {
-      res.status(404).send({ message: "User not found" });
+      res
+        .status(404)
+        .send({ message: "유저를 찾을 수 없습니다.[error code:003]" });
     }
   })
 );
@@ -192,7 +194,9 @@ userRouter.put(
       const updatedUser = await user.save();
       res.send({ message: "유저가 업데이트되었습니다.", user: updatedUser });
     } else {
-      res.status(404).send({ message: "유저를 찾을 수 없습니다." });
+      res
+        .status(404)
+        .send({ message: "유저를 찾을 수 없습니다. [error code:004]" });
     }
   })
 );
