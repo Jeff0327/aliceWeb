@@ -83,7 +83,7 @@ export default function ShippingAddressScreen() {
         <h1 className="my-3">Shipping Address</h1>
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="fullName">
-            <Form.Label>배송자 이름</Form.Label>
+            <Form.Label>배송자명</Form.Label>
             <Form.Control
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
