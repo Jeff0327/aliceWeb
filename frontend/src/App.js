@@ -15,6 +15,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import SearchBox from "./components/SearchBox";
 import CartScreen from "./screens/CartScreen";
 import DashboardScreen from "./screens/DashboardScreen";
+import ForgetPasswordScreen from "./screens/ForgetPasswordScreen";
 import HomeScreen from "./screens/HomeScreen";
 import OrderHistoryScreen from "./screens/OrderHistoryScreen";
 import OrderListScreen from "./screens/OrderListScreen";
@@ -25,6 +26,7 @@ import ProductEditScreen from "./screens/ProductEditScreen";
 import ProductListScreen from "./screens/ProductListScreen";
 import ProductScreen from "./screens/ProductScreen";
 import ProfileScreen from "./screens/ProfileScreen";
+import ResetPasswordScreen from "./screens/ResetPasswordScreen";
 import SearchScreen from "./screens/SearchScreen";
 import ShippingAddressScreen from "./screens/ShippingAddressScreen";
 import SigninScreen from "./screens/SigninScreen";
@@ -84,7 +86,7 @@ function App() {
                 <SearchBox />
                 <Nav className="me-auto  w-100  justify-content-end">
                   <Link to="/cart" className="nav-link">
-                    cart
+                    장바구니
                     {cart.cartItems.length > 0 && (
                       <Badge pill bg="danger">
                         {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
@@ -137,7 +139,7 @@ function App() {
         <div
           className={
             sidebarIsOpen
-              ? "active-nav side-navbar d-flex justify-content-between flex-wrap flex-column"
+              ? "active-nav side-navbar d-flex justify-content-between flex-wrap flex-column max-width-30"
               : "side-navbar d-flex justify-content-between flex-wrap flex-column"
           }
         >
@@ -165,6 +167,14 @@ function App() {
               <Route path="/search" element={<SearchScreen />} />
               <Route path="/signin" element={<SigninScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
+              <Route
+                path="/forget-password"
+                element={<ForgetPasswordScreen />}
+              />
+              <Route
+                path="/reset-password/:token"
+                element={<ResetPasswordScreen />}
+              />
               <Route
                 path="/profile"
                 element={

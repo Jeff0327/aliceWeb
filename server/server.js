@@ -7,7 +7,7 @@ const productRouter = require("./routes/productRoutes.js");
 const userRouter = require("./routes/userRoutes.js");
 const orderRouter = require("./routes/orderRoutes.js");
 const uploadRouter = require("./routes/uploadRoutes.js");
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 4000;
 
 mongoose
   .connect(process.env.MONGODB_URI)

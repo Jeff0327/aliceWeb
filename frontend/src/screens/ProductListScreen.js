@@ -59,7 +59,7 @@ export default function ProductListScreen() {
     loading: true,
     error: "",
   });
-  const { search, pathname } = useLocation();
+  const { search } = useLocation();
   const sp = new URLSearchParams(search);
   const page = sp.get("page") || 1;
   const { state } = useContext(Store);

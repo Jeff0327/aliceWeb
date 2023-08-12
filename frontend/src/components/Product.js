@@ -41,7 +41,7 @@ function Product(props) {
         <Card.Text>{product.price.toLocaleString()}원</Card.Text>
         {product.countInStock === 0 ? (
           <Button variant="light" disabled>
-            Out of stock
+            Sold out
           </Button>
         ) : (
           <Button onClick={() => addToCartHandler(product)}>카트에 담기</Button>

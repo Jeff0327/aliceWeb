@@ -36,16 +36,16 @@ const reducer = (state, action) => {
 
 const prices = [
   {
-    name: "$1 to $50",
-    value: "1-50",
+    name: "20,000 ~ 30,000",
+    value: "20000-30000",
   },
   {
-    name: "$51 to $200",
-    value: "51-200",
+    name: "30,000 ~ 40,000",
+    value: "30000-40000",
   },
   {
-    name: "$201 to $1000",
-    value: "201-1000",
+    name: "40,000 ~",
+    value: "40000-100000",
   },
 ];
 
@@ -144,7 +144,7 @@ export default function SearchScreen() {
                   className={"all" === category ? "text-bold" : ""}
                   to={getFilterUrl({ category: "all" })}
                 >
-                  Any
+                  전체상품
                 </Link>
               </li>
               {categories.map((c) => (
@@ -191,7 +191,7 @@ export default function SearchScreen() {
                     to={getFilterUrl({ rating: r.rating })}
                     className={`${r.rating}` === `${rating}` ? "text-bold" : ""}
                   >
-                    <Rating caption={" & up"} rating={r.rating}></Rating>
+                    <Rating caption={"Review"} rating={r.rating}></Rating>
                   </Link>
                 </li>
               ))}
@@ -200,7 +200,7 @@ export default function SearchScreen() {
                   to={getFilterUrl({ rating: "all" })}
                   className={rating === "all" ? "text-bold" : ""}
                 >
-                  <Rating caption={" & up"} rating={0}></Rating>
+                  <Rating caption={"Review"} rating={0}></Rating>
                 </Link>
               </li>
             </ul>
@@ -216,11 +216,11 @@ export default function SearchScreen() {
               <Row className="justify-content-between mb-3">
                 <Col md={6}>
                   <div>
-                    {countProducts === 0 ? "No" : countProducts} Results
+                    {countProducts === 0 ? "No" : countProducts} 개의 결과
                     {query !== "all" && " : " + query}
                     {category !== "all" && " : " + category}
                     {price !== "all" && " : Price " + price}
-                    {rating !== "all" && " : Rating " + rating + " & up"}
+                    {rating !== "all" && " : 평점 " + rating + " 개 이상리뷰"}
                     {query !== "all" ||
                     category !== "all" ||
                     rating !== "all" ||

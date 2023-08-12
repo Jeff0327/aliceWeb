@@ -68,11 +68,12 @@ export default function SigninScreen() {
           <Button type="submit">Sign In</Button>
         </div>
         <div className="mb-3">
-          New customer?{" "}
-          <Link to={`/signup?redirect=${redirect}`}>Create your account</Link>
+          새로 오셨나요?{" "}
+          <Link to={`/signup?redirect=${redirect}`}>가입하기</Link>
         </div>
         <div className="mb-3">
-          Forget Password? <Link to={`/forget-password`}>Reset Password</Link>
+          비밀번호를 잊어버렸나요?{" "}
+          <Link to={`/forget-password`}>비밀번호 초기화</Link>
         </div>
       </Form>
     </Container>
