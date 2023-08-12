@@ -6,7 +6,6 @@ import { Helmet } from "react-helmet-async";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox.js";
 import Product from "../components/Product";
-// import data from '../data';
 
 const reducer = (state, action) => {
   switch (action.type) {

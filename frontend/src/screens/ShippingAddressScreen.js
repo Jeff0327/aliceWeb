@@ -1,7 +1,7 @@
-import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import DaumPostcode from "react-daum-postcode";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import CheckoutSteps from "../components/CheckoutSteps";
@@ -9,6 +9,7 @@ import { Store } from "../Store";
 export default function ShippingAddressScreen() {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
+  const [addressPopup, setAddressPopup] = useState(false);
   const {
     fullBox,
     userInfo,
@@ -16,6 +17,9 @@ export default function ShippingAddressScreen() {
   } = state;
   const [fullName, setFullName] = useState(shippingAddress.fullName || "");
   const [address, setAddress] = useState(shippingAddress.address || "");
+  const [detailAddress, setDetailAddress] = useState(
+    shippingAddress.detailAddress || ""
+  );
   const [phoneNumber, setPhoneNumber] = useState(
     shippingAddress.phoneNumber || ""
   );
@@ -30,6 +34,7 @@ export default function ShippingAddressScreen() {
       navigate("/signin?redirect=/shipping");
     }
   }, [userInfo, navigate]);
+
   const submitHandler = (e) => {
     e.preventDefault();
     ctxDispatch({
@@ -37,10 +42,10 @@ export default function ShippingAddressScreen() {
       payload: {
         fullName,
         address,
+        detailAddress,
         phoneNumber,
         postalCode,
         deliveryMsg,
-        location: shippingAddress.location,
       },
     });
     localStorage.setItem(
@@ -48,10 +53,10 @@ export default function ShippingAddressScreen() {
       JSON.stringify({
         fullName,
         address,
+        detailAddress,
         phoneNumber,
         postalCode,
         deliveryMsg,
-        location: shippingAddress.location,
       })
     );
     navigate("/payment");
@@ -61,24 +66,12 @@ export default function ShippingAddressScreen() {
     ctxDispatch({ type: "SET_FULLBOX_OFF" });
   }, [ctxDispatch, fullBox]);
 
-  const addressSearch = async () => {
-    const addressValue = {
-      confmKey: process.env.ADDRESS_API_KEY,
-      returnUrl: "/",
-    };
-    try {
-      const { data } = await axios.get(
-        "https://www.juso.go.kr/addrlink/addrLinkUrl.do",
-        {
-          addressValue,
-        }
-      );
-      const result = await data;
-      console.log(result);
-    } catch (err) {
-      console.log(err);
-    }
+  const onComplete = (data) => {
+    setAddress(data.address);
+    setPostalCode(data.zonecode);
+    setAddressPopup(false);
   };
+
   return (
     <div>
       <Helmet>
@@ -97,6 +90,15 @@ export default function ShippingAddressScreen() {
               required
             />
           </Form.Group>
+
+          <Form.Group className="mb-3" controlId="phoneNumber">
+            <Form.Label>연락처</Form.Label>
+            <Form.Control
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              required
+            />
+          </Form.Group>
           <Form.Group className="mb-3" controlId="address">
             <Form.Label>주소</Form.Label>
             <Form.Control
@@ -104,21 +106,28 @@ export default function ShippingAddressScreen() {
               onChange={(e) => setAddress(e.target.value)}
               required
             />
+
             <Button
               id="chooseAddress"
               type="button"
               variant="light"
-              onClick={() => addressSearch()}
+              onClick={() => {
+                setAddressPopup(true);
+              }}
             >
               주소검색
             </Button>
+            {addressPopup ? (
+              <div>
+                <DaumPostcode onComplete={onComplete}></DaumPostcode>
+              </div>
+            ) : null}
           </Form.Group>
-          <Form.Group className="mb-3" controlId="phoneNumber">
-            <Form.Label>연락처</Form.Label>
+          <Form.Group className="mb-3" controlId="detailAddress">
+            <Form.Label>상세주소</Form.Label>
             <Form.Control
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              required
+              value={detailAddress}
+              onChange={(e) => setDetailAddress(e.target.value)}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="우편번호">
@@ -133,10 +142,7 @@ export default function ShippingAddressScreen() {
               type="button"
               variant="light"
               onClick={() => navigate("/map")}
-            >
-              우편번호검색
-              {/* define navigate  */}
-            </Button>
+            ></Button>
           </Form.Group>
           <Form.Group className="mb-3" controlId="deliveryMsg">
             <Form.Label>배송메세지</Form.Label>
@@ -145,24 +151,6 @@ export default function ShippingAddressScreen() {
               onChange={(e) => setDeliveryMsg(e.target.value)}
             />
           </Form.Group>
-          <div className="mb-3">
-            <Button
-              id="chooseOnMap"
-              type="button"
-              variant="light"
-              onClick={() => navigate("/map")}
-            >
-              위치 선택하기
-            </Button>
-            {shippingAddress.location && shippingAddress.location.lat ? (
-              <div>
-                LAT: {shippingAddress.location.lat}
-                LNG:{shippingAddress.location.lng}
-              </div>
-            ) : (
-              <div>위치정보없음</div>
-            )}
-          </div>
 
           <div className="mb-3">
             <Button variant="primary" type="submit">

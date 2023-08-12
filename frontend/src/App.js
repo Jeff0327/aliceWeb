@@ -42,6 +42,7 @@ function App() {
     ctxDispatch({ type: "USER_SIGNOUT" });
     localStorage.removeItem("userInfo");
     localStorage.removeItem("shippingAddress");
+    localStorage.removeItem("detailAddress");
     localStorage.removeItem("paymentMethod");
     window.location.href = "/signin";
   };

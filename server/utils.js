@@ -105,6 +105,7 @@ const payOrderEmailTemplate = (order) => {
   <p>
   받을사람:${order.shippingAddress.fullName}<br/>
   주소:${order.shippingAddress.address}<br/>
+  상세주소:${order.shippingAddress.detailAddress}<br/>
   연락처:${order.shippingAddress.phoneNumber}<br/>
   우편번호:${order.shippingAddress.postalCode}<br/>
   </p>

@@ -53,6 +53,7 @@ export default function PlaceOrderScreen() {
         {
           orderItems: cart.cartItems,
           shippingAddress: cart.shippingAddress,
+          detailAddress: cart.detailAddress,
           paymentMethod: cart.paymentMethod,
           itemsPrice: cart.itemsPrice,
           shippingPrice: cart.shippingPrice,
@@ -95,6 +96,8 @@ export default function PlaceOrderScreen() {
               <Card.Text>
                 <strong>이름:</strong> {cart.shippingAddress.fullName} <br />
                 <strong>주소: </strong> {cart.shippingAddress.address}
+                <br />
+                <strong>상세주소: </strong> {cart.shippingAddress.detailAddress}
                 <br />
                 <strong>연락처: </strong>
                 {cart.shippingAddress.phoneNumber}

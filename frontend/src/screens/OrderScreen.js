@@ -205,6 +205,9 @@ export default function OrderScreen() {
                 <strong>이름:</strong> {order.shippingAddress.fullName} <br />
                 <strong>주소: </strong> {order.shippingAddress.address}
                 <br />
+                <strong>상세주소: </strong>
+                {order.shippingAddress.detailAddress}
+                <br />
                 <strong>연락처: </strong>
                 {order.shippingAddress.phoneNumber}
                 <br />
@@ -214,15 +217,6 @@ export default function OrderScreen() {
                 <strong>배송메세지: </strong>
                 {order.shippingAddress.deliveryMsg}
                 &nbsp;
-                {order.shippingAddress.location &&
-                  order.shippingAddress.location.lat && (
-                    <a
-                      target="_new"
-                      href={`https://maps.google.com?q=${order.shippingAddress.location.lat},${order.shippingAddress.location.lng}`}
-                    >
-                      Show On Map
-                    </a>
-                  )}
               </Card.Text>
               {order.isDelivered ? (
                 <MessageBox variant="success">
