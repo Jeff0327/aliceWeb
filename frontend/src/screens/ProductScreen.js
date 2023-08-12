@@ -252,7 +252,7 @@ function ProductScreen() {
                 </Form.Select>
               </Form.Group>
               <FloatingLabel
-                contorlId="floatingTextarea"
+                controlId="floatingTextarea"
                 label="댓글"
                 className="mb-3"
               >
