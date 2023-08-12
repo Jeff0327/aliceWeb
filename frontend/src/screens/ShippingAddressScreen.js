@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -5,7 +6,6 @@ import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { Store } from "../Store";
-
 export default function ShippingAddressScreen() {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -61,6 +61,24 @@ export default function ShippingAddressScreen() {
     ctxDispatch({ type: "SET_FULLBOX_OFF" });
   }, [ctxDispatch, fullBox]);
 
+  const addressSearch = async () => {
+    const addressValue = {
+      confmKey: process.env.ADDRESS_API_KEY,
+      returnUrl: "/",
+    };
+    try {
+      const { data } = await axios.get(
+        "https://www.juso.go.kr/addrlink/addrLinkUrl.do",
+        {
+          addressValue,
+        }
+      );
+      const result = await data;
+      console.log(result);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div>
       <Helmet>
@@ -90,9 +108,8 @@ export default function ShippingAddressScreen() {
               id="chooseAddress"
               type="button"
               variant="light"
-              onClick={() => navigate("/map")}
+              onClick={() => addressSearch()}
             >
-              {/* define navigate  */}
               주소검색
             </Button>
           </Form.Group>
