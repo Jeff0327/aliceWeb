@@ -98,7 +98,7 @@ userRouter.post(
 );
 
 userRouter.post(
-  `/reset-password`,
+  "/reset-password",
   expressAsyncHandler(async (req, res) => {
     jwt.verify(req.body.token, process.env.JWT_SECRET, async (err, decode) => {
       if (err) {

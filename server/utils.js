@@ -2,11 +2,11 @@ const jwt = require("jsonwebtoken");
 const mg = require("mailgun-js");
 
 const baseUrl = () => {
-  process.env.BASE_URL
+  return process.env.BASE_URL
     ? process.env.BASE_URL
     : process.env.NODE_ENV !== "production"
     ? "http://localhost:3000"
-    : process.env.MAIN_DOMAIN;
+    : "https://alice-web-19f5664c007b.herokuapp.com/";
 };
 
 const generateToken = (user) => {

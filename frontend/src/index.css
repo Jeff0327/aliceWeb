@@ -44,6 +44,11 @@ main {
 .img-large {
   max-width: 100%;
 }
+.img-detail{
+  max-width: 120%;
+  width:120%;
+  margin-left: -10%;
+}
 .img-thumbnail {
   height: 80px;
 }
@@ -161,4 +166,19 @@ button.thumbnail {
 .search-bar{
   width: 80%;
   
+}
+
+/*ProductScreen*/
+.detail-product{
+  justify-content: center;
+  max-width: 100%;
+  align-self: center;
+  display: flex;
+  margin-top: 10%;
+}
+.detail-description{
+  justify-content: center;
+  align-self: center;
+  display: flex;
+  margin-bottom: 20%;
 }

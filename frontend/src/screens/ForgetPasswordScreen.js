@@ -36,7 +36,7 @@ export default function ForgetPasswordScreen() {
   return (
     <Container className="small-container">
       <Helmet>
-        <title>비밀번호 분실</title>
+        <title>RoseMarry</title>
       </Helmet>
       <h1 className="my-3">비밀번호 분실</h1>
       <Form onSubmit={submitHandler}>
