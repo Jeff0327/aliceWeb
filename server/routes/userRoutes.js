@@ -30,7 +30,9 @@ userRouter.get(
     if (user) {
       res.send(user);
     } else {
-      res.status(404).send({ message: "유저를 찾을 수 없습니다." });
+      res
+        .status(404)
+        .send({ message: "유저를 찾을 수 없습니다. [error code:010]" });
     }
   })
 );
@@ -49,7 +51,9 @@ userRouter.delete(
       await user.deleteOne();
       res.send({ message: "유저가 삭제되었습니다." });
     } else {
-      res.status(404).send({ message: "유저를 찾을 수 없습니다." });
+      res
+        .status(404)
+        .send({ message: "유저를 찾을 수 없습니다. [error code:011]" });
     }
   })
 );
@@ -86,7 +90,9 @@ userRouter.post(
         );
       res.send({ message: "패스워드 변경 링크를 이메일로 보냈습니다." });
     } else {
-      res.status(404).send({ message: "유저를 찾을 수 없습니다." });
+      res
+        .status(404)
+        .send({ message: "유저를 찾을 수 없습니다. [error code:012]" });
     }
   })
 );
@@ -96,7 +102,9 @@ userRouter.post(
   expressAsyncHandler(async (req, res) => {
     jwt.verify(req.body.token, process.env.JWT_SECRET, async (err, decode) => {
       if (err) {
-        res.status(401).send({ message: "인증이 만료되었습니다." });
+        res
+          .status(401)
+          .send({ message: "인증이 만료되었습니다. [error code:020]" });
       } else {
         const user = await User.findOne({ resetToken: req.body.token });
         if (user) {
@@ -108,7 +116,9 @@ userRouter.post(
             });
           }
         } else {
-          res.status(404).send({ message: "유저를 찾을 수 없습니다." });
+          res
+            .status(404)
+            .send({ message: "유저를 찾을 수 없습니다. [error code:013]" });
         }
       }
     });
@@ -177,7 +187,7 @@ userRouter.put(
     } else {
       res
         .status(404)
-        .send({ message: "유저를 찾을 수 없습니다.[error code:003]" });
+        .send({ message: "유저를 찾을 수 없습니다.[error code:014]" });
     }
   })
 );
@@ -196,7 +206,7 @@ userRouter.put(
     } else {
       res
         .status(404)
-        .send({ message: "유저를 찾을 수 없습니다. [error code:004]" });
+        .send({ message: "유저를 찾을 수 없습니다. [error code:015]" });
     }
   })
 );

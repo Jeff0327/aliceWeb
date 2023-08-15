@@ -30,14 +30,16 @@ const isAuth = (req, res, next) => {
     const token = authorization.slice(7, authorization.length); // Bearer XXXXXXX
     jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
       if (err) {
-        res.status(401).send({ message: "인증이 만료되었습니다." });
+        res
+          .status(401)
+          .send({ message: "인증이 만료되었습니다. [error code:021]" });
       } else {
         req.user = decode;
         next();
       }
     });
   } else {
-    res.status(401).send({ message: "인증번호가 없습니다.[error code:001]" });
+    res.status(401).send({ message: "인증이 만료되었습니다.[error code:022]" });
   }
 };
 const isAdmin = (req, res, next) => {
@@ -46,7 +48,7 @@ const isAdmin = (req, res, next) => {
   } else {
     res
       .status(401)
-      .send({ message: "관리자 인증이 만료되었습니다. [error code:002]" });
+      .send({ message: "관리자 인증이 만료되었습니다. [error code:001]" });
   }
 };
 const mailgun = () =>

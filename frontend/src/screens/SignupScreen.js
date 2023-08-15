@@ -25,7 +25,7 @@ export default function SignupScreen() {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      toast.error("Passwords do not match");
+      toast.error("비밀번호가 일치하지 않습니다.");
       return;
     }
     try {

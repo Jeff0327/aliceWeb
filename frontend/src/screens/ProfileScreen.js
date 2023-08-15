@@ -52,7 +52,7 @@ export default function ProfileScreen() {
       });
       ctxDispatch({ type: "USER_SIGNIN", payload: data });
       localStorage.setItem("userInfo", JSON.stringify(data));
-      toast.success("User updated successfully");
+      toast.success("프로필 정보가 수정되었습니다.");
     } catch (err) {
       dispatch({
         type: "FETCH_FAIL",
@@ -64,12 +64,12 @@ export default function ProfileScreen() {
   return (
     <div className="container small-container">
       <Helmet>
-        <title>User Profile</title>
+        <title>Alice</title>
       </Helmet>
-      <h1 className="my-3">User Profile</h1>
+      <h1 className="my-3">프로필</h1>
       <form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="name">
-          <Form.Label>Name</Form.Label>
+          <Form.Label>이름</Form.Label>
           <Form.Control
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -77,7 +77,7 @@ export default function ProfileScreen() {
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="name">
-          <Form.Label>Email</Form.Label>
+          <Form.Label>이메일</Form.Label>
           <Form.Control
             type="email"
             value={email}
@@ -86,7 +86,7 @@ export default function ProfileScreen() {
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="password">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>비밀번호</Form.Label>
           <Form.Control
             value={password}
             type="password"
@@ -94,7 +94,7 @@ export default function ProfileScreen() {
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="password">
-          <Form.Label>Confirm Password</Form.Label>
+          <Form.Label>비밀번호 확인</Form.Label>
           <Form.Control
             value={confirmPassword}
             type="password"
@@ -102,7 +102,7 @@ export default function ProfileScreen() {
           />
         </Form.Group>
         <div className="mb-3">
-          <Button type="submit">Update</Button>
+          <Button type="submit">수정하기</Button>
         </div>
       </form>
     </div>

@@ -82,7 +82,7 @@ export default function ProductListScreen() {
   }, [page, userInfo, successDelete]);
 
   const createHandler = async () => {
-    if (window.confirm("Are you sure to create?")) {
+    if (window.confirm("새로운 상품을 생성하시겠습니까?")) {
       try {
         dispatch({ type: "CREATE_REQUEST" });
         const { data } = await axios.post(
@@ -94,7 +94,6 @@ export default function ProductListScreen() {
             },
           }
         );
-        toast.success("product created successfully");
         dispatch({ type: "CREATE_SUCCESS" });
         navigate(`/admin/product/${data.product._id}`);
       } catch (err) {

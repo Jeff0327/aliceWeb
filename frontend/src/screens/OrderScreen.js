@@ -179,7 +179,7 @@ export default function OrderScreen() {
         }
       );
       dispatch({ type: "DELIVER_SUCCESS", payload: data });
-      toast.success("Order is delivered");
+      toast.success("주문이 배송되었습니다.");
     } catch (err) {
       toast.error(getError(err));
       dispatch({ type: "DELIVER_FAIL" });

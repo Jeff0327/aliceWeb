@@ -73,7 +73,7 @@ function ProductScreen() {
     const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${product._id}`);
     if (data.countInStock < quantity) {
-      window.alert("Sorry. Product is out of stock");
+      window.alert("죄송합니다 상품이 매진되었습니다.");
       return;
     }
     ctxDispatch({
@@ -86,7 +86,7 @@ function ProductScreen() {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!comment || !rating) {
-      toast.error("댓글과 평가를 입력해주세요");
+      toast.error("댓글 & 평점을 남겨주세요.");
       return;
     }
     try {
