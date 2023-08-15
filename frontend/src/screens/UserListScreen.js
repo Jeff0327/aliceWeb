@@ -79,7 +79,7 @@ export default function UserListScreen() {
   return (
     <div>
       <Helmet>
-        <title>Alice</title>
+        <title>RoseMarry</title>
       </Helmet>
       <h1>Users</h1>
       {loadingDelete && <LoadingBox></LoadingBox>}

@@ -155,7 +155,7 @@ export default function ProductEditScreen() {
   return (
     <Container className="small-container">
       <Helmet>
-        <title>Alice</title>
+        <title>RoseMarry</title>
       </Helmet>
       <h1>상품수정{productId}</h1>
 

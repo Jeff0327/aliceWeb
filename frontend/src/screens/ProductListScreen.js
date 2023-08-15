@@ -136,7 +136,7 @@ export default function ProductListScreen() {
         </Col>
       </Row>
       <Helmet>
-        <title>Alice</title>
+        <title>RoseMarry</title>
       </Helmet>
       {loadingCreate && <LoadingBox></LoadingBox>}
       {loadingDelete && <LoadingBox></LoadingBox>}

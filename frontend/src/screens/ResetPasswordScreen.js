@@ -45,8 +45,8 @@ export default function ResetPasswordScreen() {
 
   return (
     <Container className="small-container">
-      <Helmet>비밀번호 초기화</Helmet>
-      <h1 className="my-3">비밀번호 초기화</h1>
+      <Helmet>RoseMarry</Helmet>
+      <h1 className="my-3">비밀번호 분실</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="password">
           <Form.Label>새로운 비밀번호</Form.Label>

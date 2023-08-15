@@ -193,7 +193,7 @@ export default function OrderScreen() {
   ) : (
     <div>
       <Helmet>
-        <title>Alice</title>
+        <title>RoseMarry</title>
       </Helmet>
       <h1 className="my-3">주문번호 [{orderId}]</h1>
       <Row>

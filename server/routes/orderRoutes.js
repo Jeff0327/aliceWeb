@@ -141,7 +141,7 @@ orderRouter.put(
         .messages()
         .send(
           {
-            from: `Alice <coca12@gmail.com>`,
+            from: `RoseMarry <https://alice-web-19f5664c007b.herokuapp.com/>`,
             to: `${order.user.name} <${order.user.email}>`,
             subject: `구매해주셔서 감사합니다.  주문번호:[${order._id}]`,
             html: payOrderEmailTemplate(order),

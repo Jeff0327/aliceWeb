@@ -79,7 +79,7 @@ export default function OrderListScreen() {
   return (
     <div>
       <Helmet>
-        <title>Alice</title>
+        <title>RoseMarry</title>
       </Helmet>
       <h1>Orders</h1>
       {loadingDelete && <LoadingBox></LoadingBox>}

@@ -75,7 +75,7 @@ userRouter.post(
         .messages()
         .send(
           {
-            from: `Alice <cocacola158500@gmail.com>`,
+            from: `RoseMarry <https://alice-web-19f5664c007b.herokuapp.com/>`,
             to: `${user.name} <${user.email}>`,
             subject: `비밀번호 변경`,
             html: `

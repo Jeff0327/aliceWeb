@@ -40,7 +40,7 @@ export default function CartScreen() {
   return (
     <div>
       <Helmet>
-        <title>Alice</title>
+        <title>RoseMarry</title>
       </Helmet>
       <h1>주문목록</h1>
       <Row>

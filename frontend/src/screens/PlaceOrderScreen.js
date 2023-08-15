@@ -85,7 +85,7 @@ export default function PlaceOrderScreen() {
     <div>
       <CheckoutSteps step1 step2 step3 step4></CheckoutSteps>
       <Helmet>
-        <title>Alice</title>
+        <title>RoseMarry</title>
       </Helmet>
       <h1 className="my-3">주문 미리보기</h1>
       <Row>

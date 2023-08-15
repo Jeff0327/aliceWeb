@@ -90,7 +90,7 @@ export default function UserEditScreen() {
   return (
     <Container className="small-container">
       <Helmet>
-        <title>Alice</title>
+        <title>RoseMarry</title>
       </Helmet>
       <h1>유저수정{userId}</h1>
 
