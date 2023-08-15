@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useContext } from "react";
-import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 import { Store } from "../Store";
@@ -39,13 +38,6 @@ function Product(props) {
         </Link>
         <Rating rating={product.rating} numReviews={product.numReviews} />
         <Card.Text>{product.price.toLocaleString()}원</Card.Text>
-        {product.countInStock === 0 ? (
-          <Button variant="light" disabled>
-            Sold out
-          </Button>
-        ) : (
-          <Button onClick={() => addToCartHandler(product)}>카트에 담기</Button>
-        )}
       </Card.Body>
     </Card>
   );

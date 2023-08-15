@@ -53,8 +53,8 @@ main {
   color: #a0a0a0;
 }
 .checkout-steps > div.active {
-  border-bottom: 0.2rem solid #f08000;
-  color: #f08000;
+  border-bottom: 0.2rem solid #14f572;
+  color: #000000;
 }
 
 /* sidebar */
@@ -154,4 +154,8 @@ button.thumbnail {
   margin:10px;
   justify-content: center;
   align-self: center;
+}
+.search-bar{
+  width: 80%;
+  
 }

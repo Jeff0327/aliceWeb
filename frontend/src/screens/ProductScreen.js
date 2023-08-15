@@ -195,7 +195,7 @@ function ProductScreen() {
                       {product.countInStock > 0 ? (
                         <Badge bg="success">판매중</Badge>
                       ) : (
-                        <Badge bg="danger">재고없음</Badge>
+                        <Badge bg="danger">Sold out</Badge>
                       )}
                     </Col>
                   </Row>
