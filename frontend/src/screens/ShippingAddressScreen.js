@@ -128,6 +128,7 @@ export default function ShippingAddressScreen() {
             <Form.Control
               value={detailAddress}
               onChange={(e) => setDetailAddress(e.target.value)}
+              required
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="우편번호">

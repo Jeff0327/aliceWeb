@@ -75,9 +75,9 @@ userRouter.post(
         .messages()
         .send(
           {
-            from: `RoseMarry <https://alice-web-19f5664c007b.herokuapp.com/>`,
+            from: "RoseMarry <cocacola158500@gmail.com>",
             to: `${user.name} <${user.email}>`,
-            subject: `비밀번호 변경`,
+            subject: "비밀번호 변경",
             html: `
         <p>비밀번호를 변경하려면 여기를 클릭하세요:</p>
         <a href="${baseUrl()}/reset-password/${token}"}>비밀번호 변경</a>

@@ -73,7 +73,7 @@ export default function SigninScreen() {
         </div>
         <div className="mb-3">
           비밀번호를 잊어버렸나요?{" "}
-          <Link to={`/forget-password`}>비밀번호 분실</Link>
+          <Link to={`/forget-password`}>비밀번호 찾기</Link>
         </div>
       </Form>
     </Container>

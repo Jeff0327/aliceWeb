@@ -17,6 +17,9 @@ main {
   background-color: #f0c040;
   color: #000000;
 }
+.title-name{
+  margin-left: 15px;
+}
 .products {
   display: flex;
   flex-wrap: wrap;
