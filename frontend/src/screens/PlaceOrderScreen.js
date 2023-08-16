@@ -40,7 +40,7 @@ export default function PlaceOrderScreen() {
   cart.itemsPrice = round2(
     cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
   );
-  cart.shippingPrice = cart.itemsPrice > 100 ? round2(0) : round2(10);
+  cart.shippingPrice = cart.itemsPrice > 50000 ? 0 : 2500; //5만원 이상 결제시 배송료 무료 5만원미만 결제시 배송료 2500
 
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
 

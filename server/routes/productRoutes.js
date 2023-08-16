@@ -42,6 +42,7 @@ productRouter.put(
       product.price = req.body.price;
       product.image = req.body.image;
       product.images = req.body.images;
+      product.detailImages = req.body.detailImages;
       product.category = req.body.category;
       product.brand = req.body.brand;
       product.countInStock = req.body.countInStock;

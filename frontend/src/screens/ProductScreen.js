@@ -215,24 +215,18 @@ function ProductScreen() {
           </Card>
         </Col>
       </Row>
-      {/* <div className="detail-product">
-        <Row>
-          <div className="detail-description">
-            <Row>
-              <Col>asd</Col>
-            </Row>
-          </div>
-          <div>
-            <Col>
-              <img
-                src={selectedImage || product.image}
-                className="img-detail"
-                alt="img"
-              />
-            </Col>
-          </div>
-        </Row>
-      </div> */}
+      <div className="detail-product">
+        <div className="detail-wrap">
+          {product.detailImages.map((e, index) => (
+            <img
+              key={index}
+              src={e}
+              className="detail-images"
+              alt={`detailImage-${index}`}
+            />
+          ))}
+        </div>
+      </div>
       <div className="my-3">
         <h2 ref={reviewsRef}>리뷰</h2>
         <div className="mb-3">

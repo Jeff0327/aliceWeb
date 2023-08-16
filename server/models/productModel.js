@@ -17,6 +17,7 @@ const productSchema = new mongoose.Schema(
     category: { type: String, required: true },
     image: { type: String, required: true },
     images: [String],
+    detailImages: [String],
     price: { type: Number, required: true },
     countInStock: { type: Number, required: true },
     brand: { type: String, required: true },

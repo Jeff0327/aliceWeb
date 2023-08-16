@@ -176,9 +176,14 @@ button.thumbnail {
   display: flex;
   margin-top: 10%;
 }
-.detail-description{
+.detail-wrap{
   justify-content: center;
   align-self: center;
   display: flex;
-  margin-bottom: 20%;
+  flex-wrap: wrap;
+}
+.detail-images{
+  max-width: 80%;
+  margin-top: 3%;
+  margin-bottom: 3%;
 }

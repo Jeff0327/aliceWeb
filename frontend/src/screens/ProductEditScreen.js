@@ -59,6 +59,7 @@ export default function ProductEditScreen() {
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
   const [images, setImages] = useState([]);
+  const [detailImages, setDetailImages] = useState([]);
   const [category, setCategory] = useState("");
   const [countInStock, setCountInStock] = useState("");
   const [brand, setBrand] = useState("");
@@ -74,6 +75,7 @@ export default function ProductEditScreen() {
         setPrice(data.price);
         setImage(data.image);
         setImages(data.images);
+        setDetailImages(data.detailImages);
         setCategory(data.category);
         setCountInStock(data.countInStock);
         setBrand(data.brand);
@@ -102,6 +104,7 @@ export default function ProductEditScreen() {
           price,
           image,
           images,
+          detailImages,
           category,
           brand,
           countInStock,
@@ -148,8 +151,40 @@ export default function ProductEditScreen() {
       dispatch({ type: "UPLOAD_FAIL", payload: getError(err) });
     }
   };
+
+  const uploadDetailImagesHandler = async (e, forDetailImages) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append("file", file);
+    try {
+      dispatch({ type: "UPLOAD_REQUEST" });
+      const { data } = await axios.post("/api/upload", bodyFormData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+      dispatch({ type: "UPLOAD_SUCCESS" });
+
+      if (forDetailImages) {
+        setDetailImages([...detailImages, data.secure_url]);
+      } else {
+        setDetailImages(data.secure_url);
+      }
+      toast.success(
+        "이미지가 성공적으로 업로드되었습니다. 업데이트를 클릭하여 적용하세요"
+      );
+    } catch (err) {
+      toast.error(getError(err));
+      dispatch({ type: "UPLOAD_FAIL", payload: getError(err) });
+    }
+  };
   const deleteFileHandler = async (fileName) => {
     setImages(images.filter((x) => x !== fileName));
+    toast.success("이미지가 제거되었습니다. 업데이트를 클릭하여 적용하세요.");
+  };
+  const deleteDetailImagesHandler = async (fileName) => {
+    setDetailImages(detailImages.filter((x) => x !== fileName));
     toast.success("이미지가 제거되었습니다. 업데이트를 클릭하여 적용하세요.");
   };
   return (
@@ -222,6 +257,33 @@ export default function ProductEditScreen() {
             <Form.Control
               type="file"
               onChange={(e) => uploadFileHandler(e, true)}
+            />
+            {loadingUpload && <LoadingBox></LoadingBox>}
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="detailImage">
+            <Form.Label>Detail Images</Form.Label>
+            {detailImages.length === 0 && (
+              <MessageBox>No Detail image</MessageBox>
+            )}
+            <ListGroup variant="flush">
+              {detailImages.map((x) => (
+                <ListGroup.Item key={x}>
+                  {x}
+                  <Button
+                    variant="light"
+                    onClick={() => deleteDetailImagesHandler(x)}
+                  >
+                    <i className="fa fa-times-circle"></i>
+                  </Button>
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="detailImageFile">
+            <Form.Label>Upload Detail Image</Form.Label>
+            <Form.Control
+              type="file"
+              onChange={(e) => uploadDetailImagesHandler(e, true)}
             />
             {loadingUpload && <LoadingBox></LoadingBox>}
           </Form.Group>
