@@ -51,7 +51,7 @@ export default function DashboardScreen() {
 
   return (
     <div>
-      <h1>Dashboard</h1>
+      <h1>통계</h1>
       {loading ? (
         <LoadingBox />
       ) : error ? (
@@ -64,10 +64,10 @@ export default function DashboardScreen() {
                 <Card.Body>
                   <Card.Title>
                     {summary.users && summary.users[0]
-                      ? summary.users[0].numUsers
+                      ? summary.users[0].numUsers + "명"
                       : 0}
                   </Card.Title>
-                  <Card.Text> Users</Card.Text>
+                  <Card.Text>유저</Card.Text>
                 </Card.Body>
               </Card>
             </Col>
@@ -76,10 +76,10 @@ export default function DashboardScreen() {
                 <Card.Body>
                   <Card.Title>
                     {summary.orders && summary.users[0]
-                      ? summary.orders[0].numOrders
+                      ? summary.orders[0].numOrders + "건"
                       : 0}
                   </Card.Title>
-                  <Card.Text> Orders</Card.Text>
+                  <Card.Text>주문수</Card.Text>
                 </Card.Body>
               </Card>
             </Col>
@@ -87,26 +87,25 @@ export default function DashboardScreen() {
               <Card>
                 <Card.Body>
                   <Card.Title>
-                    $
                     {summary.orders && summary.users[0]
-                      ? summary.orders[0].totalSales.toFixed(2)
+                      ? summary.orders[0].totalSales.toLocaleString() + "원"
                       : 0}
                   </Card.Title>
-                  <Card.Text> Orders</Card.Text>
+                  <Card.Text>주문금액</Card.Text>
                 </Card.Body>
               </Card>
             </Col>
           </Row>
           <div className="my-3">
-            <h2>Sales</h2>
+            <h2>판매평균금액</h2>
             {summary.dailyOrders.length === 0 ? (
-              <MessageBox>No Sale</MessageBox>
+              <MessageBox>판매없음</MessageBox>
             ) : (
               <Chart
                 width="100%"
                 height="400px"
                 chartType="AreaChart"
-                loader={<div>Loading Chart...</div>}
+                loader={<div>불러오는중...</div>}
                 data={[
                   ["Date", "Sales"],
                   ...summary.dailyOrders.map((x) => [x._id, x.sales]),
@@ -115,7 +114,7 @@ export default function DashboardScreen() {
             )}
           </div>
           <div className="my-3">
-            <h2>Categories</h2>
+            <h2>카테고리</h2>
             {summary.productCategories.length === 0 ? (
               <MessageBox>No Category</MessageBox>
             ) : (

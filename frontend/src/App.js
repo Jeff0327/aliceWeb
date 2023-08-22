@@ -261,7 +261,27 @@ function App() {
           </Container>
         </main>
         <footer>
-          <div className="text-center">All rights reserved</div>
+          <div className="footer-contents">
+            <ul className="footer-contents-ul">
+              <li>
+                <p>상호: 로즈메리 &nbsp;</p>
+                <p>대표자: 김지섭 &nbsp;</p>
+                <p>사업자 등록번호: 531-20-02039 &nbsp;</p>
+              </li>
+              <li>
+                <p>고객센터: 010-1111-1111&nbsp;</p>
+                <p>
+                  카카오톡:{" "}
+                  <a href="https://open.kakao.com/o/s6vqBJCf">이동하기</a>{" "}
+                  {/* .env 파일로 이동 */}
+                </p>
+                <p>평일: 09:00시~17:00시 &nbsp;</p>
+              </li>
+              <li>
+                <p>로즈메리 이용해주셔서 감사합니다.</p>
+              </li>
+            </ul>
+          </div>
         </footer>
       </div>
     </BrowserRouter>

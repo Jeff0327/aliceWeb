@@ -34,17 +34,30 @@ const reducer = (state, action) => {
   }
 };
 
+const categoryColors = [
+  "#F08080",
+  "#FFA07A",
+  "#DAA520",
+  "#F0E68C",
+  "#7CFC00",
+  "#00FA9A",
+  "#008B8B",
+  "#66CDAA",
+  "#AFEEEE",
+  "#87CEEB",
+  "#00BFFF",
+];
 const prices = [
   {
-    name: "20,000 ~ 30,000",
+    name: "20,000~30,000",
     value: "20000-30000",
   },
   {
-    name: "30,000 ~ 40,000",
+    name: "30,000~40,000",
     value: "30000-40000",
   },
   {
-    name: "40,000 ~",
+    name: "40,000~",
     value: "40000-100000",
   },
 ];
@@ -138,22 +151,32 @@ export default function SearchScreen() {
         <Col md={3}>
           <h3>목록</h3>
           <div>
-            <ul>
+            <ul className="list-ulContainer">
               <li>
                 <Link
                   className={"all" === category ? "text-bold" : ""}
                   to={getFilterUrl({ category: "all" })}
                 >
-                  전체상품
+                  <p className="list-text">전체상품</p>
                 </Link>
               </li>
-              {categories.map((c) => (
-                <li key={c}>
+
+              {categories.map((c, index) => (
+                <li
+                  className="list-liContainer"
+                  key={c}
+                  style={{
+                    "--clr":
+                      categoryColors[index % categoryColors.length] || "black",
+                  }}
+                >
                   <Link
-                    className={c === category ? "text-bold" : ""}
+                    className={c === category ? "searchClickBefore" : ""}
                     to={getFilterUrl({ category: c })}
                   >
-                    {c}
+                    <p data-text={`\u00A0${c}`} className="list-text">
+                      &nbsp;{c}
+                    </p>
                   </Link>
                 </li>
               ))}
@@ -167,16 +190,29 @@ export default function SearchScreen() {
                   className={"all" === price ? "text-bold" : ""}
                   to={getFilterUrl({ price: "all" })}
                 >
-                  전체
+                  <p className="list-text">전체</p>
                 </Link>
               </li>
-              {prices.map((p) => (
-                <li key={p.value}>
+              {prices.map((p, index) => (
+                <li
+                  key={p.value}
+                  className="list-liContainer"
+                  style={{
+                    "--clr":
+                      categoryColors[(index % categoryColors.length) + 4] ||
+                      "black",
+                  }}
+                >
                   <Link
                     to={getFilterUrl({ price: p.value })}
-                    className={p.value === price ? "text-bold" : ""}
+                    className={p.value === price ? "searchClickBefore" : ""}
                   >
-                    {p.name}
+                    <p
+                      data-text={`\u00A0${p.name}`}
+                      className="list-text-price"
+                    >
+                      &nbsp;{p.name}
+                    </p>
                   </Link>
                 </li>
               ))}

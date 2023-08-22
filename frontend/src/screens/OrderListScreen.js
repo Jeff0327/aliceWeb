@@ -95,8 +95,8 @@ export default function OrderListScreen() {
               <th>유저</th>
               <th>주문일</th>
               <th>주문합계</th>
-              <th>결제</th>
-              <th>배송</th>
+              <th>결제일</th>
+              <th>배송상태</th>
               <th>기타</th>
             </tr>
           </thead>
@@ -106,7 +106,7 @@ export default function OrderListScreen() {
                 <td>{order._id}</td>
                 <td>{order.user ? order.user.name : "삭제된 유저"}</td>
                 <td>{order.createdAt.substring(0, 10)}</td>
-                <td>{order.totalPrice.toFixed(2)}</td>
+                <td>{order.totalPrice.toLocaleString()}</td>
                 <td>{order.isPaid ? order.paidAt.substring(0, 10) : "No"}</td>
                 <td>
                   {order.isDelivered
@@ -121,7 +121,7 @@ export default function OrderListScreen() {
                       navigate(`/order/${order._id}`);
                     }}
                   >
-                    Details
+                    상세정보
                   </Button>
                   &nbsp;
                   <Button

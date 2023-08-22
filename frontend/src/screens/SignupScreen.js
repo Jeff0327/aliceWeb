@@ -34,11 +34,23 @@ export default function SignupScreen() {
         email,
         password,
       });
+
       ctxDispatch({ type: "USER_SIGNIN", payload: data });
       localStorage.setItem("userInfo", JSON.stringify(data));
       navigate(redirect || "/");
     } catch (err) {
-      toast.error(getError(err));
+      const errorResponse = getError(err);
+
+      const errorName = errorResponse.includes("dup key: { name:");
+      const errorEmail = errorResponse.includes("dup key: { email:");
+
+      if (errorName) {
+        toast.error("사용중인 이름입니다.");
+      } else if (errorEmail) {
+        toast.error("사용중인 이메일입니다.");
+      } else {
+        toast.error(getError(err));
+      }
     }
   };
 

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useContext, useEffect, useReducer, useRef, useState } from "react";
+import AnchorLink from "react-anchor-link-smooth-scroll";
 import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
@@ -215,7 +216,23 @@ function ProductScreen() {
           </Card>
         </Col>
       </Row>
-      <div className="detail-product">
+      <div style={{ display: "flex" }}>
+        <ul className="contents-section-ul">
+          <AnchorLink href="#details" className="contents-section-link">
+            <li>상세정보</li>
+          </AnchorLink>
+          <AnchorLink href="#reviews" className="contents-section-link">
+            <li>상품평/리뷰</li>
+          </AnchorLink>
+          <AnchorLink href="#inquire" className="contents-section-link">
+            <li>상품문의</li>
+          </AnchorLink>
+          <AnchorLink href="#delivery" className="contents-section-link">
+            <li>배송/교환</li>
+          </AnchorLink>
+        </ul>
+      </div>
+      <div id="details" className="detail-product">
         <div className="detail-wrap">
           {product.detailImages.map((e, index) => (
             <img
@@ -227,7 +244,8 @@ function ProductScreen() {
           ))}
         </div>
       </div>
-      <div className="my-3">
+
+      <div id="reviews" className="my-3">
         <h2 ref={reviewsRef}>리뷰</h2>
         <div className="mb-3">
           {product.reviews.length === 0 && (
@@ -294,6 +312,12 @@ function ProductScreen() {
             </MessageBox>
           )}
         </div>
+      </div>
+      <div id="inquire" className="my-3">
+        <p>문의</p>
+      </div>
+      <div id="delivery" className="my-3">
+        <p>배송</p>
       </div>
     </div>
   );
