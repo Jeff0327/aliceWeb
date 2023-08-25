@@ -30,7 +30,14 @@ function Product(props) {
   return (
     <Card>
       <Link to={`/product/${product.slug}`}>
-        <img src={product.image} className="card-img-top" alt={product.name} />
+        <div style={{ height: "300px", overflow: "hidden" }}>
+          <img
+            style={{ objectFit: "cover", width: "100%", height: "100%" }}
+            src={product.image}
+            className="card-img-top"
+            alt={product.name}
+          />
+        </div>
       </Link>
       <Card.Body>
         <Link to={`/product/${product.slug}`}>

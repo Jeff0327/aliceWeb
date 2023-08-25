@@ -60,6 +60,10 @@ function App() {
     };
     fetchCategories();
   }, []);
+
+  const hometaxUrl = () => {
+    const url = window.open(url, "bizCommPop", "width=750, height=700;");
+  };
   return (
     <BrowserRouter>
       <div
@@ -262,25 +266,12 @@ function App() {
         </main>
         <footer>
           <div className="footer-contents">
-            <ul className="footer-contents-ul">
-              <li>
-                <p>상호: 로즈메리 &nbsp;</p>
-                <p>대표자: 김지섭 &nbsp;</p>
-                <p>사업자 등록번호: 531-20-02039 &nbsp;</p>
-              </li>
-              <li>
-                <p>고객센터: 010-1111-1111&nbsp;</p>
-                <p>
-                  카카오톡:{" "}
-                  <a href="https://open.kakao.com/o/s6vqBJCf">이동하기</a>{" "}
-                  {/* .env 파일로 이동 */}
-                </p>
-                <p>평일: 09:00시~17:00시 &nbsp;</p>
-              </li>
-              <li>
-                <p>로즈메리 이용해주셔서 감사합니다.</p>
-              </li>
-            </ul>
+            상호: 로즈메리 | 대표자: 김지섭 | 주소: 군산시 오식도동 806-3
+            한성필하우스 107/1304 | 대표번호: 010-3055-4972 | E-mail:
+            cocacola158500@gmail.com | 사업자 등록번호: 531-20-02039
+            <a className="footerTextLink">(사업자정보확인)</a>|
+            <a className="footerTextLink">개인정보처리방침</a> |
+            <a className="footerTextLink">이용약관</a>
           </div>
         </footer>
       </div>

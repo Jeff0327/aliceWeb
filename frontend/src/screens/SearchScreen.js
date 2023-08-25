@@ -149,7 +149,6 @@ export default function SearchScreen() {
       </Helmet>
       <Row>
         <Col md={3}>
-          <h3>목록</h3>
           <div>
             <ul className="list-ulContainer">
               <li>
@@ -183,7 +182,6 @@ export default function SearchScreen() {
             </ul>
           </div>
           <div>
-            <h3>가격</h3>
             <ul>
               <li>
                 <Link
@@ -219,7 +217,7 @@ export default function SearchScreen() {
             </ul>
           </div>
           <div>
-            <h3>평균리뷰 높은순</h3>
+            <h2>Review</h2>
             <ul>
               {ratings.map((r) => (
                 <li key={r.name}>
