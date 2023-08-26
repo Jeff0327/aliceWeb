@@ -15,7 +15,7 @@ export default function SearchBox() {
   };
   const buttonStyle = {
     borderColor: "black",
-    backgroundColor: isHovered ? "black" : "white", // Change on hover
+    backgroundColor: isHovered ? "black" : "white",
   };
   return (
     <Form className="search-bar" onSubmit={submitHandler}>
