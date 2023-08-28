@@ -10,6 +10,7 @@ import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { Store } from "../Store";
 import { getError } from "../utils";
+import "./Style.css";
 const reducer = (state, action) => {
   switch (action.type) {
     case "FETCH_REQUEST":
@@ -129,7 +130,11 @@ export default function ProductListScreen() {
         </Col>
         <Col className="col text-end">
           <div>
-            <Button type="button" onClick={createHandler}>
+            <Button
+              type="button"
+              onClick={createHandler}
+              className="submitButton"
+            >
               생성하기
             </Button>
           </div>

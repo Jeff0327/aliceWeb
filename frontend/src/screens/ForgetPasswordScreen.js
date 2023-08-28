@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Store } from "../Store";
 import { getError } from "../utils";
+import "./Style.css";
 export default function ForgetPasswordScreen() {
   const navigate = useNavigate();
 
@@ -49,7 +50,9 @@ export default function ForgetPasswordScreen() {
           />
         </Form.Group>
         <div className="mb-3">
-          <Button type="submit">확인</Button>
+          <Button type="submit" className="submitButton">
+            확인
+          </Button>
         </div>
       </Form>
     </Container>

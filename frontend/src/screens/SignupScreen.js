@@ -8,7 +8,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Store } from "../Store";
 import { getError } from "../utils";
-
+import "./Style.css";
 export default function SignupScreen() {
   const navigate = useNavigate();
   const { search } = useLocation();
@@ -63,17 +63,17 @@ export default function SignupScreen() {
   return (
     <Container className="small-container">
       <Helmet>
-        <title>Sign Up</title>
+        <title>RoseMarry</title>
       </Helmet>
-      <h1 className="my-3">Sign Up</h1>
+      <h1 className="my-3">가입하기</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="name">
-          <Form.Label>Name</Form.Label>
+          <Form.Label>이름</Form.Label>
           <Form.Control onChange={(e) => setName(e.target.value)} required />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="email">
-          <Form.Label>Email</Form.Label>
+          <Form.Label>Email(아이디)</Form.Label>
           <Form.Control
             type="email"
             required
@@ -81,14 +81,14 @@ export default function SignupScreen() {
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="password">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>비밀번호</Form.Label>
           <Form.Control
             type="password"
             required
             onChange={(e) => setPassword(e.target.value)}
           />
           <Form.Group className="mb-3" controlId="confirmPassword">
-            <Form.Label>Confirm Password</Form.Label>
+            <Form.Label>비밀번호 확인</Form.Label>
             <Form.Control
               type="password"
               onChange={(e) => setConfirmPassword(e.target.value)}
@@ -97,11 +97,13 @@ export default function SignupScreen() {
           </Form.Group>
         </Form.Group>
         <div className="mb-3">
-          <Button type="submit">Sign Up</Button>
+          <Button type="submit" className="submitButton">
+            가입하기
+          </Button>
         </div>
         <div className="mb-3">
-          Already have an account?{" "}
-          <Link to={`/signin?redirect=${redirect}`}>Sign-In</Link>
+          이미 계정이 있으시나요?{" "}
+          <Link to={`/signin?redirect=${redirect}`}>로그인</Link>
         </div>
       </Form>
     </Container>

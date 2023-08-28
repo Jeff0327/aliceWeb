@@ -61,9 +61,16 @@ function App() {
     fetchCategories();
   }, []);
 
-  const hometaxUrl = () => {
-    const url = window.open(url, "bizCommPop", "width=750, height=700;");
-  };
+  function onPopKBAuthMark() {
+    window.open(
+      "",
+      "KB_AUTHMARK",
+      "height=604, width=648, status=yes, toolbar=no, menubar=no, location=no"
+    );
+    document.KB_AUTHMARK_FORM.action = "https://okbfex.kbstar.com/quics";
+    document.KB_AUTHMARK_FORM.target = "KB_AUTHMARK";
+    document.KB_AUTHMARK_FORM.submit();
+  }
   return (
     <BrowserRouter>
       <div
@@ -269,9 +276,28 @@ function App() {
             상호: 로즈메리 | 대표자: 김지섭 | 주소: 군산시 오식도동 806-3
             한성필하우스 107/1304 | 대표번호: 010-3055-4972 | E-mail:
             cocacola158500@gmail.com | 사업자 등록번호: 531-20-02039
-            <a className="footerTextLink">(사업자정보확인)</a>|
+            {/* <a className="footerTextLink">(사업자정보확인)</a>|
             <a className="footerTextLink">개인정보처리방침</a> |
-            <a className="footerTextLink">이용약관</a>
+            <a className="footerTextLink">이용약관</a> */}
+          </div>
+          <div className="markContainer">
+            <form name="KB_AUTHMARK_FORM" method="get">
+              <input type="hidden" name="page" value="C021590" />
+              <input type="hidden" name="cc" value="b034066:b035526" />
+              <input
+                type="hidden"
+                name="mHValue"
+                value="6ba1766548b9295ff6787f2f38752382"
+              />
+            </form>
+            <a href="#" onClick={onPopKBAuthMark}>
+              <img
+                style={{ width: "50px", height: "50px" }}
+                src="http://img1.kbstar.com/img/escrow/escrowcmark.gif"
+                border="0"
+                alt="KB Auth Mark"
+              />
+            </a>
           </div>
         </footer>
       </div>

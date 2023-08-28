@@ -146,7 +146,11 @@ button.thumbnail {
   transition: 0.5s;
 }
 /* @media (max-width:768px){
- 모바일 환경
+  .detail-product{
+    grid-template-columns: 50%;
+    width:30px;
+  }
+  
 } */
 .site-container{
   transition: 0.4s;
@@ -299,4 +303,10 @@ button.thumbnail {
   text-decoration: underline;
   cursor: pointer;
   color:#000000
+}
+.markContainer{
+  display: flex;
+  border-top:1px solid #ccc;
+  justify-content: center;
+  padding: 2px;
 }
