@@ -274,7 +274,7 @@ function App() {
         <footer>
           <div className="footer-contents">
             상호: 로즈메리 | 대표자: 김지섭 | 주소: 군산시 오식도동 806-3
-            한성필하우스 107/1304 | 대표번호: 010-3055-4972 | E-mail:
+            한성필하우스 107/1304 | 연락처: 010-3055-4972 | E-mail:
             cocacola158500@gmail.com | 사업자 등록번호: 531-20-02039
             {/* <a className="footerTextLink">(사업자정보확인)</a>|
             <a className="footerTextLink">개인정보처리방침</a> |
