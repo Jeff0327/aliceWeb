@@ -279,6 +279,7 @@ function App() {
             <a className="footerTextLink">(사업자정보확인)</a>|
             <a className="footerTextLink">개인정보처리방침</a> |
             <a className="footerTextLink">이용약관</a>
+            {/* asd */}
           </div>
           <div className="markContainer">
             <form name="KB_AUTHMARK_FORM" method="get">
