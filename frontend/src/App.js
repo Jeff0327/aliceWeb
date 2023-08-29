@@ -290,14 +290,22 @@ function App() {
                 value="6ba1766548b9295ff6787f2f38752382"
               />
             </form>
-            <a href="#" onClick={onPopKBAuthMark}>
+            <button
+              onClick={onPopKBAuthMark}
+              style={{
+                border: "none",
+                background: "none",
+                padding: 0,
+                cursor: "pointer",
+              }}
+            >
               <img
                 style={{ width: "50px", height: "50px" }}
                 src="http://img1.kbstar.com/img/escrow/escrowcmark.gif"
                 border="0"
                 alt="KB Auth Mark"
               />
-            </a>
+            </button>
           </div>
         </footer>
       </div>
