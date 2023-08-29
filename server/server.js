@@ -22,6 +22,12 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use((req, res, next) => {
+  if (req.headers.host === "www.rosesmarry.com") {
+    return res.redirect(301, "http://rosesmarry.com" + req.originalUrl);
+  }
+  return next();
+});
 app.get("/api/keys/paypal", (req, res) => {
   res.send(process.env.PAYPAL_CLIENT_ID || "sb");
 });
