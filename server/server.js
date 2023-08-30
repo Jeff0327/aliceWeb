@@ -10,7 +10,7 @@ const uploadRouter = require("./routes/uploadRoutes.js");
 const port = process.env.PORT || 4000;
 
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(process.env.MONGODB_URL_ATLAS)
   .then(() => {
     console.log("connected to db");
   })

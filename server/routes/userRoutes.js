@@ -75,7 +75,7 @@ userRouter.post(
         .messages()
         .send(
           {
-            from: "RoseMarry <cocacola158500@gmail.com>",
+            from: "RoseMarry <cocacola158500.com>",
             to: `${user.name} <${user.email}>`,
             subject: "비밀번호 변경",
             html: `
@@ -92,7 +92,7 @@ userRouter.post(
     } else {
       res
         .status(404)
-        .send({ message: "유저를 찾을 수 없습니다. [error code:012]" });
+        .send({ message: "이메일을 찾을 수 없습니다. [error code:012]" });
     }
   })
 );
