@@ -28,17 +28,17 @@ function Product(props) {
   };
 
   return (
-    <Card>
+    <Card className="cardContainer">
       <Link to={`/product/${product.slug}`}>
         <div style={{ height: "300px", overflow: "hidden" }}>
           <img
-            style={{ objectFit: "cover", width: "100%", height: "100%" }}
             src={product.image}
             className="card-img-top"
             alt={product.name}
           />
         </div>
       </Link>
+
       <Card.Body>
         <Link to={`/product/${product.slug}`}>
           <Card.Title>{product.name}</Card.Title>
