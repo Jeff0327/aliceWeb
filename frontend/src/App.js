@@ -293,8 +293,10 @@ function App() {
             >
               (사업자정보확인)|
             </a>
-            {/* <a className="footerTextLink">개인정보처리방침|</a> */}
-            <a href="/service" className="footerTextLink">
+            <Link to="/service#privacy" className="footerTextLink">
+              개인정보처리방침|
+            </Link>
+            <a href="/service#terms" className="footerTextLink">
               이용약관
             </a>
           </div>
