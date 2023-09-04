@@ -8,7 +8,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Store } from "../Store";
 import { getError } from "../utils";
-import "./Style.css";
 export default function SignupScreen() {
   const navigate = useNavigate();
   const { search } = useLocation();
@@ -79,6 +78,11 @@ export default function SignupScreen() {
             required
             onChange={(e) => setEmail(e.target.value)}
           />
+          {
+            <div className="text-muted info-text">
+              상품구매시 구매내역이 메일로 전송됩니다.
+            </div>
+          }
         </Form.Group>
         <Form.Group className="mb-3" controlId="password">
           <Form.Label>비밀번호</Form.Label>
@@ -97,7 +101,7 @@ export default function SignupScreen() {
           </Form.Group>
         </Form.Group>
         <div className="mb-3">
-          <Button type="submit" className="submitButton">
+          <Button type="submit" className="btn-dark">
             가입하기
           </Button>
         </div>

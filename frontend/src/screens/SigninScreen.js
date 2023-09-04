@@ -8,7 +8,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Store } from "../Store";
 import { getError } from "../utils";
-import "./Style.css";
 export default function SigninScreen() {
   const navigate = useNavigate();
   const { search } = useLocation();
@@ -65,7 +64,11 @@ export default function SigninScreen() {
           />
         </Form.Group>
         <div className="mb-3">
-          <Button type="submit" className="submitButton">
+          <Button
+            type="submit"
+            style={{ borderColor: "black" }}
+            class="btn btn-dark"
+          >
             로그인
           </Button>
         </div>

@@ -116,9 +116,10 @@ export default function CartScreen() {
                   <div className="d-grid">
                     <Button
                       type="button"
-                      variant="primary"
+                      variant="success"
                       onClick={checkoutHandler}
                       disabled={cartItems.length === 0}
+                      style={{ borderColor: "black" }}
                     >
                       계속하기
                     </Button>

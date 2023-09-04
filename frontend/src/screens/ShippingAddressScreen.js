@@ -4,12 +4,14 @@ import Form from "react-bootstrap/Form";
 import DaumPostcode from "react-daum-postcode";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { Store } from "../Store";
 export default function ShippingAddressScreen() {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const [addressPopup, setAddressPopup] = useState(false);
+  const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(true);
   const {
     fullBox,
     userInfo,
@@ -37,6 +39,10 @@ export default function ShippingAddressScreen() {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    if (!isPhoneNumberValid) {
+      toast.error("휴대폰번호를 확인하세요");
+      return;
+    }
     ctxDispatch({
       type: "SAVE_SHIPPING_ADDRESS",
       payload: {
@@ -71,7 +77,23 @@ export default function ShippingAddressScreen() {
     setPostalCode(data.zonecode);
     setAddressPopup(false);
   };
+  const setPhoneNumberHandler = (inputPhoneNumber) => {
+    // Remove any non-numeric characters from the input
+    const numericPhoneNumber = inputPhoneNumber.replace(/\D/g, "");
 
+    if (numericPhoneNumber.length === 11) {
+      // If the phone number has a length of 11, format it as "010-$2-$3"
+      const formattedPhoneNumber = numericPhoneNumber.replace(
+        /(\d{3})(\d{4})(\d{4})/,
+        "010-$2-$3"
+      );
+      setIsPhoneNumberValid(true);
+      setPhoneNumber(formattedPhoneNumber);
+    } else {
+      setIsPhoneNumberValid(false);
+      setPhoneNumber(inputPhoneNumber); // Set the unformatted input
+    }
+  };
   return (
     <div>
       <Helmet>
@@ -95,9 +117,12 @@ export default function ShippingAddressScreen() {
             <Form.Label>연락처</Form.Label>
             <Form.Control
               value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
+              onChange={(e) => setPhoneNumberHandler(e.target.value)}
               required
             />
+            {!isPhoneNumberValid && (
+              <div className="text-danger">휴대폰번호를 확인하세요</div>
+            )}
           </Form.Group>
           <Form.Group className="mb-3" controlId="address">
             <Form.Label>주소</Form.Label>
@@ -154,7 +179,7 @@ export default function ShippingAddressScreen() {
           </Form.Group>
 
           <div className="mb-3">
-            <Button variant="primary" type="submit">
+            <Button variant="success" type="submit">
               계속하기
             </Button>
           </div>

@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Store } from "../Store";
 import { getError } from "../utils";
-import "./Style.css";
+
 export default function ForgetPasswordScreen() {
   const navigate = useNavigate();
 

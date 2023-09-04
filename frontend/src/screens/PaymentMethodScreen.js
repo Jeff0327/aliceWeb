@@ -68,7 +68,9 @@ export default function PaymentMethodScreen() {
             />
           </div>
           <div className="mb-3">
-            <Button type="submit">Continue</Button>
+            <Button type="submit" variant="success">
+              계속하기
+            </Button>
           </div>
         </Form>
       </div>

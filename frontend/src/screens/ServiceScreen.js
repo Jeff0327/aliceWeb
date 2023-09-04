@@ -11,7 +11,6 @@ function ServiceScreen() {
         <h6>
           1.교환 및 반품
           <ul>
-            <hr />
             1) 단숨 변심에 의한 반품{" "}
             <ul>
               <li>
@@ -20,7 +19,6 @@ function ServiceScreen() {
                 배송비는 구매자가 부담하여야 합니다.
               </li>
             </ul>
-            <hr />
             2)상품문제에 의한 반품{" "}
             <ul>
               <li>
@@ -29,7 +27,6 @@ function ServiceScreen() {
                 있습니다. 반품 배송비는 판매자가 부담합니다.
               </li>
             </ul>
-            <hr />
             3)상품의 하자로 인한 반품{" "}
             <ul>
               <li>
