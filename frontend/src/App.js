@@ -28,6 +28,7 @@ import ProductScreen from "./screens/ProductScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import ResetPasswordScreen from "./screens/ResetPasswordScreen";
 import SearchScreen from "./screens/SearchScreen";
+import ServiceScreen from "./screens/ServiceScreen";
 import ShippingAddressScreen from "./screens/ShippingAddressScreen";
 import SigninScreen from "./screens/SigninScreen";
 import SignupScreen from "./screens/SignupScreen";
@@ -98,6 +99,9 @@ function App() {
               <Navbar.Collapse id="basic-navbar-nav">
                 <SearchBox />
                 <Nav className="me-auto  w-100  justify-content-end">
+                  <Link to="/service" className="nav-link">
+                    도움말
+                  </Link>
                   <Link to="/cart" className="nav-link">
                     장바구니
                     {cart.cartItems.length > 0 && (
@@ -177,6 +181,7 @@ function App() {
             <Routes>
               <Route path="/product/:slug" element={<ProductScreen />} />
               <Route path="/cart" element={<CartScreen />} />
+              <Route path="/service" element={<ServiceScreen />} />
               <Route path="/search" element={<SearchScreen />} />
               <Route path="/signin" element={<SigninScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
@@ -288,8 +293,10 @@ function App() {
             >
               (사업자정보확인)|
             </a>
-            {/* <a className="footerTextLink">개인정보처리방침|</a>
-            <a className="footerTextLink">이용약관</a> */}
+            {/* <a className="footerTextLink">개인정보처리방침|</a> */}
+            <a href="/service" className="footerTextLink">
+              이용약관
+            </a>
           </div>
           <div className="markContainer">
             <form name="KB_AUTHMARK_FORM" method="get">

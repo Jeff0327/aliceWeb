@@ -47,20 +47,6 @@ const categoryColors = [
   "#87CEEB",
   "#00BFFF",
 ];
-const prices = [
-  {
-    name: "20,000~30,000",
-    value: "20000-30000",
-  },
-  {
-    name: "30,000~40,000",
-    value: "30000-40000",
-  },
-  {
-    name: "40,000~",
-    value: "40000-100000",
-  },
-];
 
 export const ratings = [
   {
