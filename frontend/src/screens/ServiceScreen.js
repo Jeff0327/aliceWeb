@@ -1,15 +1,12 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Helmet } from "react-helmet-async";
-function ServiceScreen({ scrollToSection }) {
-  const termsRef = useRef(null);
-  const privacyRef = useRef(null);
-
+function ServiceScreen() {
   return (
     <div>
       <Helmet>
         <title>RoseMarry</title>
       </Helmet>
-      <div ref={termsRef} id="terms">
+      <div id="terms">
         <h2>이용약관</h2>
         <h6>
           1.교환 및 반품
@@ -143,7 +140,7 @@ function ServiceScreen({ scrollToSection }) {
         </h6>
       </div>
 
-      <div ref={privacyRef} id="privacy" style={{ marginTop: "5%" }}>
+      <div id="privacy" style={{ marginTop: "5%" }}>
         {" "}
         <h2>개인정보처리방침</h2>
         <hr />
