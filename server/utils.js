@@ -6,7 +6,7 @@ const baseUrl = () =>
     ? process.env.BASE_URL
     : process.env.NODE_ENV !== "production"
     ? "http://localhost:3000"
-    : "https://alice-web-19f5664c007b.herokuapp.com/";
+    : "http://rosesmarry.com";
 
 const generateToken = (user) => {
   return jwt.sign(

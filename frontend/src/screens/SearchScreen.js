@@ -181,41 +181,7 @@ export default function SearchScreen() {
               ))}
             </ul>
           </div>
-          <div>
-            <ul>
-              <li>
-                <Link
-                  className={"all" === price ? "text-bold" : ""}
-                  to={getFilterUrl({ price: "all" })}
-                >
-                  <p className="list-text">전체</p>
-                </Link>
-              </li>
-              {prices.map((p, index) => (
-                <li
-                  key={p.value}
-                  className="list-liContainer"
-                  style={{
-                    "--clr":
-                      categoryColors[(index % categoryColors.length) + 4] ||
-                      "black",
-                  }}
-                >
-                  <Link
-                    to={getFilterUrl({ price: p.value })}
-                    className={p.value === price ? "searchClickBefore" : ""}
-                  >
-                    <p
-                      data-text={`\u00A0${p.name}`}
-                      className="list-text-price"
-                    >
-                      &nbsp;{p.name}
-                    </p>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+
           <div>
             <h2>Review</h2>
             <ul>

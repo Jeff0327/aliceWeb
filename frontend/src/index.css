@@ -156,7 +156,8 @@ button.thumbnail {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-    gap: 10px; /* Add gap between cards */
+    gap: 10px; 
+    
   }
 } 
 .site-container{

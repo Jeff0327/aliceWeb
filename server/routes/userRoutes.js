@@ -75,7 +75,7 @@ userRouter.post(
         .messages()
         .send(
           {
-            from: "RoseMarry <cocacola158500.com>",
+            from: "RoseMarry <cocacola158500@gmail.com>",
             to: `${user.name} <${user.email}>`,
             subject: "비밀번호 변경",
             html: `

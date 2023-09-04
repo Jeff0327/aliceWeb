@@ -72,10 +72,6 @@ function App() {
     document.KB_AUTHMARK_FORM.submit();
   }
 
-  const checkNumber = () => {
-    const url = `http://www.ftc.go.kr/bizCommPop.do?wrkr_no=5312002039`;
-    window.open(url, "bizCommPop", "width=750, height=700;");
-  };
   return (
     <BrowserRouter>
       <div
@@ -280,14 +276,20 @@ function App() {
           <div className="footer-contents">
             상호: 로즈메리 | 대표자: 김지섭 | 주소: 군산시 오식도동 806-3
             한성필하우스 107/1304 | 연락처: 010-3055-4972 | E-mail:
-            cocacola158500@gmail.com | 사업자 등록번호: 531-20-02039 |
+            rosemarry0719@gmail.com | 사업자 등록번호: 531-20-02039 |
             통신판매업신고 : 2023-전북군산-0484
             <br />
-            <a onClick={checkNumber} className="footerTextLink">
+            <a
+              href="http://www.ftc.go.kr/bizCommPop.do?wrkr_no=5312002039"
+              target="_blank"
+              className="footerTextLink"
+              title="사업자정보확인"
+              rel="noreferrer"
+            >
               (사업자정보확인)|
             </a>
-            <a className="footerTextLink">개인정보처리방침|</a>
-            <a className="footerTextLink">이용약관</a>
+            {/* <a className="footerTextLink">개인정보처리방침|</a>
+            <a className="footerTextLink">이용약관</a> */}
           </div>
           <div className="markContainer">
             <form name="KB_AUTHMARK_FORM" method="get">
