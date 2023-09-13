@@ -267,7 +267,6 @@ function ProductScreen() {
             <form onSubmit={submitHandler}>
               <h2>리뷰 작성</h2>
               <Form.Group className="mb-3" controlId="rating">
-                <Form.Label>평가</Form.Label>
                 <Form.Select
                   aria-label="평가"
                   value={rating}

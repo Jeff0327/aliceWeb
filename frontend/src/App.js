@@ -99,16 +99,26 @@ function App() {
               <Navbar.Collapse id="basic-navbar-nav">
                 <SearchBox />
                 <Nav className="me-auto  w-100  justify-content-end">
-                  <Link to="/service" className="nav-link">
-                    도움말
-                  </Link>
                   <Link to="/cart" className="nav-link">
-                    장바구니
+                    <img
+                      src={`${process.env.PUBLIC_URL}/images/cartImg.png`}
+                      className="Aligning images"
+                      style={{
+                        width: 30,
+                        height: 30,
+                        alignSelf: "center",
+                      }}
+                      alt="cart"
+                    />
+
                     {cart.cartItems.length > 0 && (
                       <Badge pill bg="danger">
                         {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
                       </Badge>
                     )}
+                  </Link>
+                  <Link to="/service" className="nav-link">
+                    도움말
                   </Link>
                   {userInfo ? (
                     <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
