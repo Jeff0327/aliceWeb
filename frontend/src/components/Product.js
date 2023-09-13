@@ -44,7 +44,7 @@ function Product(props) {
           style={{ textDecoration: "none", color: "black" }}
           to={`/product/${product.slug}`}
         >
-          <Card.Title>{product.name}</Card.Title>
+          <Card.Title className="productName">{product.name}</Card.Title>
         </Link>
         <Rating rating={product.rating} numReviews={product.numReviews} />
         <Card.Text>{product.price.toLocaleString()}원</Card.Text>

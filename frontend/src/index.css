@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Diphylleia&family=Gowun+Dodum&display=swap');
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -19,7 +20,11 @@ main {
 }
 .title-name{
   margin-left: 15px;
+  font-size:x-large;
+  font-family: 'Diphylleia', serif;
 }
+
+
 .products {
   display: flex;
   flex-wrap: wrap;
@@ -33,6 +38,9 @@ main {
 .product {
   border: 1px #404040 solid;
   margin: 1rem;
+}
+.productName{
+  font-family: 'Gowun Dodum', sans-serif;
 }
 .product img {
   width: 100%;
@@ -147,6 +155,9 @@ button.thumbnail {
 /* sidebar */
 .navbar-brand{
   font-weight: bold;
+}
+.nav-link{
+  font-family: 'Diphylleia', serif;
 }
 .side-navbar{
   width:240px;
