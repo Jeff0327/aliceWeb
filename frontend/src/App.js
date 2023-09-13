@@ -79,7 +79,7 @@ function App() {
       <div
         className={
           sidebarIsOpen
-            ? "d-flex flex-column site-container active-cont"
+            ? "d-flex flex-column site-container active-cont w-30"
             : "d-flex flex-column site-container"
         }
       >
@@ -164,13 +164,7 @@ function App() {
             </Container>
           </Navbar>
         </header>
-        <div
-          className={
-            sidebarIsOpen
-              ? "active-nav side-navbar d-flex justify-content-between flex-wrap flex-column max-width-30"
-              : "side-navbar d-flex justify-content-between flex-wrap flex-column"
-          }
-        >
+        <div className={sidebarIsOpen ? "side-navbar-open" : "side-navbar"}>
           <Nav className="flex-column text-white w-100 p-2">
             <Nav.Item>
               <strong>카테고리</strong>
