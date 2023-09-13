@@ -36,6 +36,13 @@ export default function ShippingAddressScreen() {
       navigate("/signin?redirect=/shipping");
     }
   }, [userInfo, navigate]);
+  useEffect(() => {
+    if (phoneNumber.length === 11) {
+      setIsPhoneNumberValid(true);
+    } else {
+      setIsPhoneNumberValid(false);
+    }
+  }, [phoneNumber]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -77,23 +84,7 @@ export default function ShippingAddressScreen() {
     setPostalCode(data.zonecode);
     setAddressPopup(false);
   };
-  const setPhoneNumberHandler = (inputPhoneNumber) => {
-    // Remove any non-numeric characters from the input
-    const numericPhoneNumber = inputPhoneNumber.replace(/\D/g, "");
 
-    if (numericPhoneNumber.length === 11) {
-      // If the phone number has a length of 11, format it as "010-$2-$3"
-      const formattedPhoneNumber = numericPhoneNumber.replace(
-        /(\d{3})(\d{4})(\d{4})/,
-        "010-$2-$3"
-      );
-      setIsPhoneNumberValid(true);
-      setPhoneNumber(formattedPhoneNumber);
-    } else {
-      setIsPhoneNumberValid(false);
-      setPhoneNumber(inputPhoneNumber); // Set the unformatted input
-    }
-  };
   return (
     <div>
       <Helmet>
@@ -117,11 +108,15 @@ export default function ShippingAddressScreen() {
             <Form.Label>연락처</Form.Label>
             <Form.Control
               value={phoneNumber}
-              onChange={(e) => setPhoneNumberHandler(e.target.value)}
+              onChange={(e) => setPhoneNumber(e.target.value)}
               required
             />
-            {!isPhoneNumberValid && (
-              <div className="text-danger">휴대폰번호를 확인하세요</div>
+            {phoneNumber.length === 0 ? (
+              <div className="text-primary">휴대폰번호를 입력하세요</div>
+            ) : (
+              !isPhoneNumberValid && (
+                <div className="text-danger">휴대폰번호를 확인하세요</div>
+              )
             )}
           </Form.Group>
           <Form.Group className="mb-3" controlId="address">
