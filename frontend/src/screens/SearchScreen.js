@@ -1,16 +1,14 @@
 import axios from "axios";
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer } from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { Helmet } from "react-helmet-async";
 import LinkContainer from "react-router-bootstrap/LinkContainer";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useLocation, useNavigate } from "react-router-dom";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import Product from "../components/Product";
-import Rating from "../components/Rating";
 import { getError } from "../utils";
 
 const reducer = (state, action) => {
@@ -33,20 +31,6 @@ const reducer = (state, action) => {
       return state;
   }
 };
-
-const categoryColors = [
-  "#F08080",
-  "#FFA07A",
-  "#DAA520",
-  "#F0E68C",
-  "#7CFC00",
-  "#00FA9A",
-  "#008B8B",
-  "#66CDAA",
-  "#AFEEEE",
-  "#87CEEB",
-  "#00BFFF",
-];
 
 export const ratings = [
   {
@@ -87,6 +71,7 @@ export default function SearchScreen() {
       error: "",
     });
 
+  console.log(products);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -103,19 +88,6 @@ export default function SearchScreen() {
     };
     fetchData();
   }, [category, error, order, page, price, query, rating]);
-
-  const [categories, setCategories] = useState([]);
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const { data } = await axios.get(`/api/products/categories`);
-        setCategories(data);
-      } catch (err) {
-        toast.error(getError(err));
-      }
-    };
-    fetchCategories();
-  }, [dispatch]);
 
   const getFilterUrl = (filter, skipPathname) => {
     const filterPage = filter.page || page;
@@ -134,65 +106,7 @@ export default function SearchScreen() {
         <title>검색</title>
       </Helmet>
       <Row>
-        <Col md={3}>
-          <div>
-            <ul className="list-ulContainer">
-              <li>
-                <Link
-                  className={"all" === category ? "text-bold" : ""}
-                  to={getFilterUrl({ category: "all" })}
-                >
-                  <p className="list-text">전체상품</p>
-                </Link>
-              </li>
-
-              {categories.map((c, index) => (
-                <li
-                  className="list-liContainer"
-                  key={c}
-                  style={{
-                    "--clr":
-                      categoryColors[index % categoryColors.length] || "black",
-                  }}
-                >
-                  <Link
-                    className={c === category ? "searchClickBefore" : ""}
-                    to={getFilterUrl({ category: c })}
-                  >
-                    <p data-text={`\u00A0${c}`} className="list-text">
-                      &nbsp;{c}
-                    </p>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h2>Review</h2>
-            <ul>
-              {ratings.map((r) => (
-                <li key={r.name}>
-                  <Link
-                    to={getFilterUrl({ rating: r.rating })}
-                    className={`${r.rating}` === `${rating}` ? "text-bold" : ""}
-                  >
-                    <Rating caption={"Review"} rating={r.rating}></Rating>
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <Link
-                  to={getFilterUrl({ rating: "all" })}
-                  className={rating === "all" ? "text-bold" : ""}
-                >
-                  <Rating caption={"Review"} rating={0}></Rating>
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </Col>
-        <Col md={9}>
+        <Col md={11}>
           {loading ? (
             <LoadingBox></LoadingBox>
           ) : error ? (
@@ -241,7 +155,7 @@ export default function SearchScreen() {
 
               <Row>
                 {products.map((product) => (
-                  <Col sm={6} lg={4} className="mb-3" key={product._id}>
+                  <Col sm={6} lg={3} className="mb-3" key={product._id}>
                     <Product product={product}></Product>
                   </Col>
                 ))}
@@ -254,7 +168,7 @@ export default function SearchScreen() {
                     className="mx-1"
                     to={{
                       pathname: "/search",
-                      seacrh: getFilterUrl({ page: x + 1 }, true),
+                      search: getFilterUrl({ page: x + 1 }, true),
                     }}
                   >
                     <Button

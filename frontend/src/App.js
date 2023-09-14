@@ -39,6 +39,7 @@ import { getError } from "./utils";
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
+
   const { cart, userInfo } = state;
   const signoutHandler = () => {
     ctxDispatch({ type: "USER_SIGNOUT" });
@@ -55,14 +56,14 @@ function App() {
     const fetchCategories = async () => {
       try {
         const { data } = await axios.get(`/api/products/categories`);
-        setCategories(data);
+        const reorderedCategories = findEventValue([...data]);
+        setCategories(reorderedCategories);
       } catch (err) {
         toast.error(getError(err));
       }
     };
     fetchCategories();
   }, []);
-
   function onPopKBAuthMark() {
     window.open(
       "",
@@ -74,6 +75,14 @@ function App() {
     document.KB_AUTHMARK_FORM.submit();
   }
 
+  const findEventValue = (arr) => {
+    const index = arr.indexOf("이벤트");
+    if (index !== -1) {
+      const eventElement = arr.splice(index, 1)[0];
+      arr.unshift(eventElement);
+    }
+    return arr;
+  };
   return (
     <BrowserRouter>
       <div
@@ -163,12 +172,30 @@ function App() {
               </Navbar.Collapse>
             </Container>
           </Navbar>
+          <Navbar bg="white" expand="lg">
+            <Container>
+              <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="me-auto  w-100  justify-content-center flex">
+                  {categories.map((category) => (
+                    <Nav.Item key={category}>
+                      <LinkContainer
+                        to={{
+                          pathname: "/search",
+                          search: `category=${category}`,
+                        }}
+                        onClick={() => setSidebarIsOpen(false)}
+                      >
+                        <Nav.Link className="font-size-10">{category}</Nav.Link>
+                      </LinkContainer>
+                    </Nav.Item>
+                  ))}
+                </Nav>
+              </Navbar.Collapse>
+            </Container>
+          </Navbar>
         </header>
         <div className={sidebarIsOpen ? "side-navbar-open" : "side-navbar"}>
           <Nav className="flex-column text-white w-100 p-2">
-            <Nav.Item>
-              <strong>카테고리</strong>
-            </Nav.Item>
             {categories.map((category) => (
               <Nav.Item key={category}>
                 <LinkContainer
