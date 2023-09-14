@@ -71,7 +71,6 @@ export default function SearchScreen() {
       error: "",
     });
 
-  console.log(products);
   useEffect(() => {
     const fetchData = async () => {
       try {
