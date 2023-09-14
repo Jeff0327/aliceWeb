@@ -106,6 +106,8 @@ function App() {
                 <Navbar.Brand className="title-name">RoseMarry</Navbar.Brand>
               </LinkContainer>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              {/*오른쪽 사이드버튼 */}
+
               <Navbar.Collapse id="basic-navbar-nav">
                 <SearchBox />
                 <Nav className="me-auto  w-100  justify-content-end">
