@@ -1,15 +1,15 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import Badge from "react-bootstrap/Badge";
-import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import Navbar from "react-bootstrap/Navbar";
 import { LinkContainer } from "react-router-bootstrap";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Store } from "./Store";
 import AdminRoute from "./components/AdminRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
 import SearchBox from "./components/SearchBox";
@@ -34,7 +34,6 @@ import SigninScreen from "./screens/SigninScreen";
 import SignupScreen from "./screens/SignupScreen";
 import UserEditScreen from "./screens/UserEditScreen";
 import UserListScreen from "./screens/UserListScreen";
-import { Store } from "./Store";
 import { getError } from "./utils";
 
 function App() {
@@ -49,7 +48,7 @@ function App() {
     localStorage.removeItem("paymentMethod");
     window.location.href = "/signin";
   };
-  const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
+
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -64,7 +63,7 @@ function App() {
     };
     fetchCategories();
   }, []);
-  function onPopKBAuthMark() {
+  const onPopKBAuthMark = () => {
     window.open(
       "",
       "KB_AUTHMARK",
@@ -73,7 +72,7 @@ function App() {
     document.KB_AUTHMARK_FORM.action = "https://okbfex.kbstar.com/quics";
     document.KB_AUTHMARK_FORM.target = "KB_AUTHMARK";
     document.KB_AUTHMARK_FORM.submit();
-  }
+  };
 
   const findEventValue = (arr) => {
     const index = arr.indexOf("이벤트");
@@ -85,23 +84,11 @@ function App() {
   };
   return (
     <BrowserRouter>
-      <div
-        className={
-          sidebarIsOpen
-            ? "d-flex flex-column site-container active-cont w-30"
-            : "d-flex flex-column site-container"
-        }
-      >
+      <div>
         <ToastContainer position="bottom-center" limit={1} />
         <header>
           <Navbar bg="white" expand="lg">
             <Container>
-              <Button
-                variant="dark"
-                onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
-              >
-                <i className="fas fa-bars"></i>
-              </Button>
               <LinkContainer to="/">
                 <Navbar.Brand className="title-name">RoseMarry</Navbar.Brand>
               </LinkContainer>
@@ -174,41 +161,21 @@ function App() {
               </Navbar.Collapse>
             </Container>
           </Navbar>
-          <Navbar bg="white" expand="lg">
-            <Container>
-              <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="me-auto  w-100  justify-content-center flex">
-                  {categories.map((category) => (
-                    <Nav.Item key={category}>
-                      <LinkContainer
-                        to={{
-                          pathname: "/search",
-                          search: `category=${category}`,
-                        }}
-                        onClick={() => setSidebarIsOpen(false)}
-                      >
-                        <Nav.Link className="font-size-10">{category}</Nav.Link>
-                      </LinkContainer>
-                    </Nav.Item>
-                  ))}
-                </Nav>
-              </Navbar.Collapse>
-            </Container>
-          </Navbar>
         </header>
-        <div className={sidebarIsOpen ? "side-navbar-open" : "side-navbar"}>
-          <Nav className="flex-column text-white w-100 p-2">
-            {categories.map((category) => (
-              <Nav.Item key={category}>
-                <LinkContainer
-                  to={{ pathname: "/search", search: `category=${category}` }}
-                  onClick={() => setSidebarIsOpen(false)}
-                >
-                  <Nav.Link>{category}</Nav.Link>
-                </LinkContainer>
-              </Nav.Item>
-            ))}
-          </Nav>
+
+        <div className="mainImage">
+          {categories.map((category) => (
+            <Nav.Item key={category} className="categoryItem">
+              <LinkContainer
+                to={{
+                  pathname: "/search",
+                  search: `category=${category}`,
+                }}
+              >
+                <Nav.Link className="font-size-10">{category}</Nav.Link>
+              </LinkContainer>
+            </Nav.Item>
+          ))}
         </div>
         <main>
           <Container className="mt-3">
@@ -219,6 +186,7 @@ function App() {
               <Route path="/search" element={<SearchScreen />} />
               <Route path="/signin" element={<SigninScreen />} />
               <Route path="/signup" element={<SignupScreen />} />
+
               <Route
                 path="/forget-password"
                 element={<ForgetPasswordScreen />}

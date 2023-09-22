@@ -124,6 +124,15 @@ productRouter.get(
   })
 );
 productRouter.get(
+  "/event",
+  expressAsyncHandler(async (req, res) => {
+    const { eventData } = req;
+    const filter = eventData.category === "이벤트";
+    res.send({ filter });
+  })
+);
+
+productRouter.get(
   "/search",
   expressAsyncHandler(async (req, res) => {
     const { query } = req;
@@ -205,6 +214,17 @@ productRouter.get(
   expressAsyncHandler(async (req, res) => {
     const categories = await Product.find().distinct("category");
     res.send(categories);
+  })
+);
+
+productRouter.get(
+  "/eventdataMore",
+  expressAsyncHandler(async (req, res) => {
+    const pageSize = 4;
+    const skipCount = skip ? parseInt(skip) * pageSize : 0;
+    const eventData = await Product.find({ category: "이벤트" });
+
+    res.send(eventData);
   })
 );
 productRouter.get("/slug/:slug", async (req, res) => {

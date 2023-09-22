@@ -2,7 +2,7 @@ import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 import Rating from "./Rating";
 
-function Product(props) {
+export default function Product(props) {
   const { product } = props;
 
   return (
@@ -30,4 +30,3 @@ function Product(props) {
     </Card>
   );
 }
-export default Product;

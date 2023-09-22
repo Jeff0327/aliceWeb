@@ -12,10 +12,10 @@ import Row from "react-bootstrap/Row";
 import { Helmet } from "react-helmet-async";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Store } from "../Store";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import Rating from "../components/Rating";
-import { Store } from "../Store";
 import { getError } from "../utils";
 const reducer = (state, action) => {
   switch (action.type) {
@@ -38,7 +38,7 @@ const reducer = (state, action) => {
   }
 };
 
-function ProductScreen() {
+export default function ProductScreen() {
   let reviewsRef = useRef();
 
   const [rating, setRating] = useState(0);
@@ -321,4 +321,3 @@ function ProductScreen() {
     </div>
   );
 }
-export default ProductScreen;

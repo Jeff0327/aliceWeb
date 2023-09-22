@@ -1,6 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
-function ServiceScreen() {
+export default function ServiceScreen() {
   return (
     <div>
       <Helmet>
@@ -283,4 +283,3 @@ function ServiceScreen() {
     </div>
   );
 }
-export default ServiceScreen;

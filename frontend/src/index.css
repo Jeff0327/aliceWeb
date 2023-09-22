@@ -11,7 +11,7 @@ body {
   min-height: 100vh;
 }
 main {
-  flex: 1;
+  display: flex;
 }
 .btn-primary,
 .btn-outline-primary {
@@ -24,18 +24,55 @@ main {
   font-family: 'Diphylleia', serif;
 }
 
-
-.category-btn{
+.mainImage{
+  justify-content: center;
+  
   display: flex;
+}
+.category-btn{
+display: flex;
   flex-direction: column;
 }
-
-.products {
+.categoryItem{
+  margin:10px;
+}
+.event-container {
   display: flex;
+  width: 100%;
+  height: 500px;
+  margin-bottom: 30px;
+}
+.custom-carousel .carousel-item {
+  /* Add animation properties and timing functions here */
+  animation-name: slideIn;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+}
+.event-product {
+  max-width: 33%; 
+  max-height: 100%; 
+  margin-right: 10px;
+  width:337px;
+  height: 509px;
+}
+.products {
   flex-wrap: wrap;
   justify-content: center;
 }
-
+.event-button-left{
+  border-style: none;
+  background-color: black;
+}
+.event-button-right{
+  border-style: none;
+  background-color: black;
+}
+.event-button-img{
+  width:50px;
+  height:50px;
+  justify-self: center;
+  align-self:center;
+}
 .rating span {
   color: #ffc000;
 }

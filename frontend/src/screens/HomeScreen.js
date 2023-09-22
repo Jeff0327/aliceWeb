@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useEffect, useReducer } from "react";
+import Carousel from "react-bootstrap/Carousel";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { Helmet } from "react-helmet-async";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox.js";
 import Product from "../components/Product";
-
 const reducer = (state, action) => {
   switch (action.type) {
     case "FETCH_REQUEST":
@@ -20,13 +20,13 @@ const reducer = (state, action) => {
   }
 };
 
-function HomeScreen() {
+export default function HomeScreen() {
   const [{ loading, error, products }, dispatch] = useReducer(reducer, {
     products: [],
     loading: true,
     error: "",
   });
-  // const [products, setProducts] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
@@ -36,16 +36,44 @@ function HomeScreen() {
       } catch (err) {
         dispatch({ type: "FETCH_FAIL", payload: err.message });
       }
-
-      // setProducts(result.data);
     };
     fetchData();
   }, []);
+
   return (
     <div>
       <Helmet>
         <title>RoseMarry</title>
       </Helmet>
+      <div className="event-container">
+        <Carousel interval={4000} pause="hover" className="custom-carousel">
+          {products.map(
+            (product) =>
+              product.category === "이벤트" && (
+                <Carousel.Item key={product._id}>
+                  <Row
+                    style={{
+                      maxHeight: "500px", // Center the images vertically
+                    }}
+                  >
+                    {product.images.slice(0, 3).map((image, index) => (
+                      <Col key={index}>
+                        <img
+                          style={{
+                            width: "400px",
+                            height: "500px",
+                          }}
+                          src={`${process.env.PUBLIC_URL}${image}`}
+                          alt={`Event: ${product.name}`}
+                        />
+                      </Col>
+                    ))}
+                  </Row>
+                </Carousel.Item>
+              )
+          )}
+        </Carousel>
+      </div>
       <div className="products">
         {loading ? (
           <LoadingBox />
@@ -64,4 +92,3 @@ function HomeScreen() {
     </div>
   );
 }
-export default HomeScreen;
