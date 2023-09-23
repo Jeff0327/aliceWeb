@@ -115,7 +115,7 @@ export default function SearchScreen() {
               <Row className="justify-content-between mb-3">
                 <Col md={6}>
                   <div>
-                    {countProducts === 0 ? "No" : countProducts} 개의 결과
+                    {countProducts === 0 ? "0" : countProducts} 개의 결과
                     {query !== "all" && " : " + query}
                     {category !== "all" && " : " + category}
                     {price !== "all" && " : Price " + price}
@@ -149,7 +149,7 @@ export default function SearchScreen() {
                 </Col>
               </Row>
               {products.length === 0 && (
-                <MessageBox>No Product Found</MessageBox>
+                <MessageBox>상품을 찾을 수 없습니다.</MessageBox>
               )}
 
               <Row>
