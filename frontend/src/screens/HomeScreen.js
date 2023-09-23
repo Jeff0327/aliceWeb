@@ -4,6 +4,7 @@ import Carousel from "react-bootstrap/Carousel";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox.js";
 import Product from "../components/Product";
@@ -64,15 +65,17 @@ export default function HomeScreen() {
                           justifyContent: "space-between",
                         }}
                       >
-                        <img
-                          style={{
-                            width: "415px",
-                            height: "500px",
-                            overflow: "auto",
-                          }}
-                          src={`${process.env.PUBLIC_URL}${image}`}
-                          alt={`Event: ${product.name}`}
-                        />
+                        <Link to={`/product/${product.slug}`}>
+                          <img
+                            style={{
+                              width: "415px",
+                              height: "500px",
+                              overflow: "auto",
+                            }}
+                            src={`${process.env.PUBLIC_URL}${image}`}
+                            alt={`Event: ${product.name}`}
+                          />
+                        </Link>
                       </Col>
                     ))}
                   </Row>

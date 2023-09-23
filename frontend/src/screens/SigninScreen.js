@@ -34,6 +34,11 @@ export default function SigninScreen() {
       toast.error(getError(err));
     }
   };
+  useEffect(() => {
+    if (userInfo) {
+      navigate(redirect);
+    }
+  }, [navigate, redirect, userInfo]);
   // useEffect(() => {
 
   //   if (!window.Kakao.isInitialized()) {
@@ -42,11 +47,6 @@ export default function SigninScreen() {
   //   }
   // }, []);
 
-  useEffect(() => {
-    if (userInfo) {
-      navigate(redirect);
-    }
-  }, [navigate, redirect, userInfo]);
   // useEffect(() => {
   //   const loadKakaoAPI = async () => {
   //     try {
@@ -78,29 +78,29 @@ export default function SigninScreen() {
   //   };
   //   loadKakaoAPI();
   // }, [userInfo]);
-  const handleLoginSuccess = (response) => {
-    console.log("success msg");
-  };
+  // const handleLoginSuccess = (response) => {
+  //   console.log("success msg");
+  // };
 
-  const handleLoginFailure = (error) => {
-    console.log("error");
-  };
+  // const handleLoginFailure = (error) => {
+  //   console.log("error");
+  // };
 
-  const handleKakaoLogin = () => {
-    if (!window.Kakao.isInitialized()) {
-      console.error("Kakao SDK is not initialized");
-      return;
-    }
+  // const handleKakaoLogin = () => {
+  //   if (!window.Kakao.isInitialized()) {
+  //     console.error("Kakao SDK is not initialized");
+  //     return;
+  //   }
 
-    window.Kakao.Auth.login({
-      success: function (authObj) {
-        console.log("Kakao login success:", authObj);
-      },
-      fail: function (err) {
-        console.log("Kakao login failed:", err);
-      },
-    });
-  };
+  //   window.Kakao.Auth.login({
+  //     success: function (authObj) {
+  //       console.log("Kakao login success:", authObj);
+  //     },
+  //     fail: function (err) {
+  //       console.log("Kakao login failed:", err);
+  //     },
+  //   });
+  // };
   return (
     <Container className="small-container">
       <Helmet>
