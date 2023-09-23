@@ -57,11 +57,18 @@ export default function HomeScreen() {
                     }}
                   >
                     {product.images.slice(0, 3).map((image, index) => (
-                      <Col key={index}>
+                      <Col
+                        key={index}
+                        style={{
+                          alignContent: "space-between",
+                          justifyContent: "space-between",
+                        }}
+                      >
                         <img
                           style={{
-                            width: "400px",
+                            width: "415px",
                             height: "500px",
+                            overflow: "auto",
                           }}
                           src={`${process.env.PUBLIC_URL}${image}`}
                           alt={`Event: ${product.name}`}
