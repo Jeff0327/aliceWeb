@@ -314,7 +314,7 @@ export default function ProductScreen() {
       </div>
       <div id="inquire" className="my-3">
         <h3>문의사항</h3>
-        <h4>010-3055-4972</h4>
+        <h4>아래하단참조</h4>
         <p>평일 09:00~16:00</p>
       </div>
       <div id="delivery" className="my-3">
