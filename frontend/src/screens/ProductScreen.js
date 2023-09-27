@@ -319,7 +319,7 @@ export default function ProductScreen() {
       </div>
       <div id="delivery" className="my-3">
         <p>배송</p>
-        <div style={{ flexdirection: "row", justifyContent: "space-around" }}>
+        {/* <div style={{ flexdirection: "row", justifyContent: "space-around" }}>
           <img
             alt="delivery"
             style={{ width: 50, height: 50, color: "none" }}
@@ -355,7 +355,7 @@ export default function ProductScreen() {
             style={{ width: 50, height: 50, color: "none" }}
             src={`${process.env.PUBLIC_URL}/images/prize.png`}
           />
-        </div>
+        </div> */}
         <ul>
           주문일로부터 평균 7일이내에 배송되지만 주문량이 많을 경우 배송지연이
           될 수 있습니다.
