@@ -313,20 +313,52 @@ export default function ProductScreen() {
         </div>
       </div>
       <div id="inquire" className="my-3">
-        <p>문의</p>
+        <h3>문의사항</h3>
+        <h4>010-3055-4972</h4>
+        <p>평일 09:00~16:00</p>
       </div>
       <div id="delivery" className="my-3">
         <p>배송</p>
+        <div style={{ flexdirection: "row", justifyContent: "space-around" }}>
+          <img
+            alt="delivery"
+            style={{ width: 50, height: 50, color: "none" }}
+            src={`${process.env.PUBLIC_URL}/images/orderIcon.gif`}
+          />
+          <img
+            alt="delivery"
+            style={{ width: 50, height: 50, color: "none" }}
+            src={`${process.env.PUBLIC_URL}/images/rightArrow.png`}
+          />
+          <img
+            alt="delivery"
+            style={{ width: 50, height: 50, color: "none" }}
+            src={`${process.env.PUBLIC_URL}/images/orderIcon.gif`}
+          />
+          <img
+            alt="delivery"
+            style={{ width: 50, height: 50, color: "none" }}
+            src={`${process.env.PUBLIC_URL}/images/rightArrow.png`}
+          />
+          <img
+            alt="delivery"
+            style={{ width: 50, height: 50, color: "none" }}
+            src={`${process.env.PUBLIC_URL}/images/orderIcon.gif`}
+          />
+          <img
+            alt="delivery"
+            style={{ width: 50, height: 50, color: "none" }}
+            src={`${process.env.PUBLIC_URL}/images/rightArrow.png`}
+          />
+          <img
+            alt="delivery"
+            style={{ width: 50, height: 50, color: "none" }}
+            src={`${process.env.PUBLIC_URL}/images/prize.png`}
+          />
+        </div>
         <ul>
-          평균 주문일로부터 7일이내에 배송되지만 주문량이 많을 경우 배송지연이
+          주문일로부터 평균 7일이내에 배송되지만 주문량이 많을 경우 배송지연이
           될 수 있습니다.
-          {/* <button class="btn success">
-            <img
-              alt="delivery"
-              style={{ width: 50, height: 50, color: "none" }}
-              src={`${process.env.PUBLIC_URL}/images/delivery.gif`}
-            />
-          </button> */}
         </ul>
       </div>
     </div>

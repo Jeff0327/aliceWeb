@@ -54,7 +54,7 @@ export default function HomeScreen() {
                 <Carousel.Item key={product._id}>
                   <Row
                     style={{
-                      maxHeight: "500px", // Center the images vertically
+                      maxHeight: "500px",
                     }}
                   >
                     {product.images.slice(0, 3).map((image, index) => (
