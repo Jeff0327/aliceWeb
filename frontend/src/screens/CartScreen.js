@@ -8,8 +8,8 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Row from "react-bootstrap/Row";
 import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
-import MessageBox from "../components/MessageBox.js";
 import { Store } from "../Store";
+import MessageBox from "../components/MessageBox.js";
 
 export default function CartScreen() {
   const navigate = useNavigate();
@@ -83,6 +83,7 @@ export default function CartScreen() {
                         <i className="fas fa-plus-circle"></i>
                       </Button>
                     </Col>
+
                     <Col md={3}>{item.price.toLocaleString()}원</Col>
                     <Col md={2}>
                       <Button

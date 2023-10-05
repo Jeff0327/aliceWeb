@@ -7,11 +7,11 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Store } from "../Store";
+import { colors } from "../color";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
-import { Store } from "../Store";
 import { getError } from "../utils";
-
 const reducer = (state, action) => {
   switch (action.type) {
     case "FETCH_REQUEST":
@@ -64,6 +64,10 @@ export default function ProductEditScreen() {
   const [countInStock, setCountInStock] = useState("");
   const [brand, setBrand] = useState("");
   const [description, setDescription] = useState("");
+  // const [color, setColor] = useState([colors]);
+  const [color, setColor] = useState(
+    [...colors].map((color) => ({ ...color, count: "" }))
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,6 +84,15 @@ export default function ProductEditScreen() {
         setCountInStock(data.countInStock);
         setBrand(data.brand);
         setDescription(data.description);
+
+        const updatedColors = colors.map((color) => ({
+          ...color,
+          count:
+            data.color.find((c) => c.name === color.name)?.count ||
+            color.count ||
+            "",
+        }));
+        setColor(updatedColors);
         dispatch({ type: "FETCH_SUCCESS" });
       } catch (err) {
         dispatch({
@@ -109,6 +122,7 @@ export default function ProductEditScreen() {
           brand,
           countInStock,
           description,
+          color,
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -187,6 +201,7 @@ export default function ProductEditScreen() {
     setDetailImages(detailImages.filter((x) => x !== fileName));
     toast.success("이미지가 제거되었습니다. 업데이트를 클릭하여 적용하세요.");
   };
+
   return (
     <Container className="small-container">
       <Helmet>
@@ -201,7 +216,7 @@ export default function ProductEditScreen() {
       ) : (
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="name">
-            <Form.Label>Name</Form.Label>
+            <Form.Label>제품명</Form.Label>
             <Form.Control
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -209,23 +224,86 @@ export default function ProductEditScreen() {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="slug">
-            <Form.Label>Slug</Form.Label>
+            <Form.Label>제품특징</Form.Label>
             <Form.Control
               value={slug}
               onChange={(e) => setSlug(e.target.value)}
               required
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="name">
-            <Form.Label>Price</Form.Label>
+          <Form.Group className="mb-3" controlId="price">
+            <Form.Label>가격</Form.Label>
             <Form.Control
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               required
             />
           </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>색상</Form.Label>
+            <div className="row">
+              {colors.map((c, index) => (
+                <div
+                  key={index}
+                  className="col-md-3 mb-2"
+                  style={{
+                    flexDirection: "row",
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Form.Check
+                    type="checkbox"
+                    key={c.name}
+                    id={c.value}
+                    label={c.name}
+                    value={c.check}
+                    checked={c.check}
+                    onChange={(e) => {
+                      const updatedColors = colors.map((colorObj) => {
+                        if (colorObj.value === c.value) {
+                          colorObj.check = e.target.checked;
+                        }
+                        return colorObj;
+                      });
+                      setColor(updatedColors);
+                    }}
+                  />
+
+                  <Button
+                    key={c.value}
+                    style={{ background: c.value, borderColor: "black" }}
+                    disabled={true}
+                  ></Button>
+                </div>
+              ))}
+            </div>
+          </Form.Group>
+          {colors.map(
+            (c, index) =>
+              c.check === true && (
+                <div key={index}>
+                  <Form.Group className="mb-3">
+                    <Form.Label>{`${c.name} 재고수량`}</Form.Label>
+                    <Form.Control
+                      value={c.count || ""}
+                      onChange={(e) => {
+                        const updatedColors = colors.map((colorObj) => {
+                          if (colorObj.value === c.value) {
+                            colorObj.count = parseInt(e.target.value, 10) || "";
+                          }
+                          return colorObj;
+                        });
+                        setColor(updatedColors);
+                      }}
+                      required
+                    />
+                  </Form.Group>
+                </div>
+              )
+          )}
           <Form.Group className="mb-3" controlId="image">
-            <Form.Label>Image File</Form.Label>
+            <Form.Label>메인이미지</Form.Label>
             <Form.Control
               value={image}
               onChange={(e) => setImage(e.target.value)}
@@ -239,7 +317,7 @@ export default function ProductEditScreen() {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="additionalImage">
-            <Form.Label>Additional Images</Form.Label>
+            <Form.Label>색상별 이미지</Form.Label>
             {images.length === 0 && <MessageBox>No image</MessageBox>}
             <ListGroup variant="flush">
               {images.map((x) => (
@@ -261,7 +339,7 @@ export default function ProductEditScreen() {
             {loadingUpload && <LoadingBox></LoadingBox>}
           </Form.Group>
           <Form.Group className="mb-3" controlId="detailImage">
-            <Form.Label>Detail Images</Form.Label>
+            <Form.Label>상세페이지 이미지</Form.Label>
             {detailImages.length === 0 && (
               <MessageBox>No Detail image</MessageBox>
             )}
@@ -288,7 +366,7 @@ export default function ProductEditScreen() {
             {loadingUpload && <LoadingBox></LoadingBox>}
           </Form.Group>
           <Form.Group className="mb-3" controlId="category">
-            <Form.Label>Category</Form.Label>
+            <Form.Label>카테고리</Form.Label>
             <Form.Control
               value={category}
               onChange={(e) => setCategory(e.target.value)}
@@ -296,15 +374,16 @@ export default function ProductEditScreen() {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="brand">
-            <Form.Label>Brand</Form.Label>
+            <Form.Label>브랜드</Form.Label>
             <Form.Control
               value={brand}
               onChange={(e) => setBrand(e.target.value)}
               required
             />
           </Form.Group>
+
           <Form.Group className="mb-3" controlId="countInStock">
-            <Form.Label>Count In Stock</Form.Label>
+            <Form.Label>재고수량</Form.Label>
             <Form.Control
               value={countInStock}
               onChange={(e) => setCountInStock(e.target.value)}
@@ -312,7 +391,7 @@ export default function ProductEditScreen() {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="description">
-            <Form.Label>Description</Form.Label>
+            <Form.Label>제품설명</Form.Label>
             <Form.Control
               value={description}
               onChange={(e) => setDescription(e.target.value)}

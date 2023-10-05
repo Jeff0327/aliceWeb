@@ -44,6 +44,7 @@ export default function ProductScreen() {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [selectedImage, setSelectedImage] = useState("");
+  const [isSelectColor, setIsSelectColor] = useState(false);
   const navigate = useNavigate();
   const params = useParams();
   const { slug } = params;
@@ -73,6 +74,11 @@ export default function ProductScreen() {
     const existItem = cart.cartItems.find((x) => x._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${product._id}`);
+
+    if (isSelectColor === false) {
+      toast.error("색상을 선택하세요.");
+      return;
+    }
     if (data.countInStock < quantity) {
       window.alert("죄송합니다 상품이 매진되었습니다.");
       return;
@@ -118,6 +124,10 @@ export default function ProductScreen() {
       dispatch({ type: "CREATE_FAIL" });
     }
   };
+  const selectedColorHandler = () => {
+    product.color.map((color) => console.log(color));
+    setIsSelectColor(!isSelectColor);
+  };
   return loading ? (
     <div>Loading...</div>
   ) : error ? (
@@ -146,6 +156,23 @@ export default function ProductScreen() {
                 rating={product.rating}
                 numReviews={product.numReviews}
               ></Rating>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <div stlye={{ flex: 1, flexDirection: "row" }}>
+                색상:{" "}
+                {product.color.map((color, index) => (
+                  <Button
+                    key={index}
+                    style={{
+                      background: color.value,
+                      width: "7px",
+                      height: "7px",
+                      borderColor: "black",
+                    }}
+                    onClick={() => selectedColorHandler()}
+                  ></Button>
+                ))}
+              </div>
             </ListGroup.Item>
             <ListGroup.Item>
               상품가격:{product.price.toLocaleString()}원

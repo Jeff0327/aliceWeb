@@ -6,9 +6,9 @@ import Row from "react-bootstrap/Row";
 import { Helmet } from "react-helmet-async";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Store } from "../Store";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
-import { Store } from "../Store";
 import { getError } from "../utils";
 
 const reducer = (state, action) => {
@@ -122,6 +122,7 @@ export default function ProductListScreen() {
       }
     }
   };
+
   return (
     <div>
       <Row>
@@ -155,6 +156,7 @@ export default function ProductListScreen() {
                 <th>가격</th>
                 <th>카테고리</th>
                 <th>브랜드</th>
+                <th>색상</th>
                 <th>기타</th>
               </tr>
             </thead>
@@ -166,6 +168,11 @@ export default function ProductListScreen() {
                   <td>{product.price}</td>
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
+                  <td>
+                    {product.color.map((color) => (
+                      <div key={color._id}>{color.name}</div>
+                    ))}
+                  </td>
                   <td>
                     <Button
                       type="button"

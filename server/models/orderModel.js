@@ -14,6 +14,14 @@ const orderSchema = new mongoose.Schema(
           ref: "Product",
           required: true,
         },
+        color: [
+          {
+            name: { type: String },
+            value: { type: String },
+            check: { type: Boolean, default: false },
+            count: { type: Number, required: true },
+          },
+        ],
       },
     ],
     shippingAddress: {

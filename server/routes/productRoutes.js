@@ -24,6 +24,7 @@ productRouter.post(
       rating: 0,
       numReviews: 0,
       description: "sample description",
+      color: [],
     });
     const product = await newProduct.save();
     res.send({ message: "상품이 생성되었습니다.", product });
@@ -47,6 +48,8 @@ productRouter.put(
       product.brand = req.body.brand;
       product.countInStock = req.body.countInStock;
       product.description = req.body.description;
+      product.selectedColors = req.body.selectColor;
+
       await product.save();
       res.send({ message: "상품이 업데이트되었습니다." });
     } else {
@@ -54,6 +57,7 @@ productRouter.put(
     }
   })
 );
+
 productRouter.delete(
   "/:id",
   isAuth,

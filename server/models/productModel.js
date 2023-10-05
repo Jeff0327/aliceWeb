@@ -25,6 +25,14 @@ const productSchema = new mongoose.Schema(
     numReviews: { type: Number, required: true },
     description: { type: String, required: true },
     reviews: [reviewSchema],
+    color: [
+      {
+        name: String,
+        value: String,
+        check: { type: Boolean, default: false },
+        count: { type: Number },
+      },
+    ],
   },
   {
     timestamps: true,
