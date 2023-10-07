@@ -1,7 +1,6 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "proxy": "http://localhost:4000",
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
@@ -13,6 +12,7 @@
     "@testing-library/user-event": "^14.4.3",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.1",
+    "http-proxy-middleware": "^2.0.6",
     "react": "^18.2.0",
     "react-anchor-link-smooth-scroll": "^1.0.12",
     "react-bootstrap": "^2.8.0",

@@ -16,10 +16,10 @@ const orderSchema = new mongoose.Schema(
         },
         color: [
           {
-            name: { type: String },
-            value: { type: String },
+            name: String,
+            value: String,
             check: { type: Boolean, default: false },
-            count: { type: Number, required: true },
+            count: { type: Number },
           },
         ],
       },
