@@ -242,7 +242,7 @@ productRouter.get("/:id", async (req, res) => {
 
   console.log("request product ID:", productId);
   console.log("request color ID:", colorId);
-  const product = await Product.findOne({ _id: productId });
+  const product = await Product.findById({ _id: productId });
 
   // Find the specific color within the product
   const selectedColor = product.color.find(
