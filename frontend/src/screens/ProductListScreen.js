@@ -169,9 +169,11 @@ export default function ProductListScreen() {
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
                   <td>
-                    {product.color.map((color) => (
-                      <div key={color._id}>{color.name}</div>
-                    ))}
+                    {product.color
+                      .filter((color) => color.check === true) // Filter colors with check === true
+                      .map((color) => (
+                        <div key={color._id}>{color.name}</div>
+                      ))}
                   </td>
                   <td>
                     <Button

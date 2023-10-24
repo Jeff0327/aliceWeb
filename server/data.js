@@ -17,7 +17,6 @@ const data = {
       category: "",
       image: "", // 679px × 829px
       price: "",
-      countInStock: "",
       brand: "",
       rating: "",
       numReviews: "",

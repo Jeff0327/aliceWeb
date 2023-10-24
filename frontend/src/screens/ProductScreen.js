@@ -45,6 +45,8 @@ export default function ProductScreen() {
   const [comment, setComment] = useState("");
   const [selectedImage, setSelectedImage] = useState("");
   const [isSelectColor, setIsSelectColor] = useState(false);
+  const [selectColor, setSelectColor] = useState([]);
+  const [isSaleColor, setIsSaleColor] = useState(true);
   const navigate = useNavigate();
   const params = useParams();
   const { slug } = params;
@@ -65,31 +67,56 @@ export default function ProductScreen() {
         dispatch({ type: "FETCH_FAIL", payload: getError(err) });
       }
     };
+
     fetchData();
   }, [slug]);
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
-  const addToCartHandler = async () => {
-    const existItem = cart.cartItems.find((x) => x._id === product._id);
-    const quantity = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await axios.get(`/api/products/${product._id}`);
 
+  const addToCartHandler = async () => {
+    const { data } = await axios.get(
+      `/api/products/${product._id}?color=${product.color.selectColor}`
+    );
     if (isSelectColor === false) {
-      toast.error("색상을 선택하세요.");
+      window.alert("색상을 선택해주세요.");
       return;
     }
-    if (data.countInStock < quantity) {
-      window.alert("죄송합니다 상품이 매진되었습니다.");
+
+    const cartItem = data.color.find((e) => e._id === selectColor._id);
+    if (cartItem.count < selectColor.quantity) {
+      window.alert("재고가 부족합니다.");
       return;
     }
+
     ctxDispatch({
       type: "CART_ADD_ITEM",
-      payload: { ...product, quantity },
+      payload: { ...product, color: { selectColor: selectColor } },
     });
     navigate("/cart");
   };
 
+  const isSaleColorHandler = async () => {
+    const existItem = cart.cartItems.find(
+      (x) => x._id === product._id && x.color._id === selectColor._id
+    );
+
+    const quantity = existItem ? existItem.color.selectColor.quantity + 1 : 1;
+
+    try {
+      const { data } = await axios.get(
+        `/api/products/${product._id}?color=${product.color._id}`
+      );
+
+      if (data.color.some((color) => color.count < quantity)) {
+        setIsSaleColor(false);
+      } else {
+        setIsSaleColor(true);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!comment || !rating) {
@@ -124,8 +151,20 @@ export default function ProductScreen() {
       dispatch({ type: "CREATE_FAIL" });
     }
   };
-  const selectedColorHandler = () => {
-    product.color.map((color) => console.log(color));
+
+  const colorSelectHandler = (clickedColor) => {
+    const existItem = cart.cartItems.find(
+      (x) =>
+        x._id === product._id && x.color.selectColor._id === clickedColor._id
+    );
+
+    const quantity = existItem ? existItem.color.selectColor.quantity + 1 : 1;
+    const updatedSelectColor = {
+      ...clickedColor,
+      quantity: quantity,
+    };
+    setSelectColor(updatedSelectColor);
+    isSaleColorHandler();
     setIsSelectColor(!isSelectColor);
   };
   return loading ? (
@@ -158,19 +197,43 @@ export default function ProductScreen() {
               ></Rating>
             </ListGroup.Item>
             <ListGroup.Item>
-              <div stlye={{ flex: 1, flexDirection: "row" }}>
-                색상:{" "}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                }}
+              >
+                색상:
                 {product.color.map((color, index) => (
                   <Button
                     key={index}
+                    className="color-btn"
                     style={{
-                      background: color.value,
-                      width: "7px",
-                      height: "7px",
-                      borderColor: "black",
+                      justifyContent: "space-around",
+                      alignItems: "center",
+                      display: "flex",
+                      backgroundColor:
+                        isSelectColor && selectColor.name === color.name
+                          ? "#198754"
+                          : "#DCDCDC",
+                      position: "relative",
                     }}
-                    onClick={() => selectedColorHandler()}
-                  ></Button>
+                    onClick={() => colorSelectHandler(color)}
+                  >
+                    <div
+                      value={color}
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        background: color.value,
+                        width: "20px",
+                        height: "20px",
+                        borderColor: "black",
+                      }}
+                    ></div>
+                    <div>{color.name}</div>
+                  </Button>
                 ))}
               </div>
             </ListGroup.Item>
@@ -220,7 +283,9 @@ export default function ProductScreen() {
                   <Row>
                     <Col>상태:</Col>
                     <Col>
-                      {product.countInStock > 0 ? (
+                      {isSaleColor ? (
+                        <Badge bg="success">판매중</Badge>
+                      ) : isSelectColor && isSaleColor ? (
                         <Badge bg="success">판매중</Badge>
                       ) : (
                         <Badge bg="danger">Sold out</Badge>
@@ -229,10 +294,14 @@ export default function ProductScreen() {
                   </Row>
                 </ListGroup.Item>
 
-                {product.countInStock > 0 && (
+                {product.color.map((c) => c.count > 0) && (
                   <ListGroup.Item>
                     <div className="d-grid">
-                      <Button onClick={addToCartHandler} variant="primary">
+                      <Button
+                        onClick={addToCartHandler}
+                        variant="primary"
+                        style={{ borderColor: "black" }}
+                      >
                         카트에 담기
                       </Button>
                     </div>
@@ -271,7 +340,22 @@ export default function ProductScreen() {
           ))}
         </div>
       </div>
-
+      <div>
+        <ul>
+          비고/특별 주의 사항{" "}
+          <li>
+            손세탁을 권장하며, 기계세탁 및 지퍼나 딱딱한 의류는 세탁하지 마세요
+          </li>{" "}
+          <li>
+            청바지, 짙은 색상의 의류는 세탁 시 물빠짐 현상이 발생할 수 있으니,
+            이염 방지를 위해 단독 세탁해주세요
+          </li>
+          <li>
+            벨벳 의류의 보풀이 빠지는 것은 정상적인 현상이며, 스웨터, 코트 등의
+            보풀 문제는 면기로 처리할 수 있습니다
+          </li>
+        </ul>
+      </div>
       <div id="reviews" className="my-3">
         <h2 ref={reviewsRef}>리뷰</h2>
         <div className="mb-3">
@@ -346,43 +430,6 @@ export default function ProductScreen() {
       </div>
       <div id="delivery" className="my-3">
         <p>배송</p>
-        {/* <div style={{ flexdirection: "row", justifyContent: "space-around" }}>
-          <img
-            alt="delivery"
-            style={{ width: 50, height: 50, color: "none" }}
-            src={`${process.env.PUBLIC_URL}/images/orderIcon.gif`}
-          />
-          <img
-            alt="delivery"
-            style={{ width: 50, height: 50, color: "none" }}
-            src={`${process.env.PUBLIC_URL}/images/rightArrow.png`}
-          />
-          <img
-            alt="delivery"
-            style={{ width: 50, height: 50, color: "none" }}
-            src={`${process.env.PUBLIC_URL}/images/orderIcon.gif`}
-          />
-          <img
-            alt="delivery"
-            style={{ width: 50, height: 50, color: "none" }}
-            src={`${process.env.PUBLIC_URL}/images/rightArrow.png`}
-          />
-          <img
-            alt="delivery"
-            style={{ width: 50, height: 50, color: "none" }}
-            src={`${process.env.PUBLIC_URL}/images/orderIcon.gif`}
-          />
-          <img
-            alt="delivery"
-            style={{ width: 50, height: 50, color: "none" }}
-            src={`${process.env.PUBLIC_URL}/images/rightArrow.png`}
-          />
-          <img
-            alt="delivery"
-            style={{ width: 50, height: 50, color: "none" }}
-            src={`${process.env.PUBLIC_URL}/images/prize.png`}
-          />
-        </div> */}
         <ul>
           주문일로부터 평균 7일이내에 배송되지만 주문량이 많을 경우 배송지연이
           될 수 있습니다.

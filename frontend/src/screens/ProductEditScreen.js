@@ -64,7 +64,6 @@ export default function ProductEditScreen() {
   const [countInStock, setCountInStock] = useState("");
   const [brand, setBrand] = useState("");
   const [description, setDescription] = useState("");
-  // const [color, setColor] = useState([colors]);
   const [color, setColor] = useState(
     [...colors].map((color) => ({ ...color, count: "" }))
   );
@@ -382,14 +381,6 @@ export default function ProductEditScreen() {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="countInStock">
-            <Form.Label>재고수량</Form.Label>
-            <Form.Control
-              value={countInStock}
-              onChange={(e) => setCountInStock(e.target.value)}
-              required
-            />
-          </Form.Group>
           <Form.Group className="mb-3" controlId="description">
             <Form.Label>제품설명</Form.Label>
             <Form.Control

@@ -29,29 +29,47 @@ function reducer(state, action) {
       return { ...state, fullBox: true };
     case "SET_FULLBOX_OFF":
       return { ...state, fullBox: false };
-
-    case "CART_ADD_ITEM":
-      // add to cart
+    // case "CART_CLEAR":
+    //   return { ...state, cart: { ...state.cart, cartItems: [] } };
+    case "CART_ADD_ITEM": {
       const newItem = action.payload;
       const existItem = state.cart.cartItems.find(
         (item) => item._id === newItem._id
       );
-      const cartItems = existItem
-        ? state.cart.cartItems.map((item) =>
-            item._id === existItem._id ? newItem : item
-          )
-        : [...state.cart.cartItems, newItem];
-      localStorage.setItem("cartItems", JSON.stringify(cartItems));
-      return { ...state, cart: { ...state.cart, cartItems } };
-    case "CART_REMOVE_ITEM": {
-      const cartItems = state.cart.cartItems.filter(
-        (item) => item._id !== action.payload._id
-      );
+
+      if (!existItem) {
+        // If the item doesn't exist in the cart, simply add it.
+        const cartItems = [...state.cart.cartItems, newItem];
+        localStorage.setItem("cartItems", JSON.stringify(cartItems));
+        return { ...state, cart: { ...state.cart, cartItems } };
+      }
+
+      if (existItem.color._id === newItem.color._id) {
+        // If the same item with the same color exists, update the quantity.
+        const cartItems = state.cart.cartItems.map((item) =>
+          item._id === existItem._id ? newItem : item
+        );
+        localStorage.setItem("cartItems", JSON.stringify(cartItems));
+        return { ...state, cart: { ...state.cart, cartItems } };
+      }
+
+      // If the same item with a different color exists, add it as a new item.
+      const cartItems = [...state.cart.cartItems, newItem];
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
       return { ...state, cart: { ...state.cart, cartItems } };
     }
-    case "CART_CLEAR":
-      return { ...state, cart: { ...state.cart, cartItems: [] } };
+
+    case "CART_REMOVE_ITEM": {
+      const {
+        _id,
+        color: { colorId },
+      } = action.payload; // Destructure _id and color._id from the item
+      const updatedCartItems = state.cart.cartItems.filter(
+        (item) => item._id !== _id || item.color._id !== colorId
+      );
+      localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+      return { ...state, cart: { ...state.cart, cartItems: updatedCartItems } };
+    }
 
     case "USER_SIGNIN":
       return { ...state, userInfo: action.payload };

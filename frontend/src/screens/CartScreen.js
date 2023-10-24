@@ -10,7 +10,6 @@ import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
 import { Store } from "../Store";
 import MessageBox from "../components/MessageBox.js";
-
 export default function CartScreen() {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -19,18 +18,46 @@ export default function CartScreen() {
   } = state;
 
   const updateCartHandler = async (item, quantity) => {
-    const { data } = await axios.get(`/api/products/${item._id}`);
-    if (data.countInStock < quantity) {
-      window.alert("죄송합니다 상품이 매진되었습니다.");
-      return;
+    try {
+      const { data } = await axios.get(
+        `/api/products/${item._id}?color=${item.color.selectColor._id}`
+      );
+
+      const newColor = data.color.find(
+        (c) => c._id === item.color.selectColor._id
+      );
+
+      if (newColor && newColor.count < quantity) {
+        window.alert("매진");
+        return;
+      }
+    } catch (err) {
+      console.log(err);
     }
+
     ctxDispatch({
       type: "CART_ADD_ITEM",
-      payload: { ...item, quantity },
+      payload: {
+        ...item,
+        color: {
+          ...item.color,
+          selectColor: {
+            ...item.color.selectColor,
+            quantity: quantity,
+          },
+        },
+      },
     });
   };
+
   const removeItemHandler = (item) => {
-    ctxDispatch({ type: "CART_REMOVE_ITEM", payload: item });
+    ctxDispatch({
+      type: "CART_REMOVE_ITEM",
+      payload: {
+        _id: item._id,
+        color: { colorId: item.color._id },
+      },
+    });
   };
 
   const checkoutHandler = () => {
@@ -52,33 +79,45 @@ export default function CartScreen() {
           ) : (
             <ListGroup>
               {cartItems.map((item) => (
-                <ListGroup.Item key={item._id}>
+                <ListGroup.Item
+                  key={`${item._id}-${item.color.selectColor._id}`}
+                >
                   <Row className="align-items-center">
-                    <Col md={4}>
+                    <Col md={3}>
                       <img
                         src={item.image}
                         alt={item.name}
                         className="img-fluid rounded img-thumbnail"
                       ></img>{" "}
-                      <Link to={`/product/${item.slug}`}>{item.name}</Link>
+                      <Link to={`/product/${item.slug}`}>{item.name}</Link>{" "}
                     </Col>
+                    <Col md={1}>{item.color.selectColor.name}</Col>
                     <Col md={3}>
                       <Button
                         onClick={() =>
-                          updateCartHandler(item, item.quantity - 1)
+                          updateCartHandler(
+                            item,
+                            item.color.selectColor.quantity - 1
+                          )
                         }
                         variant="light"
-                        disabled={item.quantity === 1}
+                        disabled={item.color.selectColor.quantity === 1}
                       >
                         <i className="fas fa-minus-circle"></i>
                       </Button>{" "}
-                      <span>{item.quantity}</span>{" "}
+                      <span>{item.color.selectColor.quantity}</span>{" "}
                       <Button
                         variant="light"
                         onClick={() =>
-                          updateCartHandler(item, item.quantity + 1)
+                          updateCartHandler(
+                            item,
+                            item.color.selectColor.quantity + 1
+                          )
                         }
-                        disabled={item.quantity === item.countInStock}
+                        disabled={
+                          item.color &&
+                          item.color.selectColor.quantity === item.color.count
+                        }
                       >
                         <i className="fas fa-plus-circle"></i>
                       </Button>
@@ -105,10 +144,17 @@ export default function CartScreen() {
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <h3>
-                    상품개수({cartItems.reduce((a, c) => a + c.quantity, 0)}개)
-                    :
+                    상품개수(
+                    {cartItems.reduce(
+                      (a, c) => a + c.color.selectColor.quantity,
+                      0
+                    )}
+                    개) :
                     {cartItems
-                      .reduce((a, c) => a + c.price * c.quantity, 0)
+                      .reduce(
+                        (a, c) => a + c.price * c.color.selectColor.quantity,
+                        0
+                      )
                       .toLocaleString()}
                     원
                   </h3>

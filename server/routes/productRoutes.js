@@ -20,7 +20,6 @@ productRouter.post(
       price: 0,
       category: "sample category",
       brand: "sample brand",
-      countInStock: 0,
       rating: 0,
       numReviews: 0,
       description: "sample description",
@@ -46,9 +45,8 @@ productRouter.put(
       product.detailImages = req.body.detailImages;
       product.category = req.body.category;
       product.brand = req.body.brand;
-      product.countInStock = req.body.countInStock;
       product.description = req.body.description;
-      product.selectedColors = req.body.selectColor;
+      product.color = req.body.color.filter((color) => color.check === true);
 
       await product.save();
       res.send({ message: "상품이 업데이트되었습니다." });
@@ -221,16 +219,6 @@ productRouter.get(
   })
 );
 
-productRouter.get(
-  "/eventdataMore",
-  expressAsyncHandler(async (req, res) => {
-    const pageSize = 4;
-    const skipCount = skip ? parseInt(skip) * pageSize : 0;
-    const eventData = await Product.find({ category: "이벤트" });
-
-    res.send(eventData);
-  })
-);
 productRouter.get("/slug/:slug", async (req, res) => {
   const product = await Product.findOne({ slug: req.params.slug });
   if (product) {
@@ -248,4 +236,25 @@ productRouter.get("/:id", async (req, res) => {
     res.status(404).send({ message: "상품을 찾을 수 없습니다." });
   }
 });
+productRouter.get("/:id", async (req, res) => {
+  const productId = req.params.id;
+  const colorId = productId.color; // Get the color from the query parameter
+
+  console.log("request product ID:", productId);
+  console.log("request color ID:", colorId);
+  const product = await Product.findOne({ _id: productId });
+
+  // Find the specific color within the product
+  const selectedColor = product.color.find(
+    (color) => color._id.toString() === colorId
+  );
+
+  if (product && selectedColor) {
+    // Return the specific product and color
+    res.send(selectedColor);
+  } else {
+    res.status(404).send({ message: "상품을 찾을 수 없습니다." });
+  }
+});
+
 module.exports = productRouter;
