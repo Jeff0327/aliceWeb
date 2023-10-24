@@ -240,8 +240,6 @@ productRouter.get("/:id", async (req, res) => {
   const productId = req.params.id;
   const colorId = productId.color; // Get the color from the query parameter
 
-  console.log("request product ID:", productId);
-  console.log("request color ID:", colorId);
   const product = await Product.findById({ _id: productId });
 
   // Find the specific color within the product
