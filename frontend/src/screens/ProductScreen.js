@@ -85,7 +85,7 @@ export default function ProductScreen() {
 
     const cartItem = data.color.find((e) => e._id === selectColor._id);
     if (cartItem.count < selectColor.quantity) {
-      window.alert("재고가 부족합니다.");
+      window.alert("매진되었습니다.");
       return;
     }
 
