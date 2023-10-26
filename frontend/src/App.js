@@ -1,5 +1,4 @@
-import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import Badge from "react-bootstrap/Badge";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -7,7 +6,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Navbar from "react-bootstrap/Navbar";
 import { LinkContainer } from "react-router-bootstrap";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Store } from "./Store";
 import AdminRoute from "./components/AdminRoute";
@@ -34,7 +33,7 @@ import SigninScreen from "./screens/SigninScreen";
 import SignupScreen from "./screens/SignupScreen";
 import UserEditScreen from "./screens/UserEditScreen";
 import UserListScreen from "./screens/UserListScreen";
-import { getError } from "./utils";
+// import { getError } from "./utils";
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -49,20 +48,20 @@ function App() {
     window.location.href = "/signin";
   };
 
-  const [categories, setCategories] = useState([]);
+  // const [categories, setCategories] = useState([]);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const { data } = await axios.get(`/api/products/categories`);
-        const reorderedCategories = findEventValue([...data]);
-        setCategories(reorderedCategories);
-      } catch (err) {
-        toast.error(getError(err));
-      }
-    };
-    fetchCategories();
-  }, []);
+  // useEffect(() => {
+  //   const fetchCategories = async () => {
+  //     try {
+  //       const { data } = await axios.get(`/api/products/categories`);
+  //       const reorderedCategories = findEventValue([...data]);
+  //       setCategories(reorderedCategories);
+  //     } catch (err) {
+  //       toast.error(getError(err));
+  //     }
+  //   };
+  //   fetchCategories();
+  // }, []);
   const onPopKBAuthMark = () => {
     window.open(
       "",
@@ -74,14 +73,14 @@ function App() {
     document.KB_AUTHMARK_FORM.submit();
   };
 
-  const findEventValue = (arr) => {
-    const index = arr.indexOf("이벤트");
-    if (index !== -1) {
-      const eventElement = arr.splice(index, 1)[0];
-      arr.unshift(eventElement);
-    }
-    return arr;
-  };
+  // const findEventValue = (arr) => {
+  //   const index = arr.indexOf("이벤트");
+  //   if (index !== -1) {
+  //     const eventElement = arr.splice(index, 1)[0];
+  //     arr.unshift(eventElement);
+  //   }
+  //   return arr;
+  // };
   return (
     <BrowserRouter>
       <div>
@@ -167,7 +166,7 @@ function App() {
         </header>
 
         <div className="mainImage">
-          {categories.map((category) => (
+          {/* {categories.map((category) => (
             <Nav.Item key={category} className="categoryItem">
               <LinkContainer
                 to={{
@@ -178,7 +177,7 @@ function App() {
                 <Nav.Link className="font-size-10">{category}</Nav.Link>
               </LinkContainer>
             </Nav.Item>
-          ))}
+          ))} */}
         </div>
         <main>
           <Container className="mt-3">
