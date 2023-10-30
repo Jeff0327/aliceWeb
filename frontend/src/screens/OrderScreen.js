@@ -9,9 +9,9 @@ import Row from "react-bootstrap/Row";
 import { Helmet } from "react-helmet-async";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Store } from "../Store";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox.js";
-import { Store } from "../Store";
 import { getError } from "../utils";
 
 function reducer(state, action) {
@@ -247,7 +247,7 @@ export default function OrderScreen() {
               <Card.Title>상품정보</Card.Title>
               <ListGroup variant="flush">
                 {order.orderItems.map((item) => (
-                  <ListGroup.Item key={item._id}>
+                  <ListGroup.Item key={`${item._id}-${item.color._id}`}>
                     <Row className="align-items-center">
                       <Col md={6}>
                         <img
@@ -257,9 +257,7 @@ export default function OrderScreen() {
                         ></img>{" "}
                         <Link to={`/product/${item.slug}`}>{item.name}</Link>
                       </Col>
-                      <Col md={3}>
-                        <span>{item.quantity}</span>
-                      </Col>
+                      <Col md={3}>{item.color.map((e) => e.name)}</Col>
                       <Col md={3}>{item.price.toLocaleString()}원</Col>
                     </Row>
                   </ListGroup.Item>

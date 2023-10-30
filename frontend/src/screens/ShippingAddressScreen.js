@@ -5,8 +5,8 @@ import DaumPostcode from "react-daum-postcode";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import CheckoutSteps from "../components/CheckoutSteps";
 import { Store } from "../Store";
+import CheckoutSteps from "../components/CheckoutSteps";
 export default function ShippingAddressScreen() {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -92,7 +92,7 @@ export default function ShippingAddressScreen() {
       </Helmet>
 
       <CheckoutSteps step1 step2></CheckoutSteps>
-      <div className="container small-container">
+      <div className="container">
         <h1 className="my-3">Shipping Address</h1>
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="fullName">

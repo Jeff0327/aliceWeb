@@ -8,6 +8,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Store } from "../Store";
 import { getError } from "../utils";
+// import { GoogleLogin } from "react-google-login";
 export default function SigninScreen() {
   const navigate = useNavigate();
   const { search } = useLocation();
@@ -40,9 +41,7 @@ export default function SigninScreen() {
     }
   }, [navigate, redirect, userInfo]);
   // useEffect(() => {
-
   //   if (!window.Kakao.isInitialized()) {
-
   //     window.Kakao.init(`${process.env.KAKAO_JAVASCRIPT_KEY}`);
   //   }
   // }, []);
@@ -52,8 +51,8 @@ export default function SigninScreen() {
   //     try {
   //       await window.Kakao.Auth.login({
   //         success: async (authObj) => {
-  //           const accessToken = userInfo.token;
-
+  //           const accessToken = authObj.access_token; // Use access_token from authObj
+  //           console.log(accessToken);
   //           const response = await fetch("https://kapi.kakao.com/v2/user/me", {
   //             method: "GET",
   //             headers: {
@@ -77,7 +76,7 @@ export default function SigninScreen() {
   //     }
   //   };
   //   loadKakaoAPI();
-  // }, [userInfo]);
+  // }, []);
   // const handleLoginSuccess = (response) => {
   //   console.log("success msg");
   // };
@@ -101,6 +100,10 @@ export default function SigninScreen() {
   //     },
   //   });
   // };
+  const responseGoogle = (response) => {
+    console.log(response);
+  };
+
   return (
     <Container className="small-container">
       <Helmet>
@@ -145,9 +148,18 @@ export default function SigninScreen() {
             <KakaoLoginButton
               onLoginSuccess={handleLoginSuccess}
               onLoginFailure={handleLoginFailure}
-              onClick={handleKakaoLogin}
+              onClick={() => handleKakaoLogin}
             />
           </div>
+        </Form> */}
+
+        {/* <Form>
+          <GoogleLogin
+            clientId="258796595331-jcpcgb5jthi75dns0lrudp4bfus8obmr.apps.googleusercontent.com"
+            buttonText="Google 로그인"
+            onSuccess={responseGoogle}
+            onFailure={responseGoogle}
+          />
         </Form> */}
       </Form>
     </Container>

@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
-  if (req.headers.host === "rosemarry.kr") {
+  if (req.headers.host !== "rosemarry.kr") {
     return res.redirect(301, "http://rosemarry.kr" + req.originalUrl);
   }
   return next();

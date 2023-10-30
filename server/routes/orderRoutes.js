@@ -25,7 +25,10 @@ orderRouter.post(
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const newOrder = new Order({
-      orderItems: req.body.orderItems.map((x) => ({ ...x, product: x._id })),
+      orderItems: req.body.orderItems.map((x) => ({
+        ...x,
+        product: x._id,
+      })),
       shippingAddress: req.body.shippingAddress,
       detailAddress: req.body.detailAddress,
       paymentMethod: req.body.paymentMethod,
@@ -35,6 +38,7 @@ orderRouter.post(
       user: req.user._id,
     });
     const order = await newOrder.save();
+
     res.status(201).send({ message: "주문되었습니다.", order });
   })
 );

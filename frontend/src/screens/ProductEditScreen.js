@@ -202,7 +202,7 @@ export default function ProductEditScreen() {
   };
 
   return (
-    <Container className="small-container">
+    <Container className="container">
       <Helmet>
         <title>RoseMarry</title>
       </Helmet>

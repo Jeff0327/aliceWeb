@@ -33,30 +33,45 @@ function reducer(state, action) {
     //   return { ...state, cart: { ...state.cart, cartItems: [] } };
     case "CART_ADD_ITEM": {
       const newItem = action.payload;
-      const existItem = state.cart.cartItems.find(
-        (item) => item._id === newItem._id
+      const existItemIndex = state.cart.cartItems.findIndex(
+        (item) =>
+          item._id === newItem._id &&
+          item.color.selectColor._id === newItem.color.selectColor_id
       );
 
-      if (!existItem) {
+      if (existItemIndex === -1) {
         // If the item doesn't exist in the cart, simply add it.
         const cartItems = [...state.cart.cartItems, newItem];
         localStorage.setItem("cartItems", JSON.stringify(cartItems));
         return { ...state, cart: { ...state.cart, cartItems } };
       }
 
-      if (existItem.color._id === newItem.color._id) {
-        // If the same item with the same color exists, update the quantity.
-        const cartItems = state.cart.cartItems.map((item) =>
-          item._id === existItem._id ? newItem : item
-        );
-        localStorage.setItem("cartItems", JSON.stringify(cartItems));
-        return { ...state, cart: { ...state.cart, cartItems } };
-      }
+      // If the same item with the same color exists, update the quantity.
+      const cartItems = state.cart.cartItems.map((item, index) =>
+        index === existItemIndex
+          ? { ...item, quantity: item.quantity + newItem.quantity }
+          : item
+      );
 
-      // If the same item with a different color exists, add it as a new item.
-      const cartItems = [...state.cart.cartItems, newItem];
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
       return { ...state, cart: { ...state.cart, cartItems } };
+    }
+    case "UPDATE_CART_ITEM": {
+      const updatedItem = action.payload; // The payload should contain the updated item
+
+      const updatedCartItems = state.cart.cartItems.map((item) => {
+        if (
+          item._id === updatedItem._id &&
+          item.color.selectColor._id === updatedItem.color.selectColor._id
+        ) {
+          return updatedItem;
+        }
+        return item;
+      });
+
+      localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+
+      return { ...state, cart: { ...state.cart, cartItems: updatedCartItems } };
     }
 
     case "CART_REMOVE_ITEM": {

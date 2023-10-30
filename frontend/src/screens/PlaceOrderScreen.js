@@ -34,24 +34,38 @@ export default function PlaceOrderScreen() {
   });
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
+
   const { cart, userInfo } = state;
 
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100; // 123.2345 => 123.23
   cart.itemsPrice = round2(
-    cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
+    cart.cartItems.reduce(
+      (a, c) => a + c.color.selectColor.quantity * c.price,
+      0
+    )
   );
   cart.shippingPrice = cart.itemsPrice > 50000 ? 0 : 2500; //5만원 이상 결제시 배송료 무료 5만원미만 결제시 배송료 2500
 
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
 
   const placeOrderHandler = async () => {
+    const updatedOrderItems = cart.cartItems.map((item) => ({
+      ...item,
+      color: [
+        {
+          name: item.color.selectColor.name, // Include color.name
+          value: item.color.selectColor.value, // Include other color properties
+        },
+        // Add more color objects if needed
+      ],
+    }));
     try {
       dispatch({ type: "CREATE_REQUEST" });
 
       const { data } = await Axios.post(
         "/api/orders",
         {
-          orderItems: cart.cartItems,
+          orderItems: updatedOrderItems,
           shippingAddress: cart.shippingAddress,
           detailAddress: cart.detailAddress,
           paymentMethod: cart.paymentMethod,
@@ -68,7 +82,9 @@ export default function PlaceOrderScreen() {
       ctxDispatch({ type: "CART_CLEAR" });
       dispatch({ type: "CREATE_SUCCESS" });
       localStorage.removeItem("cartItems");
-      navigate(`/order/${data.order._id}`);
+      navigate(`/order/${data.order._id}`, {
+        state: { colorName: updatedOrderItems.map((item) => item.color) },
+      });
     } catch (err) {
       dispatch({ type: "CREATE_FAIL" });
       toast.error(getError(err));
@@ -137,10 +153,11 @@ export default function PlaceOrderScreen() {
                         ></img>{" "}
                         <Link to={`/product/${item.slug}`}>{item.name}</Link>
                       </Col>
-                      <Col md={3}>
-                        <span>{item.quantity}</span>
+                      <Col md={2}>{item.color.selectColor.name}</Col>
+                      <Col md={2}>
+                        <span>{item.color.selectColor.quantity}개</span>
                       </Col>
-                      <Col md={3}>{item.price}</Col>
+                      <Col md={2}>{item.price}</Col>
                     </Row>
                   </ListGroup.Item>
                 ))}

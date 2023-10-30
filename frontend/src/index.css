@@ -106,6 +106,7 @@ display: flex;
 }
 .small-container {
   max-width: 600px;
+  height: 70vh;
 }
 
 .checkout-steps > div {

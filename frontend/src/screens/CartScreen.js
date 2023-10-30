@@ -1,5 +1,4 @@
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import axios from "axios";
 import { useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
@@ -17,39 +16,60 @@ export default function CartScreen() {
     cart: { cartItems },
   } = state;
 
-  const updateCartHandler = async (item, quantity) => {
-    try {
-      const { data } = await axios.get(
-        `/api/products/${item._id}?color=${item.color.selectColor._id}`
-      );
+  // const updateCartHandler = async (item, quantity) => {
+  //   try {
+  //     const { data } = await axios.get(
+  //       `/api/products/${item._id}?color=${item.color.selectColor._id}`
+  //     );
 
-      const newColor = data.color.find(
-        (c) => c._id === item.color.selectColor._id
-      );
+  //     const newColor = data.color.find(
+  //       (c) => c._id === item.color.selectColor._id
+  //     );
 
-      if (newColor && newColor.count < quantity) {
-        window.alert("매진");
-        return;
-      }
-    } catch (err) {
-      console.log(err);
-    }
+  //     if (newColor && newColor.count < quantity) {
+  //       window.alert("매진");
+  //       return;
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
 
-    ctxDispatch({
-      type: "CART_ADD_ITEM",
-      payload: {
-        ...item,
-        color: {
-          ...item.color,
-          selectColor: {
-            ...item.color.selectColor,
-            quantity: quantity,
+  //   ctxDispatch({
+  //     type: "CART_ADD_ITEM",
+  //     payload: {
+  //       ...item,
+  //       color: {
+  //         ...item.color,
+  //         selectColor: {
+  //           ...item.color.selectColor,
+  //           quantity: quantity,
+  //         },
+  //       },
+  //     },
+  //   });
+  // };
+  const updateCartHandler = (item, quantity) => {
+    const updatedCartItems = [...cartItems];
+    const existColor = updatedCartItems.find(
+      (e) =>
+        e._id === item._id &&
+        e.color.selectColor._id &&
+        item.color.selectColor._id
+    );
+
+    if (existColor) {
+      ctxDispatch({
+        type: "UPDATE_CART_ITEM",
+        payload: {
+          ...item,
+          color: {
+            ...item.color,
+            selectColor: { ...item.color.selectColor, quantity: quantity },
           },
         },
-      },
-    });
+      });
+    }
   };
-
   const removeItemHandler = (item) => {
     ctxDispatch({
       type: "CART_REMOVE_ITEM",
@@ -78,9 +98,9 @@ export default function CartScreen() {
             </MessageBox>
           ) : (
             <ListGroup>
-              {cartItems.map((item) => (
+              {cartItems.map((item, index) => (
                 <ListGroup.Item
-                  key={`${item._id}-${item.color.selectColor._id}`}
+                  key={`${item._id}-${item.color.selectColor._id}-${index}`}
                 >
                   <Row className="align-items-center">
                     <Col md={3}>
@@ -122,7 +142,7 @@ export default function CartScreen() {
                         <i className="fas fa-plus-circle"></i>
                       </Button>
                     </Col>
-
+                    {console.log(cartItems)}
                     <Col md={3}>{item.price.toLocaleString()}원</Col>
                     <Col md={2}>
                       <Button
