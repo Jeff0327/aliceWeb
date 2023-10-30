@@ -100,12 +100,12 @@ export default function SigninScreen() {
   //     },
   //   });
   // };
-  const responseGoogle = (response) => {
-    console.log(response);
-  };
+  // const responseGoogle = (response) => {
+  //   console.log(response);
+  // };
 
   return (
-    <Container className="small-container">
+    <Container className="container">
       <Helmet>
         <title>Sign In</title>
       </Helmet>
