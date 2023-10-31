@@ -29,7 +29,7 @@ function reducer(state, action) {
       return { ...state, fullBox: true };
     case "SET_FULLBOX_OFF":
       return { ...state, fullBox: false };
-    // case "CART_CLEAR":
+    // case "CART_CLEAR ":
     //   return { ...state, cart: { ...state.cart, cartItems: [] } };
     case "CART_ADD_ITEM": {
       const newItem = action.payload;

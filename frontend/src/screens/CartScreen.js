@@ -142,7 +142,6 @@ export default function CartScreen() {
                         <i className="fas fa-plus-circle"></i>
                       </Button>
                     </Col>
-                    {console.log(cartItems)}
                     <Col md={3}>{item.price.toLocaleString()}원</Col>
                     <Col md={2}>
                       <Button

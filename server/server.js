@@ -7,6 +7,7 @@ const productRouter = require("./routes/productRoutes.js");
 const userRouter = require("./routes/userRoutes.js");
 const orderRouter = require("./routes/orderRoutes.js");
 const uploadRouter = require("./routes/uploadRoutes.js");
+const cors = require("cors");
 const port = process.env.PORT || 4000;
 
 mongoose
@@ -18,7 +19,7 @@ mongoose
     console.log(err.message);
   });
 const app = express();
-
+app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -33,11 +34,11 @@ app.get("/api/keys/paypal", (req, res) => {
 });
 app.use("/api/upload", uploadRouter);
 app.use("/api/seed", seedRouter);
-app.use("/api/products", productRouter);
+app.use("/api/products", cors(), productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
-
 app.use(express.static(path.join(__dirname, "../frontend/build")));
+
 app.get("*", (req, res) =>
   res.sendFile(path.join(__dirname, "../frontend/build/index.html"))
 );
