@@ -76,7 +76,12 @@ export default function ProductScreen() {
 
   const addToCartHandler = async () => {
     const { data } = await axios.get(
-      `/api/products/${product._id}?color=${product.color.selectColor}`
+      `/api/products/${product._id}?color=${product.color.selectColor}`,
+      {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
     );
     if (isSelectColor === false) {
       window.alert("색상을 선택해주세요.");
@@ -105,7 +110,12 @@ export default function ProductScreen() {
 
     try {
       const { data } = await axios.get(
-        `/api/products/${product._id}?color=${product.color._id}`
+        `/api/products/${product._id}?color=${product.color._id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
       );
 
       if (data.color.some((color) => color.count < quantity)) {

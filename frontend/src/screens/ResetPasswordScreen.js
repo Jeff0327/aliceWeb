@@ -32,10 +32,18 @@ export default function ResetPasswordScreen() {
       return;
     }
     try {
-      await axios.post("/api/users/reset-password", {
-        password,
-        token,
-      });
+      await axios.post(
+        "/api/users/reset-password",
+        {
+          password,
+          token,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
       navigate("/signin");
       toast.success("패스워드가 변경되었습니다.");
     } catch (err) {

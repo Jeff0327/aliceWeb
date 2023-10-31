@@ -3,8 +3,7 @@ const Product = require("../models/productModel.js");
 const expressAsyncHandler = require("express-async-handler");
 const productRouter = express.Router();
 const { isAuth, isAdmin } = require("../utils.js");
-const cors = require("cors");
-productRouter.use(cors());
+
 productRouter.get("/", async (req, res) => {
   const products = await Product.find();
   res.send(products);
@@ -237,23 +236,26 @@ productRouter.get("/:id", async (req, res) => {
     res.status(404).send({ message: "상품을 찾을 수 없습니다." });
   }
 });
-productRouter.get("/:id", async (req, res) => {
-  const productId = req.params.id;
-  const colorId = productId.color; // Get the color from the query parameter
+productRouter.get(
+  "/:id",
+  expressAsyncHandler(async (req, res) => {
+    const productId = req.params.id;
+    const colorId = productId.color; // Get the color from the query parameter
 
-  const product = await Product.findById({ _id: productId });
+    const product = await Product.findById({ _id: productId });
 
-  // Find the specific color within the product
-  const selectedColor = product.color.find(
-    (color) => color._id.toString() === colorId
-  );
+    // Find the specific color within the product
+    const selectedColor = product.color.find(
+      (color) => color._id.toString() === colorId
+    );
 
-  if (product && selectedColor) {
-    // Return the specific product and color
-    res.send(selectedColor);
-  } else {
-    res.status(404).send({ message: "상품을 찾을 수 없습니다." });
-  }
-});
+    if (product && selectedColor) {
+      // Return the specific product and color
+      res.send(selectedColor);
+    } else {
+      res.status(404).send({ message: "상품을 찾을 수 없습니다." });
+    }
+  })
+);
 
 module.exports = productRouter;
