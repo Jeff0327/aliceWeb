@@ -3,7 +3,8 @@ const Product = require("../models/productModel.js");
 const expressAsyncHandler = require("express-async-handler");
 const productRouter = express.Router();
 const { isAuth, isAdmin } = require("../utils.js");
-
+const cors = require("cors");
+productRouter.use(cors());
 productRouter.get("/", async (req, res) => {
   const products = await Product.find();
   res.send(products);

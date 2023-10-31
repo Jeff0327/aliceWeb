@@ -8,6 +8,28 @@ const userRouter = require("./routes/userRoutes.js");
 const orderRouter = require("./routes/orderRoutes.js");
 const uploadRouter = require("./routes/uploadRoutes.js");
 const port = process.env.PORT || 4000;
+// const cors = require("cors");
+
+// const options = {
+//   allowedHeaders: [
+//     "X-ACCESS_TOKEN",
+//     "Authorization",
+//     "Origin",
+//     "X-Requested-With",
+//     "Content-Type",
+//     "Content-Range",
+//     "Content-Disposition",
+//     "Content-Description",
+//   ],
+//   credentials: true,
+//   methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+//   origin: [
+//     "http://rosemarry.kr", // Add your new domain here
+//     "http://localhost:3000", // Add localhost:3000
+//   ],
+//   preflightContinue: false,
+// };
+// app.use(cors(options));
 
 mongoose
   .connect(process.env.MONGODB_URL_ATLAS)
@@ -23,13 +45,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-
+  if (req.headers.host !== "rosemarry.kr") {
+    res.message(req.headers.host);
+    return res.redirect(301, "http://rosemarry.kr" + req.originalUrl);
+  }
   return next();
 });
 app.get("/api/keys/paypal", (req, res) => {
