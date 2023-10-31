@@ -19,6 +19,7 @@ mongoose
   });
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -36,7 +37,7 @@ app.get("/api/keys/paypal", (req, res) => {
 
 app.use("/api/upload", uploadRouter);
 app.use("/api/seed", seedRouter);
-app.use("/api/products", cors(), productRouter);
+app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
 app.use(express.static(path.join(__dirname, "../frontend/build")));
