@@ -61,7 +61,6 @@ export default function ProductEditScreen() {
   const [images, setImages] = useState([]);
   const [detailImages, setDetailImages] = useState([]);
   const [category, setCategory] = useState("");
-  const [countInStock, setCountInStock] = useState("");
   const [brand, setBrand] = useState("");
   const [description, setDescription] = useState("");
   const [color, setColor] = useState(
@@ -80,7 +79,6 @@ export default function ProductEditScreen() {
         setImages(data.images);
         setDetailImages(data.detailImages);
         setCategory(data.category);
-        setCountInStock(data.countInStock);
         setBrand(data.brand);
         setDescription(data.description);
 
@@ -119,7 +117,6 @@ export default function ProductEditScreen() {
           detailImages,
           category,
           brand,
-          countInStock,
           description,
           color,
         },
