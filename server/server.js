@@ -7,7 +7,6 @@ const productRouter = require("./routes/productRoutes.js");
 const userRouter = require("./routes/userRoutes.js");
 const orderRouter = require("./routes/orderRoutes.js");
 const uploadRouter = require("./routes/uploadRoutes.js");
-const cors = require("cors");
 const port = process.env.PORT || 4000;
 
 mongoose
@@ -19,14 +18,18 @@ mongoose
     console.log(err.message);
   });
 const app = express();
-app.use(cors({ origin: "http://localhost:3000" }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
-  if (req.headers.host !== "rosemarry.kr") {
-    return res.redirect(301, "http://rosemarry.kr" + req.originalUrl);
-  }
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+
   return next();
 });
 app.get("/api/keys/paypal", (req, res) => {
@@ -34,7 +37,7 @@ app.get("/api/keys/paypal", (req, res) => {
 });
 app.use("/api/upload", uploadRouter);
 app.use("/api/seed", seedRouter);
-app.use("/api/products", cors(), productRouter);
+app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
 app.use(express.static(path.join(__dirname, "../frontend/build")));
