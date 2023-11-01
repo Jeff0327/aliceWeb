@@ -30,7 +30,25 @@ app.use((req, res, next) => {
   }
   return next();
 });
+// app.use(function (req, res, next) {
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   );
+//   res.header("Access-Control-Allow-Credentials", true);
+//   res.header("Access-Control-Allow-Origin", "https://rosemarry.kr");
 
+//   res.header("Access-Control-Expose-Headers", "agreementrequired");
+
+//   next();
+// });
+app.use(
+  cors({
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true, // Allow credentials like cookies
+  })
+);
 app.get("/api/keys/paypal", (req, res) => {
   res.send(process.env.PAYPAL_CLIENT_ID || "sb");
 });
