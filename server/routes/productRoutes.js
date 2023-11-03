@@ -6,7 +6,7 @@ const { isAuth, isAdmin } = require("../utils.js");
 const cors = require("cors");
 
 productRouter.use(cors());
-productRouter.get("/", async (req, res) => {
+productRouter.get("/", cors(), async (req, res) => {
   const products = await Product.find();
   res.send(products);
 });
