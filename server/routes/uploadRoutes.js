@@ -20,10 +20,7 @@ uploadRouter.post(
         api_key: process.env.CLOUDINARY_API_KEY,
         api_secret: process.env.CLOUDINARY_API_SECRET,
       });
-      res.header("Access-Control-Allow-Origin", [
-        "http://localhost:3000",
-        "https://rosemarry.kr",
-      ]);
+      res.header("Access-Control-Allow-Origin", "*");
       const streamUpload = (req) => {
         return new Promise((resolve, reject) => {
           const stream = cloudinary.uploader.upload_stream((error, result) => {
