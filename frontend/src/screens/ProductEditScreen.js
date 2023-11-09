@@ -150,10 +150,6 @@ export default function ProductEditScreen() {
       const { data } = await axios.post("/api/upload", bodyFormData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          "Access-Control-Allow-Origin": [
-            "https://rosemarry.kr",
-            "http://localhost:3000",
-          ],
           authorization: `Bearer ${userInfo.token}`,
         },
       });

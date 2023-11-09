@@ -24,10 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
   console.log("Request received from: " + req.headers.origin);
-  res.header("Access-Control-Allow-Origin", [
-    "http://localhost:3000",
-    "https://rosemarry.kr",
-  ]);
+  res.header("Access-Control-Allow-Origin", "*");
   next();
 });
 // app.use((req, res, next) => {
