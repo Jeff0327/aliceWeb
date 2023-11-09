@@ -19,10 +19,17 @@ mongoose
   });
 const app = express();
 
-app.use(cors());
+app.use(cors({ origin: ["http://localhost:3000", "https://rosemarry.kr"] }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use((req, res, next) => {
+  console.log("Request received from: " + req.headers.origin);
+  res.header("Access-Control-Allow-Origin", [
+    "http://localhost:3000",
+    "https://rosemarry.kr",
+  ]);
+  next();
+});
 // app.use((req, res, next) => {
 //   if (req.headers.host !== "rosemarry.kr") {
 //     console.log(req.headers.host);
@@ -30,18 +37,6 @@ app.use(express.urlencoded({ extended: true }));
 //   }
 //   return next();
 // });
-app.use(function (req, res, next) {
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Origin", "*");
-
-  res.header("Access-Control-Expose-Headers", "agreementrequired");
-
-  next();
-});
 
 app.get("/api/keys/paypal", (req, res) => {
   res.send(process.env.PAYPAL_CLIENT_ID || "sb");
@@ -49,11 +44,7 @@ app.get("/api/keys/paypal", (req, res) => {
 
 app.use("/api/upload", uploadRouter);
 app.use("/api/seed", seedRouter);
-app.use(
-  "/api/products",
-  cors({ origin: ["http://localhost:3000", "http://rosemarry.kr"] }),
-  productRouter
-);
+app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
 app.use(express.static(path.join(__dirname, "../frontend/build")));

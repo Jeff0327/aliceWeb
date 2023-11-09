@@ -103,6 +103,11 @@ export default function ProductEditScreen() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    const checkboxHandler = colors.some((c) => c.check);
+    if (!checkboxHandler) {
+      toast.error("색상을 선택해주세요");
+      return;
+    }
     try {
       dispatch({ type: "UPDATE_REQUEST" });
       await axios.put(
@@ -138,11 +143,17 @@ export default function ProductEditScreen() {
     const file = e.target.files[0];
     const bodyFormData = new FormData();
     bodyFormData.append("file", file);
+    bodyFormData.append("cloud_name", "ds3rswxmw");
+    bodyFormData.append("upload_preset", "solomon");
     try {
       dispatch({ type: "UPLOAD_REQUEST" });
       const { data } = await axios.post("/api/upload", bodyFormData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          "Access-Control-Allow-Origin": [
+            "https://rosemarry.kr",
+            "http://localhost:3000",
+          ],
           authorization: `Bearer ${userInfo.token}`,
         },
       });
@@ -171,6 +182,10 @@ export default function ProductEditScreen() {
       const { data } = await axios.post("/api/upload", bodyFormData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          "Access-Control-Allow-Origin": [
+            "https://rosemarry.kr",
+            "http://localhost:3000",
+          ],
           authorization: `Bearer ${userInfo.token}`,
         },
       });
@@ -299,7 +314,8 @@ export default function ProductEditScreen() {
               )
           )}
           <Form.Group className="mb-3" controlId="image">
-            <Form.Label>메인이미지</Form.Label>
+            <Form.Label>선택한파일</Form.Label>
+            {/*메인 이미지선택파일*/}
             <Form.Control
               value={image}
               onChange={(e) => setImage(e.target.value)}
@@ -307,13 +323,13 @@ export default function ProductEditScreen() {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="imageFile">
-            <Form.Label>Upload Image</Form.Label>
+            <Form.Label>메인이미지 업로드</Form.Label>
             <Form.Control type="file" onChange={uploadFileHandler} />
             {loadingUpload && <LoadingBox></LoadingBox>}
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="additionalImage">
-            <Form.Label>색상별 이미지</Form.Label>
+            <Form.Label>선택한파일</Form.Label> {/*색상별 이미지선택파일*/}
             {images.length === 0 && <MessageBox>No image</MessageBox>}
             <ListGroup variant="flush">
               {images.map((x) => (
@@ -327,7 +343,7 @@ export default function ProductEditScreen() {
             </ListGroup>
           </Form.Group>
           <Form.Group className="mb-3" controlId="additionalImageFile">
-            <Form.Label>Upload Aditional Image</Form.Label>
+            <Form.Label>색상이미지 업로드</Form.Label>
             <Form.Control
               type="file"
               onChange={(e) => uploadFileHandler(e, true)}
@@ -335,7 +351,8 @@ export default function ProductEditScreen() {
             {loadingUpload && <LoadingBox></LoadingBox>}
           </Form.Group>
           <Form.Group className="mb-3" controlId="detailImage">
-            <Form.Label>상세페이지 이미지</Form.Label>
+            <Form.Label>선택한 파일</Form.Label>
+            {/*상세페이지 이미지선택파일*/}
             {detailImages.length === 0 && (
               <MessageBox>No Detail image</MessageBox>
             )}
@@ -354,7 +371,7 @@ export default function ProductEditScreen() {
             </ListGroup>
           </Form.Group>
           <Form.Group className="mb-3" controlId="detailImageFile">
-            <Form.Label>Upload Detail Image</Form.Label>
+            <Form.Label>상세이미지 업로드</Form.Label>
             <Form.Control
               type="file"
               onChange={(e) => uploadDetailImagesHandler(e, true)}

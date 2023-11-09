@@ -60,7 +60,7 @@ export default function SignupScreen() {
   }, [navigate, redirect, userInfo]);
 
   return (
-    <Container className="small-container">
+    <Container className="container">
       <Helmet>
         <title>RoseMarry</title>
       </Helmet>

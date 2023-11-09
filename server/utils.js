@@ -6,7 +6,7 @@ const baseUrl = () =>
     ? process.env.BASE_URL
     : process.env.NODE_ENV !== "production"
     ? "http://localhost:3000"
-    : "http://rosemarry.kr";
+    : "https://rosemarry.kr";
 
 const generateToken = (user) => {
   return jwt.sign(

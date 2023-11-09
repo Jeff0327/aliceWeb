@@ -158,12 +158,12 @@ export default function ShippingAddressScreen() {
               onChange={(e) => setPostalCode(e.target.value)}
               required
             />
-            <Button
+            {/* <Button
               id="choosePostalcode"
               type="button"
               variant="light"
               onClick={() => navigate("/map")}
-            ></Button>
+            ></Button> */}
           </Form.Group>
           <Form.Group className="mb-3" controlId="deliveryMsg">
             <Form.Label>배송메세지</Form.Label>

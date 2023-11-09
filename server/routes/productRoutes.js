@@ -3,11 +3,11 @@ const Product = require("../models/productModel.js");
 const expressAsyncHandler = require("express-async-handler");
 const productRouter = express.Router();
 const { isAuth, isAdmin } = require("../utils.js");
-const cors = require("cors");
 
-productRouter.use(cors());
-productRouter.get("/", cors(), async (req, res) => {
+productRouter.get("/", async (req, res) => {
   const products = await Product.find();
+  //cache delete
+  res.setHeader("Cache-Control", "no-cache public, max-age=3600");
   res.send(products);
 });
 productRouter.post(

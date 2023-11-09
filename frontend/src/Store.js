@@ -77,10 +77,12 @@ function reducer(state, action) {
     case "CART_REMOVE_ITEM": {
       const {
         _id,
-        color: { colorId },
-      } = action.payload; // Destructure _id and color._id from the item
+        color: {
+          selectColor: { _id: colorId },
+        },
+      } = action.payload;
       const updatedCartItems = state.cart.cartItems.filter(
-        (item) => item._id !== _id || item.color._id !== colorId
+        (item) => item._id !== _id || item.color.selectColor._id !== colorId
       );
       localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
       return { ...state, cart: { ...state.cart, cartItems: updatedCartItems } };

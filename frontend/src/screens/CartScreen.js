@@ -7,6 +7,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Row from "react-bootstrap/Row";
 import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { Store } from "../Store";
 import MessageBox from "../components/MessageBox.js";
 export default function CartScreen() {
@@ -49,6 +50,10 @@ export default function CartScreen() {
   //   });
   // };
   const updateCartHandler = (item, quantity) => {
+    if (item.color.selectColor.count < quantity) {
+      toast.error("재고가 없습니다");
+      return;
+    }
     const updatedCartItems = [...cartItems];
     const existColor = updatedCartItems.find(
       (e) =>
@@ -73,10 +78,7 @@ export default function CartScreen() {
   const removeItemHandler = (item) => {
     ctxDispatch({
       type: "CART_REMOVE_ITEM",
-      payload: {
-        _id: item._id,
-        color: { colorId: item.color._id },
-      },
+      payload: item,
     });
   };
 

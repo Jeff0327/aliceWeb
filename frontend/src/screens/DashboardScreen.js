@@ -4,9 +4,9 @@ import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Chart from "react-google-charts";
+import { Store } from "../Store";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
-import { Store } from "../Store";
 import { getError } from "../utils";
 const reducer = (state, action) => {
   switch (action.type) {

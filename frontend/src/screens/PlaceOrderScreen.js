@@ -142,8 +142,8 @@ export default function PlaceOrderScreen() {
             <Card.Body>
               <Card.Title>상품정보</Card.Title>
               <ListGroup variant="flush">
-                {cart.cartItems.map((item) => (
-                  <ListGroup.Item key={item._id}>
+                {cart.cartItems.map((item, index) => (
+                  <ListGroup.Item key={`${item._id}-${item.color_id}-${index}`}>
                     <Row className="align-items-center">
                       <Col md={6}>
                         <img
