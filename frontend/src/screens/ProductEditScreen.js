@@ -148,7 +148,6 @@ export default function ProductEditScreen() {
       dispatch({ type: "UPLOAD_REQUEST" });
       const { data } = await axios.post("/api/upload", bodyFormData, {
         headers: {
-          "Access-Control-Allow-Headers": "Content-Type",
           "Content-Type": "multipart/form-data",
           "Access-Control-Allow-Origin": "*",
           Authorization: `Bearer ${userInfo.token}`,

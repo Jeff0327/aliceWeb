@@ -20,7 +20,7 @@ uploadRouter.post(
         api_key: process.env.CLOUDINARY_API_KEY,
         api_secret: process.env.CLOUDINARY_API_SECRET,
       });
-      // res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Origin", "*");
       const streamUpload = (req) => {
         return new Promise((resolve, reject) => {
           const stream = cloudinary.uploader.upload_stream((error, result) => {
@@ -33,8 +33,9 @@ uploadRouter.post(
           streamifier.createReadStream(req.file.buffer).pipe(stream);
         });
       };
+      console.log("Before Clound");
       const result = await streamUpload(req);
-
+      console.log("After Clound");
       res.status(200).send(result);
     } catch (err) {
       res.status(500).send({ message: err.message });
