@@ -150,7 +150,8 @@ export default function ProductEditScreen() {
       const { data } = await axios.post("/api/upload", bodyFormData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          authorization: `Bearer ${userInfo.token}`,
+          "Access-Control-Allow-Origin": "*",
+          Authorization: `Bearer ${userInfo.token}`,
         },
       });
       dispatch({ type: "UPLOAD_SUCCESS" });
@@ -173,13 +174,15 @@ export default function ProductEditScreen() {
     const file = e.target.files[0];
     const bodyFormData = new FormData();
     bodyFormData.append("file", file);
+    bodyFormData.append("cloud_name", "ds3rswxmw");
+    bodyFormData.append("upload_preset", "solomon");
     try {
       dispatch({ type: "UPLOAD_REQUEST" });
       const { data } = await axios.post("/api/upload", bodyFormData, {
         headers: {
           "Content-Type": "multipart/form-data",
           "Access-Control-Allow-Origin": "*",
-          authorization: `Bearer ${userInfo.token}`,
+          Authorization: `Bearer ${userInfo.token}`,
         },
       });
       dispatch({ type: "UPLOAD_SUCCESS" });
