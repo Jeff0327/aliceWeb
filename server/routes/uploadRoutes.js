@@ -21,16 +21,13 @@ uploadRouter.post(
     try {
       const streamUpload = (req) => {
         return new Promise((resolve, reject) => {
-          const stream = cloudinary.uploader.upload_stream(
-            { width: 640, height: 640, crop: "fill" },
-            (error, result) => {
-              if (result) {
-                resolve(result);
-              } else {
-                reject(error);
-              }
+          const stream = cloudinary.uploader.upload_stream((error, result) => {
+            if (result) {
+              resolve(result);
+            } else {
+              reject(error);
             }
-          );
+          });
           streamifier.createReadStream(req.file.buffer).pipe(stream);
         });
       };

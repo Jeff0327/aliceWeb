@@ -23,7 +23,6 @@ app.use(
   cors({
     origin: ["http://localhost:3000", "https://rosemarry.kr"],
     methods: ["PUT", "POST", "DELETE", "GET", "OPTIONS"],
-    allowedHeaders: ["origin", "x-requested-with", "content-type"],
   })
 );
 app.use(express.json());
