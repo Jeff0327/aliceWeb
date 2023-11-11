@@ -25,6 +25,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
   console.log("Request received from: " + req.headers.origin);
   res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+
   next();
 });
 // app.use((req, res, next) => {

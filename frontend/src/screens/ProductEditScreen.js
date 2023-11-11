@@ -143,6 +143,7 @@ export default function ProductEditScreen() {
     const file = e.target.files[0];
     const bodyFormData = new FormData();
     bodyFormData.append("file", file);
+    bodyFormData.append("upload_preset", "solomon");
 
     try {
       dispatch({ type: "UPLOAD_REQUEST" });
@@ -153,6 +154,7 @@ export default function ProductEditScreen() {
           Authorization: `Bearer ${userInfo.token}`,
         },
       });
+
       dispatch({ type: "UPLOAD_SUCCESS" });
 
       if (forImages) {
@@ -173,6 +175,7 @@ export default function ProductEditScreen() {
     const file = e.target.files[0];
     const bodyFormData = new FormData();
     bodyFormData.append("file", file);
+    bodyFormData.append("upload_preset", "solomon");
 
     try {
       dispatch({ type: "UPLOAD_REQUEST" });
@@ -183,6 +186,7 @@ export default function ProductEditScreen() {
           Authorization: `Bearer ${userInfo.token}`,
         },
       });
+
       dispatch({ type: "UPLOAD_SUCCESS" });
 
       if (forDetailImages) {
