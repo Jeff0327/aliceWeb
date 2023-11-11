@@ -34,7 +34,7 @@ uploadRouter.post(
       const result = await streamUpload(req);
       res.status(200).send(result);
     } catch (err) {
-      res.status(500).send({ message: "internal server Error!!", err });
+      res.status(500).send({ message: "internal server Error!!", error: err });
     }
   }
 );
