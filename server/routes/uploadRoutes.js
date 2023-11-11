@@ -13,29 +13,41 @@ uploadRouter.post(
   isAdmin,
   upload.single("file"),
   async (req, res) => {
-    cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET,
-    });
     try {
+      // Check if a file was provided in the request
+      if (!req.file) {
+        return res.status(400).json({ message: "No file provided" });
+      }
+
+      cloudinary.config({
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET,
+      });
+
       const streamUpload = (req) => {
         return new Promise((resolve, reject) => {
           const stream = cloudinary.uploader.upload_stream((error, result) => {
             if (result) {
               resolve(result);
             } else {
+              console.error("Cloudinary upload error:", error);
               reject(error);
             }
           });
           streamifier.createReadStream(req.file.buffer).pipe(stream);
         });
       };
+
       const result = await streamUpload(req);
-      res.status(200).send(result);
-    } catch (err) {
-      res.status(500).send({ message: "internal server Error!!", err });
+
+      // Respond with the Cloudinary result
+      res.status(200).json(result);
+    } catch (error) {
+      console.error("Promise rejection error:", error);
+      throw error;
     }
   }
 );
+
 module.exports = uploadRouter;
