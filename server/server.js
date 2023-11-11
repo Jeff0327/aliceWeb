@@ -19,7 +19,12 @@ mongoose
   });
 const app = express();
 
-app.use(cors({ origin: ["http://localhost:3000", "https://rosemarry.kr"] }));
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://rosemarry.kr"],
+    methods: ["PUT", "POST", "DELETE", "GET", "OPTIONS"],
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
