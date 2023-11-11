@@ -21,15 +21,15 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://rosemarry.kr"],
-    methods: ["PUT", "POST", "DELETE", "GET", "OPTIONS"],
+    origin: "*",
+    methods: "*",
   })
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Methods", "*");
 
   next();
 });
