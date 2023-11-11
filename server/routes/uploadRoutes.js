@@ -25,13 +25,18 @@ uploadRouter.post(
     try {
       const streamUpload = (req) => {
         return new Promise((resolve, reject) => {
-          const stream = cloudinary.uploader.upload_stream((error, result) => {
-            if (result) {
-              resolve(result);
-            } else {
-              reject(error);
+          const stream = cloudinary.uploader.upload_stream(
+            { width: 640, height: 640, crop: "fill" },
+            (error, result) => {
+              if (result) {
+                resolve(result);
+              } else {
+                console.error("Cloudinary error:", error);
+                reject(error);
+              }
             }
-          });
+          );
+          console.log("req.file:", req.file);
           streamifier.createReadStream(req.file.buffer).pipe(stream);
         });
       };
@@ -41,8 +46,7 @@ uploadRouter.post(
       const result = await streamUpload(req);
       res.status(200).send(result);
     } catch (err) {
-      console.error(err);
-      res.status(500).send({ message: "internal server Error" });
+      res.status(500).send({ message: "internal server Error!!", err });
     }
   }
 );
