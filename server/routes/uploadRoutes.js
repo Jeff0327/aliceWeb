@@ -3,14 +3,13 @@ const multer = require("multer");
 const { v2: cloudinary } = require("cloudinary");
 const streamifier = require("streamifier");
 const { isAdmin, isAuth } = require("../utils.js");
-const { readdirSync } = require("fs");
 
+const storage = multer.memoryStorage();
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 1024 * 1024 * 5 }, // 5 MB limit, adjust as needed
+  limits: { fileSize: 1024 * 1024 * 5 },
 });
 const uploadRouter = express.Router();
-const storage = multer.memoryStorage(); // Use memory storage for stream
 
 uploadRouter.post(
   "/",
