@@ -3,12 +3,13 @@ import { useContext, useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
+import { GoogleLogin } from "react-google-login";
 import { Helmet } from "react-helmet-async";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Store } from "../Store";
+// import KakaoLoginButton from "../components/KakaoLoginButton";
 import { getError } from "../utils";
-// import { GoogleLogin } from "react-google-login";
 export default function SigninScreen() {
   const navigate = useNavigate();
   const { search } = useLocation();
@@ -100,9 +101,9 @@ export default function SigninScreen() {
   //     },
   //   });
   // };
-  // const responseGoogle = (response) => {
-  //   console.log(response);
-  // };
+  const responseGoogle = (response) => {
+    console.log(response);
+  };
 
   return (
     <Container className="container">
@@ -153,14 +154,15 @@ export default function SigninScreen() {
           </div>
         </Form> */}
 
-        {/* <Form>
+        <div>
           <GoogleLogin
-            clientId="258796595331-jcpcgb5jthi75dns0lrudp4bfus8obmr.apps.googleusercontent.com"
+            clientId="258796595331-i3a9759p2fjajsg80gr3fsuavbdko1ld.apps.googleusercontent.com"
             buttonText="Google 로그인"
             onSuccess={responseGoogle}
             onFailure={responseGoogle}
+            cookiePolicy={"single_host_origin"}
           />
-        </Form> */}
+        </div>
       </Form>
     </Container>
   );
