@@ -4,11 +4,7 @@ const { v2: cloudinary } = require("cloudinary");
 const streamifier = require("streamifier");
 const { isAdmin, isAuth } = require("../utils.js");
 
-const storage = multer.memoryStorage();
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 1024 * 1024 * 5 },
-});
+const upload = multer();
 const uploadRouter = express.Router();
 
 uploadRouter.post(
@@ -31,18 +27,13 @@ uploadRouter.post(
               if (result) {
                 resolve(result);
               } else {
-                console.error("Cloudinary error:", error);
                 reject(error);
               }
             }
           );
-          console.log("req.file:", req.file);
           streamifier.createReadStream(req.file.buffer).pipe(stream);
         });
       };
-      if (!req.file || req.file.size > 1024 * 1024 * 5) {
-        return res.status(400).json({ message: "File size limit exceeded" });
-      }
       const result = await streamUpload(req);
       res.status(200).send(result);
     } catch (err) {
