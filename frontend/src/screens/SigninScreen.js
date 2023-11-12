@@ -153,17 +153,16 @@ export default function SigninScreen() {
             />
           </div>
         </Form> */}
-        <Form>
-          <div>
-            <GoogleLogin
-              clientId="258796595331-i3a9759p2fjajsg80gr3fsuavbdko1ld.apps.googleusercontent.com"
-              buttonText="Google 로그인"
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              cookiePolicy={"single_host_origin"}
-            />
-          </div>
-        </Form>
+
+        <Form.Group className="mb-3" controlId="GoogleForm">
+          <GoogleLogin
+            clientId="258796595331-i3a9759p2fjajsg80gr3fsuavbdko1ld.apps.googleusercontent.com"
+            buttonText="Google 로그인"
+            onSuccess={responseGoogle}
+            onFailure={responseGoogle}
+            cookiePolicy={"single_host_origin"}
+          />
+        </Form.Group>
       </Form>
     </Container>
   );
