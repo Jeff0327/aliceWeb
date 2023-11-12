@@ -41,11 +41,11 @@ export default function SigninScreen() {
       navigate(redirect);
     }
   }, [navigate, redirect, userInfo]);
-  // useEffect(() => {
-  //   if (!window.Kakao.isInitialized()) {
-  //     window.Kakao.init(`${process.env.KAKAO_JAVASCRIPT_KEY}`);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init(`${process.env.KAKAO_JAVASCRIPT_KEY}`);
+    }
+  }, []);
 
   // useEffect(() => {
   //   const loadKakaoAPI = async () => {
@@ -106,7 +106,7 @@ export default function SigninScreen() {
   };
 
   return (
-    <Container className="container">
+    <Container className="small-container">
       <Helmet>
         <title>Sign In</title>
       </Helmet>
@@ -153,16 +153,17 @@ export default function SigninScreen() {
             />
           </div>
         </Form> */}
-
-        <div>
-          <GoogleLogin
-            clientId="258796595331-i3a9759p2fjajsg80gr3fsuavbdko1ld.apps.googleusercontent.com"
-            buttonText="Google 로그인"
-            onSuccess={responseGoogle}
-            onFailure={responseGoogle}
-            cookiePolicy={"single_host_origin"}
-          />
-        </div>
+        <Form>
+          <div>
+            <GoogleLogin
+              clientId="258796595331-i3a9759p2fjajsg80gr3fsuavbdko1ld.apps.googleusercontent.com"
+              buttonText="Google 로그인"
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+              cookiePolicy={"single_host_origin"}
+            />
+          </div>
+        </Form>
       </Form>
     </Container>
   );

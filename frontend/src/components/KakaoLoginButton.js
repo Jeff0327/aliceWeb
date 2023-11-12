@@ -18,7 +18,7 @@ const KakaoLoginButton = ({ onLoginSuccess, onLoginFailure }) => {
 
   return (
     <KakaoLogin
-      jsKey="YOUR_KAKAO_SDK_KEY"
+      jsKey="6ab943e0d2ab9971181a9bde00bba505"
       onSuccess={handleSuccess}
       onFail={handleFailure}
       getProfile={true} // Retrieve user profile information
