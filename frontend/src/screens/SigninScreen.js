@@ -41,11 +41,11 @@ export default function SigninScreen() {
       navigate(redirect);
     }
   }, [navigate, redirect, userInfo]);
-  useEffect(() => {
-    if (!window.Kakao.isInitialized()) {
-      window.Kakao.init(`${process.env.KAKAO_JAVASCRIPT_KEY}`);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!window.Kakao.isInitialized()) {
+  //     window.Kakao.init(`${process.env.KAKAO_JAVASCRIPT_KEY}`);
+  //   }
+  // }, []);
 
   // useEffect(() => {
   //   const loadKakaoAPI = async () => {
