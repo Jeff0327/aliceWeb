@@ -413,3 +413,15 @@ button.thumbnail {
   font-size:13px;
   text-decoration: underline;
 }
+/*service*/
+pre{
+  font-size:14px;
+  color:#303030;
+  white-space: pre-wrap;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+hr{
+  color:white;
+}
