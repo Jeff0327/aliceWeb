@@ -102,7 +102,7 @@ export default function SigninScreen() {
   //   });
   // };
   const responseGoogle = (response) => {
-    console.log(response);
+    console.log("response:", response);
   };
 
   return (

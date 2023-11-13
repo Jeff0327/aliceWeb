@@ -3,8 +3,8 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
-import CheckoutSteps from "../components/CheckoutSteps";
 import { Store } from "../Store";
+import CheckoutSteps from "../components/CheckoutSteps";
 
 export default function PaymentMethodScreen() {
   const navigate = useNavigate();
@@ -50,20 +50,20 @@ export default function PaymentMethodScreen() {
           <div className="mb-3">
             <Form.Check
               type="radio"
-              id="Stripe"
-              label="Stripe"
-              value="Stripe"
-              checked={paymentMethodName === "Stripe"}
+              id="KakaoPay"
+              label="KakaoPay"
+              value="KakaoPay"
+              checked={paymentMethodName === "KakaoPay"}
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
           </div>
           <div className="mb-3">
             <Form.Check
               type="radio"
-              id="Naver Pay"
+              id="NaverPay"
               label="네이버페이"
               value="Naver Pay"
-              checked={paymentMethodName === "Naver Pay"}
+              checked={paymentMethodName === "NaverPay"}
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
           </div>
