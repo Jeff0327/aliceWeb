@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const mg = require("mailgun-js");
-
 const baseUrl = () =>
   process.env.BASE_URL
     ? process.env.BASE_URL

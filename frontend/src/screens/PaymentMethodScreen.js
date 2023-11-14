@@ -62,7 +62,7 @@ export default function PaymentMethodScreen() {
               type="radio"
               id="NaverPay"
               label="네이버페이"
-              value="Naver Pay"
+              value="NaverPay"
               checked={paymentMethodName === "NaverPay"}
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
