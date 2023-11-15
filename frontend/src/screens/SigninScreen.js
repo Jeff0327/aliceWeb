@@ -8,7 +8,7 @@ import { Helmet } from "react-helmet-async";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Store } from "../Store";
-import KakaoLoginButton from "../components/KakaoLoginButton";
+// import KakaoLoginButton from "../components/KakaoLoginButton";
 import { getError } from "../utils";
 export default function SigninScreen() {
   const navigate = useNavigate();
@@ -41,66 +41,66 @@ export default function SigninScreen() {
       navigate(redirect);
     }
   }, [navigate, redirect, userInfo]);
-  useEffect(() => {
-    if (!window.Kakao.isInitialized()) {
-      window.Kakao.init(`${process.env.KAKAO_JAVASCRIPT_KEY}`);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!window.Kakao.isInitialized()) {
+  //     window.Kakao.init(`${process.env.KAKAO_JAVASCRIPT_KEY}`);
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    const loadKakaoAPI = async () => {
-      try {
-        await window.Kakao.Auth.login({
-          success: async (authObj) => {
-            const accessToken = authObj.access_token; // Use access_token from authObj
-            console.log(accessToken);
-            const response = await fetch("https://kapi.kakao.com/v2/user/me", {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-            });
+  // useEffect(() => {
+  //   const loadKakaoAPI = async () => {
+  //     try {
+  //       await window.Kakao.Auth.login({
+  //         success: async (authObj) => {
+  //           const accessToken = authObj.access_token; // Use access_token from authObj
+  //           console.log(accessToken);
+  //           const response = await fetch("https://kapi.kakao.com/v2/user/me", {
+  //             method: "GET",
+  //             headers: {
+  //               Authorization: `Bearer ${accessToken}`,
+  //             },
+  //           });
 
-            if (response.ok) {
-              const userData = await response.json();
-              console.log("Kakao User Data:", userData);
-            } else {
-              console.error("Failed to fetch user data from Kakao API");
-            }
-          },
-          fail: (error) => {
-            console.error("Kakao login failed:", error);
-          },
-        });
-      } catch (error) {
-        console.error("An error occurred during Kakao login:", error);
-      }
-    };
-    loadKakaoAPI();
-  }, []);
-  const handleLoginSuccess = (response) => {
-    console.log("success msg");
-  };
+  //           if (response.ok) {
+  //             const userData = await response.json();
+  //             console.log("Kakao User Data:", userData);
+  //           } else {
+  //             console.error("Failed to fetch user data from Kakao API");
+  //           }
+  //         },
+  //         fail: (error) => {
+  //           console.error("Kakao login failed:", error);
+  //         },
+  //       });
+  //     } catch (error) {
+  //       console.error("An error occurred during Kakao login:", error);
+  //     }
+  //   };
+  //   loadKakaoAPI();
+  // }, []);
+  // const handleLoginSuccess = (response) => {
+  //   console.log("success msg");
+  // };
 
-  const handleLoginFailure = (error) => {
-    console.log("error");
-  };
+  // const handleLoginFailure = (error) => {
+  //   console.log("error");
+  // };
 
-  const handleKakaoLogin = () => {
-    if (!window.Kakao.isInitialized()) {
-      console.error("Kakao SDK is not initialized");
-      return;
-    }
+  // const handleKakaoLogin = () => {
+  //   if (!window.Kakao.isInitialized()) {
+  //     console.error("Kakao SDK is not initialized");
+  //     return;
+  //   }
 
-    window.Kakao.Auth.login({
-      success: function (authObj) {
-        console.log("Kakao login success:", authObj);
-      },
-      fail: function (err) {
-        console.log("Kakao login failed:", err);
-      },
-    });
-  };
+  //   window.Kakao.Auth.login({
+  //     success: function (authObj) {
+  //       console.log("Kakao login success:", authObj);
+  //     },
+  //     fail: function (err) {
+  //       console.log("Kakao login failed:", err);
+  //     },
+  //   });
+  // };
   const responseGoogle = (response) => {
     console.log("response:", response);
   };
@@ -144,7 +144,7 @@ export default function SigninScreen() {
           비밀번호를 잊어버렸나요?{" "}
           <Link to={`/forget-password`}>비밀번호 찾기</Link>
         </div>
-        <Form onSubmit={submitHandler}>
+        {/* <Form onSubmit={submitHandler}>
           <div className="mb-3">
             <KakaoLoginButton
               onLoginSuccess={handleLoginSuccess}
@@ -152,7 +152,7 @@ export default function SigninScreen() {
               onClick={() => handleKakaoLogin}
             />
           </div>
-        </Form>
+        </Form> */}
 
         <Form.Group className="mb-3" controlId="GoogleForm">
           <GoogleLogin
