@@ -1,9 +1,9 @@
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import Axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
-import { GoogleLogin } from "react-google-login";
 import { Helmet } from "react-helmet-async";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -101,9 +101,6 @@ export default function SigninScreen() {
   //     },
   //   });
   // };
-  const responseGoogle = (response) => {
-    console.log("response:", response);
-  };
 
   return (
     <Container className="small-container">
@@ -155,13 +152,29 @@ export default function SigninScreen() {
         </Form> */}
 
         <Form.Group className="mb-3" controlId="GoogleForm">
-          <GoogleLogin
-            clientId="258796595331-i3a9759p2fjajsg80gr3fsuavbdko1ld.apps.googleusercontent.com"
+          {/* <GoogleLogin
+            clientId={`${process.env.GOOGLE_CLIENT_ID}`}
             buttonText="Google 로그인"
-            onSuccess={responseGoogle}
-            onFailure={responseGoogle}
+            onSuccess={(res) => {
+              console.log(res);
+            }}
+            onFailure={(err) => {
+              console.log(err);
+            }}
             cookiePolicy={"single_host_origin"}
-          />
+          /> */}
+          <GoogleOAuthProvider clientId={`${process.env.GOOGLE_CLIENT_ID}`}>
+            <GoogleLogin
+              buttonText="Google 로그인"
+              onSuccess={(res) => {
+                console.log(res);
+              }}
+              onFailure={(err) => {
+                console.log(err);
+              }}
+              cookiePolicy={"single_host_origin"}
+            />
+          </GoogleOAuthProvider>
         </Form.Group>
       </Form>
     </Container>
