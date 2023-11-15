@@ -115,16 +115,9 @@ function App() {
     <BrowserRouter>
       {showLoading && !loading ? (
         <div
-          className="fade-out"
+          className="loading-screen fade-out"
           style={{
-            height: "100vh",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
             backgroundImage: `url(${process.env.PUBLIC_URL}/images/backgroundImg.jpg)`,
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
           }}
         ></div>
       ) : (
