@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import Badge from "react-bootstrap/Badge";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -35,7 +35,28 @@ import SignupScreen from "./screens/SignupScreen";
 import UserEditScreen from "./screens/UserEditScreen";
 import UserListScreen from "./screens/UserListScreen";
 import { getError } from "./utils";
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "FETCH_REQUEST":
+      return { ...state, loading: true };
+    case "FETCH_SUCCESS":
+      return {
+        ...state,
+        payload: action.payload,
+        loading: false,
+      };
+    case "FETCH_FAIL":
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
 function App() {
+  const [{ loading }, dispatch] = useReducer(reducer, {
+    loading: true,
+    error: "",
+  });
   const { state, dispatch: ctxDispatch } = useContext(Store);
 
   const { cart, userInfo } = state;
@@ -49,15 +70,23 @@ function App() {
   };
 
   const [categories, setCategories] = useState([]);
-
+  const [showLoading, setShowLoading] = useState(true);
   useEffect(() => {
     const fetchCategories = async () => {
       try {
+        dispatch({ type: "FETCH_REQUEST" });
         const { data } = await axios.get(`/api/products/categories`);
         const reorderedCategories = findEventValue([...data]);
         setCategories(reorderedCategories);
+        dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
+        dispatch({ type: "FETCH_FAIL", payload: getError(err) });
         toast.error(getError(err));
+      } finally {
+        // Hide loading screen after 3 seconds
+        setTimeout(() => {
+          setShowLoading(false);
+        }, 3500);
       }
     };
     fetchCategories();
@@ -81,258 +110,280 @@ function App() {
     }
     return arr;
   };
+
   return (
     <BrowserRouter>
-      <div>
-        <ToastContainer position="bottom-center" limit={1} />
-        <header>
-          <Navbar bg="white" expand="lg">
-            <Container>
-              <LinkContainer to="/">
-                <Navbar.Brand className="title-name">RoseMarry</Navbar.Brand>
-              </LinkContainer>
-              <Navbar.Toggle aria-controls="basic-navbar-nav" />
-              {/*오른쪽 사이드버튼 */}
+      {showLoading && !loading ? (
+        <div
+          className="fade-out"
+          style={{
+            height: "100vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundImage: `url(${process.env.PUBLIC_URL}/images/backgroundImg.jpg)`,
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+          }}
+        ></div>
+      ) : (
+        <div>
+          <ToastContainer position="bottom-center" limit={1} />
+          <header>
+            {/* {loading ? "asd" : "dfg"} */}
+            <Navbar bg="white" expand="lg">
+              <Container>
+                <LinkContainer to="/">
+                  <Navbar.Brand className="title-name">RoseMarry</Navbar.Brand>
+                </LinkContainer>
+                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                {/*오른쪽 사이드버튼 */}
+                <Navbar.Collapse id="basic-navbar-nav">
+                  <SearchBox />
+                  <Nav className="me-auto  w-100  justify-content-end">
+                    <Link to="/cart" className="nav-link">
+                      <img
+                        src={`${process.env.PUBLIC_URL}/images/cartImg.png`}
+                        className="Aligning images"
+                        style={{
+                          width: 30,
+                          height: 30,
+                          alignSelf: "center",
+                        }}
+                        alt="cart"
+                      />
 
-              <Navbar.Collapse id="basic-navbar-nav">
-                <SearchBox />
-                <Nav className="me-auto  w-100  justify-content-end">
-                  <Link to="/cart" className="nav-link">
-                    <img
-                      src={`${process.env.PUBLIC_URL}/images/cartImg.png`}
-                      className="Aligning images"
-                      style={{
-                        width: 30,
-                        height: 30,
-                        alignSelf: "center",
-                      }}
-                      alt="cart"
-                    />
-
-                    {cart.cartItems.length > 0 && (
-                      <Badge pill bg="danger">
-                        {cart.cartItems.reduce(
-                          (a, c) => a + c.color.selectColor.quantity,
-                          0
-                        )}
-                      </Badge>
-                    )}
-                  </Link>
-                  <Link to="/service" className="nav-link">
-                    도움말
-                  </Link>
-                  {userInfo ? (
-                    <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
-                      <LinkContainer to="/profile">
-                        <NavDropdown.Item>프로필</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/orderhistory">
-                        <NavDropdown.Item>주문내역</NavDropdown.Item>
-                      </LinkContainer>
-                      <NavDropdown.Divider />
-                      <Link
-                        className="dropdown-item"
-                        to="#signout"
-                        onClick={signoutHandler}
-                      >
-                        로그아웃
-                      </Link>
-                    </NavDropdown>
-                  ) : (
-                    <Link className="nav-link" to="/signin">
-                      로그인
+                      {cart.cartItems.length > 0 && (
+                        <Badge pill bg="danger">
+                          {cart.cartItems.reduce(
+                            (a, c) => a + c.color.selectColor.quantity,
+                            0
+                          )}
+                        </Badge>
+                      )}
                     </Link>
-                  )}
-                  {userInfo && userInfo.isAdmin && (
-                    <NavDropdown title="Admin" id="admin-nav-dropdown">
-                      <LinkContainer to="/admin/dashboard">
-                        <NavDropdown.Item>통계</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/products">
-                        <NavDropdown.Item>상품목록</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/orders">
-                        <NavDropdown.Item>주문목록</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/users">
-                        <NavDropdown.Item>유저목록</NavDropdown.Item>
-                      </LinkContainer>
-                    </NavDropdown>
-                  )}
-                </Nav>
-              </Navbar.Collapse>
-            </Container>
-          </Navbar>
-        </header>
+                    <Link to="/service" className="nav-link">
+                      도움말
+                    </Link>
+                    {userInfo ? (
+                      <NavDropdown
+                        title={userInfo.name}
+                        id="basic-nav-dropdown"
+                      >
+                        <LinkContainer to="/profile">
+                          <NavDropdown.Item>프로필</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/orderhistory">
+                          <NavDropdown.Item>주문내역</NavDropdown.Item>
+                        </LinkContainer>
+                        <NavDropdown.Divider />
+                        <Link
+                          className="dropdown-item"
+                          to="#signout"
+                          onClick={signoutHandler}
+                        >
+                          로그아웃
+                        </Link>
+                      </NavDropdown>
+                    ) : (
+                      <Link className="nav-link" to="/signin">
+                        로그인
+                      </Link>
+                    )}
+                    {userInfo && userInfo.isAdmin && (
+                      <NavDropdown title="Admin" id="admin-nav-dropdown">
+                        <LinkContainer to="/admin/dashboard">
+                          <NavDropdown.Item>통계</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/admin/products">
+                          <NavDropdown.Item>상품목록</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/admin/orders">
+                          <NavDropdown.Item>주문목록</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/admin/users">
+                          <NavDropdown.Item>유저목록</NavDropdown.Item>
+                        </LinkContainer>
+                      </NavDropdown>
+                    )}
+                  </Nav>
+                </Navbar.Collapse>
+              </Container>
+            </Navbar>
+          </header>
+          <div className="mainImage">
+            {categories.map((category) => (
+              <Nav.Item key={category} className="categoryItem">
+                <LinkContainer
+                  to={{
+                    pathname: "/search",
+                    search: `category=${category}`,
+                  }}
+                >
+                  <Nav.Link className="font-size-10">{category}</Nav.Link>
+                </LinkContainer>
+              </Nav.Item>
+            ))}
+          </div>
+          <main>
+            <Container className="mt-3">
+              <Routes>
+                <Route path="/product/:slug" element={<ProductScreen />} />
+                <Route path="/cart" element={<CartScreen />} />
+                <Route path="/service" element={<ServiceScreen />} />
+                <Route path="/search" element={<SearchScreen />} />
+                <Route path="/signin" element={<SigninScreen />} />
+                <Route path="/signup" element={<SignupScreen />} />
 
-        <div className="mainImage">
-          {categories.map((category) => (
-            <Nav.Item key={category} className="categoryItem">
-              <LinkContainer
-                to={{
-                  pathname: "/search",
-                  search: `category=${category}`,
+                <Route
+                  path="/forget-password"
+                  element={<ForgetPasswordScreen />}
+                />
+                <Route
+                  path="/reset-password/:token"
+                  element={<ResetPasswordScreen />}
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <ProtectedRoute>
+                      <ProfileScreen />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="/placeorder" element={<PlaceOrderScreen />} />
+                <Route
+                  path="/order/:id"
+                  element={
+                    <ProtectedRoute>
+                      <OrderScreen />
+                    </ProtectedRoute>
+                  }
+                ></Route>
+                <Route
+                  path="/orderhistory"
+                  element={
+                    <ProtectedRoute>
+                      <OrderHistoryScreen />
+                    </ProtectedRoute>
+                  }
+                ></Route>
+                <Route
+                  path="/shipping"
+                  element={<ShippingAddressScreen />}
+                ></Route>
+                <Route
+                  path="/payment"
+                  element={<PaymentMethodScreen />}
+                ></Route>
+                {/*Admin Routed*/}
+                <Route
+                  path="/admin/dashboard"
+                  element={
+                    <AdminRoute>
+                      <DashboardScreen />
+                    </AdminRoute>
+                  }
+                ></Route>
+                <Route
+                  path="/admin/products"
+                  element={
+                    <AdminRoute>
+                      <ProductListScreen />
+                    </AdminRoute>
+                  }
+                ></Route>
+                <Route
+                  path="/admin/product/:id"
+                  element={
+                    <AdminRoute>
+                      <ProductEditScreen />
+                    </AdminRoute>
+                  }
+                ></Route>
+                <Route
+                  path="/admin/orders"
+                  element={
+                    <AdminRoute>
+                      <OrderListScreen />
+                    </AdminRoute>
+                  }
+                ></Route>
+                <Route
+                  path="/admin/users"
+                  element={
+                    <AdminRoute>
+                      <UserListScreen />
+                    </AdminRoute>
+                  }
+                ></Route>
+
+                <Route
+                  path="/admin/user/:id"
+                  element={
+                    <AdminRoute>
+                      <UserEditScreen />
+                    </AdminRoute>
+                  }
+                ></Route>
+                <Route path="/" element={<HomeScreen />} />
+              </Routes>
+            </Container>
+          </main>
+          <footer>
+            <div className="footer-contents">
+              상호: 로즈메리 | 대표자: 김지섭 | 주소: 군산시 오식도동 806-3
+              한성필하우스 107/1304 | 연락처: 010-3055-4972 | E-mail:
+              rosemarry0719@gmail.com | 사업자 등록번호: 531-20-02039 |
+              통신판매업신고 : 2023-전북군산-0484
+              <br />
+              <a
+                href="http://www.ftc.go.kr/bizCommPop.do?wrkr_no=5312002039"
+                target="_blank"
+                className="footerTextLink"
+                title="사업자정보확인"
+                rel="noreferrer"
+              >
+                (사업자정보확인)|
+              </a>
+              <Link to="/service#privacy" className="footerTextLink">
+                개인정보처리방침|
+              </Link>
+              <a href="/service#terms" className="footerTextLink">
+                이용약관
+              </a>
+            </div>
+            <div className="markContainer">
+              <form name="KB_AUTHMARK_FORM" method="get">
+                <input type="hidden" name="page" value="C021590" />
+                <input type="hidden" name="cc" value="b034066:b035526" />
+                <input
+                  type="hidden"
+                  name="mHValue"
+                  value="6ba1766548b9295ff6787f2f38752382"
+                />
+              </form>
+              <button
+                onClick={onPopKBAuthMark}
+                style={{
+                  border: "none",
+                  background: "none",
+                  padding: 0,
+                  cursor: "pointer",
                 }}
               >
-                <Nav.Link className="font-size-10">{category}</Nav.Link>
-              </LinkContainer>
-            </Nav.Item>
-          ))}
+                <img
+                  style={{ width: "50px", height: "50px" }}
+                  src="https://img1.kbstar.com/img/escrow/escrowcmark.gif"
+                  border="0"
+                  alt="KB Auth Mark"
+                />
+              </button>
+            </div>
+          </footer>
         </div>
-        <main>
-          <Container className="mt-3">
-            <Routes>
-              <Route path="/product/:slug" element={<ProductScreen />} />
-              <Route path="/cart" element={<CartScreen />} />
-              <Route path="/service" element={<ServiceScreen />} />
-              <Route path="/search" element={<SearchScreen />} />
-              <Route path="/signin" element={<SigninScreen />} />
-              <Route path="/signup" element={<SignupScreen />} />
-
-              <Route
-                path="/forget-password"
-                element={<ForgetPasswordScreen />}
-              />
-              <Route
-                path="/reset-password/:token"
-                element={<ResetPasswordScreen />}
-              />
-              <Route
-                path="/profile"
-                element={
-                  <ProtectedRoute>
-                    <ProfileScreen />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path="/placeorder" element={<PlaceOrderScreen />} />
-              <Route
-                path="/order/:id"
-                element={
-                  <ProtectedRoute>
-                    <OrderScreen />
-                  </ProtectedRoute>
-                }
-              ></Route>
-              <Route
-                path="/orderhistory"
-                element={
-                  <ProtectedRoute>
-                    <OrderHistoryScreen />
-                  </ProtectedRoute>
-                }
-              ></Route>
-              <Route
-                path="/shipping"
-                element={<ShippingAddressScreen />}
-              ></Route>
-              <Route path="/payment" element={<PaymentMethodScreen />}></Route>
-              {/*Admin Routed*/}
-              <Route
-                path="/admin/dashboard"
-                element={
-                  <AdminRoute>
-                    <DashboardScreen />
-                  </AdminRoute>
-                }
-              ></Route>
-              <Route
-                path="/admin/products"
-                element={
-                  <AdminRoute>
-                    <ProductListScreen />
-                  </AdminRoute>
-                }
-              ></Route>
-              <Route
-                path="/admin/product/:id"
-                element={
-                  <AdminRoute>
-                    <ProductEditScreen />
-                  </AdminRoute>
-                }
-              ></Route>
-              <Route
-                path="/admin/orders"
-                element={
-                  <AdminRoute>
-                    <OrderListScreen />
-                  </AdminRoute>
-                }
-              ></Route>
-              <Route
-                path="/admin/users"
-                element={
-                  <AdminRoute>
-                    <UserListScreen />
-                  </AdminRoute>
-                }
-              ></Route>
-
-              <Route
-                path="/admin/user/:id"
-                element={
-                  <AdminRoute>
-                    <UserEditScreen />
-                  </AdminRoute>
-                }
-              ></Route>
-              <Route path="/" element={<HomeScreen />} />
-            </Routes>
-          </Container>
-        </main>
-        <footer>
-          <div className="footer-contents">
-            상호: 로즈메리 | 대표자: 김지섭 | 주소: 군산시 오식도동 806-3
-            한성필하우스 107/1304 | 연락처: 010-3055-4972 | E-mail:
-            rosemarry0719@gmail.com | 사업자 등록번호: 531-20-02039 |
-            통신판매업신고 : 2023-전북군산-0484
-            <br />
-            <a
-              href="http://www.ftc.go.kr/bizCommPop.do?wrkr_no=5312002039"
-              target="_blank"
-              className="footerTextLink"
-              title="사업자정보확인"
-              rel="noreferrer"
-            >
-              (사업자정보확인)|
-            </a>
-            <Link to="/service#privacy" className="footerTextLink">
-              개인정보처리방침|
-            </Link>
-            <a href="/service#terms" className="footerTextLink">
-              이용약관
-            </a>
-          </div>
-          <div className="markContainer">
-            <form name="KB_AUTHMARK_FORM" method="get">
-              <input type="hidden" name="page" value="C021590" />
-              <input type="hidden" name="cc" value="b034066:b035526" />
-              <input
-                type="hidden"
-                name="mHValue"
-                value="6ba1766548b9295ff6787f2f38752382"
-              />
-            </form>
-            <button
-              onClick={onPopKBAuthMark}
-              style={{
-                border: "none",
-                background: "none",
-                padding: 0,
-                cursor: "pointer",
-              }}
-            >
-              <img
-                style={{ width: "50px", height: "50px" }}
-                src="https://img1.kbstar.com/img/escrow/escrowcmark.gif"
-                border="0"
-                alt="KB Auth Mark"
-              />
-            </button>
-          </div>
-        </footer>
-      </div>
+      )}
     </BrowserRouter>
   );
 }
