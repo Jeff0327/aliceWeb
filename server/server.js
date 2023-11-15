@@ -34,7 +34,6 @@ app.use((req, res, next) => {
     "same-origin",
     "same-origin-allow-popups",
   ]);
-  res.header("Cross-Origin-Embedder-Policy", "require-corp");
 
   next();
 });
