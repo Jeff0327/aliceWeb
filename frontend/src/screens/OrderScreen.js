@@ -346,7 +346,11 @@ export default function OrderScreen() {
                               네이버페이 결제
                             </Button>
                           </>
-                        ) : null}
+                        ) : (
+                          <>
+                            <Button>결제하기</Button>
+                          </>
+                        )}
                       </div>
                     )}
                     {loadingPay && <LoadingBox></LoadingBox>}

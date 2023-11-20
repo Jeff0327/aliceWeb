@@ -166,7 +166,16 @@ userRouter.post(
     });
   })
 );
+userRouter.post("/refresh", isAuth, (req, res) => {
+  // 현재 사용자 정보를 기반으로 새로운 토큰 생성
+  const newToken = generateToken(req.user);
 
+  // 새로운 토큰을 클라이언트에게 반환
+  res.send({
+    token: newToken,
+    expiresIn: process.env.JWT_SECRET || "1h", // 선택적: 만료 시간 설정
+  });
+});
 userRouter.put(
   "/profile",
   isAuth,

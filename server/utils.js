@@ -37,7 +37,12 @@ const isAuth = (req, res, next) => {
       }
     });
   } else {
-    res.status(401).send({ message: "인증이 만료되었습니다.[error code:022]" });
+    const newToken = generateToken(req.user);
+    const refreshToken = generateRefreshToken(req.user);
+    res.status(401).send({ message: "hi" });
+    // Send both the new token and the refresh token to the client
+    res.send({ token: newToken, refreshToken, expiresIn: "1h" });
+    // res.status(401).send({ message: "인증이 만료되었습니다.[error code:022]" });
   }
 };
 const isAdmin = (req, res, next) => {

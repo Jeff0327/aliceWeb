@@ -49,6 +49,7 @@ export default function PlaceOrderScreen() {
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
 
   const placeOrderHandler = async () => {
+    console.log(userInfo.token);
     const updatedOrderItems = cart.cartItems.map((item) => ({
       ...item,
       color: [
