@@ -10,8 +10,6 @@ export default function Product(props) {
       <Link to={`/product/${product.slug}`}>
         <div style={{ height: "300px", overflow: "hidden" }}>
           <img
-            http-equiv="Content-Security-Policy"
-            content="img-src 'self' https://img1.kbstar.com"
             src={product.image}
             className="card-img-top"
             alt={product.name}
