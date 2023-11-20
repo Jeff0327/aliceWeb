@@ -1,28 +1,26 @@
+import axios from "axios";
 import React from "react";
 import KakaoLogin from "react-kakao-login";
-
-const KakaoLoginButton = ({ onLoginSuccess, onLoginFailure }) => {
-  const handleSuccess = (response) => {
-    console.log("Kakao login success:", response);
-    if (onLoginSuccess) {
-      onLoginSuccess(response);
-    }
+const KakaoLoginButton = () => {
+  const kakaoOnSuccess = async (e) => {
+    const { data } = await axios.post("/api/kakaosignin", {
+      headers: { Authorization: `Bearer ${process.env.KAKAO_JAVASCRIPT_KEY}` },
+    });
+    const idToken = e.response.access_token;
+    console.log(data);
+    console.log(idToken);
   };
-
-  const handleFailure = (error) => {
-    console.error("Kakao login error:", error);
-    if (onLoginFailure) {
-      onLoginFailure(error);
-    }
+  const kakaoOnFailure = (error) => {
+    console.log(error);
   };
-
   return (
-    <KakaoLogin
-      jsKey="6ab943e0d2ab9971181a9bde00bba505"
-      onSuccess={handleSuccess}
-      onFail={handleFailure}
-      getProfile={true} // Retrieve user profile information
-    />
+    <>
+      <KakaoLogin
+        token={`F7B06E3AC96D23F77CFB`}
+        onSuccess={kakaoOnSuccess}
+        onFail={kakaoOnFailure}
+      />
+    </>
   );
 };
 

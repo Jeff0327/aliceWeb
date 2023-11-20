@@ -34,7 +34,7 @@ app.use((req, res, next) => {
     "same-origin",
     "same-origin-allow-popups",
   ]);
-
+  res.header("Referrer-Policy", "strict-origin-when-cross-origin");
   next();
 });
 // app.use((req, res, next) => {
