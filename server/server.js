@@ -9,7 +9,6 @@ const orderRouter = require("./routes/orderRoutes.js");
 const uploadRouter = require("./routes/uploadRoutes.js");
 const port = process.env.PORT || 3000;
 const cors = require("cors");
-const helmet = require("helmet");
 
 mongoose
   .connect(process.env.MONGODB_URL_ATLAS)
@@ -20,10 +19,6 @@ mongoose
     console.log(err.message);
   });
 const app = express();
-
-app.use(
-  helmet({ referrerPolicy: { policy: "strict-origin-when-cross-origin" } })
-);
 
 app.use(
   cors({
