@@ -21,7 +21,9 @@ mongoose
   });
 const app = express();
 
-app.use(helmet());
+app.use(
+  helmet({ referrerPolicy: { policy: "strict-origin-when-cross-origin" } })
+);
 
 app.use(
   cors({
