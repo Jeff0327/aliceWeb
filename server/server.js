@@ -22,7 +22,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://rosemarry.kr"],
+    origin: ["http://localhost:3000", "https://rosemarry.kr"],
     methods: "*",
     credentials: true,
   })
