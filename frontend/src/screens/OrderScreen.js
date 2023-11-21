@@ -114,30 +114,30 @@ export default function OrderScreen() {
   function onError(err) {
     toast.error(getError(err));
   }
-  useEffect(() => {
-    const loadNaverPayScript = async () => {
-      // Dynamically load the NaverPay script
-      const script = document.createElement("script");
-      script.src =
-        "https://dev.apis.naver.com/cocacola158500@gmail.com/naverpay/payments/v2.2/apply/payment";
-      script.async = true;
-      document.head.appendChild(script);
-      console.log(window.Naver);
-      script.onload = () => {
-        // Once the script is loaded, initialize NaverPay
-        const naverPayInstance = window.Naver.Pay.create({
-          mode: "production", // development or production
-          clientId: "zzGqNBIM5P9dLWFD3ByE",
-        });
-        setOPay(naverPayInstance);
-      };
-    };
+  // useEffect(() => {
+  //   const loadNaverPayScript = async () => {
+  //     // Dynamically load the NaverPay script
+  //     const script = document.createElement("script");
+  //     script.src =
+  //       "https://dev.apis.naver.com/cocacola158500@gmail.com/naverpay/payments/v2.2/apply/payment";
+  //     script.async = true;
+  //     document.head.appendChild(script);
+  //     console.log(window.Naver);
+  //     script.onload = () => {
+  //       // Once the script is loaded, initialize NaverPay
+  //       const naverPayInstance = window.Naver.Pay.create({
+  //         mode: "production", // development or production
+  //         clientId: "zzGqNBIM5P9dLWFD3ByE",
+  //       });
+  //       setOPay(naverPayInstance);
+  //     };
+  //   };
 
-    // Load NaverPay script only if the payment method is NaverPay
-    if (order.paymentMethod === "NaverPay") {
-      loadNaverPayScript();
-    }
-  }, [order.paymentMethod]);
+  //   // Load NaverPay script only if the payment method is NaverPay
+  //   if (order.paymentMethod === "NaverPay") {
+  //     loadNaverPayScript();
+  //   }
+  // }, [order.paymentMethod]);
 
   // const handlePayment = () => {
   //   window.KakaoPay.requestPayment({
@@ -226,19 +226,19 @@ export default function OrderScreen() {
     }
   }
 
-  const naverpayHandler = () => {
-    if (oPay) {
-      oPay.open({
-        merchantUserKey: "D0286BE0-E668-4139-82AD-564433286EE2",
-        merchantPayKey: "가맹점 주문 번호",
-        productName: "상품명을 입력하세요",
-        totalPayAmount: "1000",
-        taxScopeAmount: "1000",
-        taxExScopeAmount: "0",
-        returnUrl: "사용자 결제 완료 후 결제 결과를 받을 URL",
-      });
-    }
-  };
+  // const naverpayHandler = () => {
+  //   if (oPay) {
+  //     oPay.open({
+  //       merchantUserKey: "D0286BE0-E668-4139-82AD-564433286EE2",
+  //       merchantPayKey: "가맹점 주문 번호",
+  //       productName: "상품명을 입력하세요",
+  //       totalPayAmount: "1000",
+  //       taxScopeAmount: "1000",
+  //       taxExScopeAmount: "0",
+  //       returnUrl: "사용자 결제 완료 후 결제 결과를 받을 URL",
+  //     });
+  //   }
+  // };
 
   return loading ? (
     <LoadingBox></LoadingBox>
@@ -360,9 +360,9 @@ export default function OrderScreen() {
                           ></PayPalButtons>
                         ) : order.paymentMethod === "NaverPay" ? (
                           <>
-                            <Button id="naverPayBtn" onClick={naverpayHandler}>
+                            {/* <Button id="naverPayBtn" onClick={naverpayHandler}>
                               네이버페이 결제
-                            </Button>
+                            </Button> */}
                           </>
                         ) : (
                           <>
