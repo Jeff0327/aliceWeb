@@ -1,4 +1,3 @@
-import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import Axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
@@ -8,7 +7,6 @@ import { Helmet } from "react-helmet-async";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Store } from "../Store";
-import KakaoLoginButton from "../components/KakaoLoginButton";
 import { getError } from "../utils";
 export default function SigninScreen() {
   const navigate = useNavigate();
@@ -141,11 +139,11 @@ export default function SigninScreen() {
           비밀번호를 잊어버렸나요?{" "}
           <Link to={`/forget-password`}>비밀번호 찾기</Link>
         </div>
-        <Form.Group className="mb-3">
+        {/* <Form.Group className="mb-3">
           <KakaoLoginButton />
-        </Form.Group>
+        </Form.Group> */}
 
-        <Form.Group className="mb-3" controlId="GoogleForm">
+        {/* <Form.Group className="mb-3" controlId="GoogleForm">
           <GoogleOAuthProvider clientId={`${process.env.GOOGLE_CLIENT_ID}`}>
             <GoogleLogin
               buttonText="Google 로그인"
@@ -158,7 +156,7 @@ export default function SigninScreen() {
               cookiePolicy={"single_host_origin"}
             />
           </GoogleOAuthProvider>
-        </Form.Group>
+        </Form.Group> */}
       </Form>
     </Container>
   );

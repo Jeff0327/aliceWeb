@@ -49,6 +49,15 @@ export default function PlaceOrderScreen() {
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
 
   const placeOrderHandler = async () => {
+    if (!userInfo || !userInfo.token) {
+      // Handle the case where the user is not authenticated
+      // You might want to redirect the user to the login page
+      navigate("/login");
+      return;
+    }
+    if (loading) {
+      return; // Prevent multiple clicks while the request is in progress
+    }
     console.log(userInfo.token);
     const updatedOrderItems = cart.cartItems.map((item) => ({
       ...item,
@@ -60,6 +69,7 @@ export default function PlaceOrderScreen() {
         // Add more color objects if needed
       ],
     }));
+
     try {
       dispatch({ type: "CREATE_REQUEST" });
 
@@ -144,7 +154,9 @@ export default function PlaceOrderScreen() {
               <Card.Title>상품정보</Card.Title>
               <ListGroup variant="flush">
                 {cart.cartItems.map((item, index) => (
-                  <ListGroup.Item key={`${item._id}-${item.color_id}-${index}`}>
+                  <ListGroup.Item
+                    key={`${item._id}-${item.color._id}-${index}`}
+                  >
                     <Row className="align-items-center">
                       <Col md={6}>
                         <img
