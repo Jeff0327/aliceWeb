@@ -118,7 +118,8 @@ export default function OrderScreen() {
     const loadNaverPayScript = async () => {
       // Dynamically load the NaverPay script
       const script = document.createElement("script");
-      script.src = "https://nsp.pay.naver.com/sdk/js/naverpay.min.js";
+      script.src =
+        "https://dev.apis.naver.com/cocacola158500@gmail.com/naverpay/payments/v2.2/apply/payment";
       script.async = true;
       document.head.appendChild(script);
       console.log(window.Naver);
