@@ -138,24 +138,20 @@ export default function OrderScreen() {
     }
   }, [order.paymentMethod]);
 
-  useEffect(() => {
-    window.KakaoPay.init(process.env.KAKAO_JAVASCRIPT_KEY);
-  }, []);
-
-  const handlePayment = () => {
-    window.KakaoPay.requestPayment({
-      partner_order_id: "YOUR_ORDER_ID",
-      partner_user_id: "asd",
-      item_name: order.name,
-      quantity: 1,
-      total_amount: 10000, // Set your total amount
-      vat_amount: 0, // Set your VAT amount
-      tax_free_amount: 0, // Set your tax-free amount
-      approval_url: "rosemarry.kr",
-      fail_url: "YOUR_FAIL_URL",
-      cancel_url: "YOUR_CANCEL_URL",
-    });
-  };
+  // const handlePayment = () => {
+  //   window.KakaoPay.requestPayment({
+  //     partner_order_id: "YOUR_ORDER_ID",
+  //     partner_user_id: "asd",
+  //     item_name: order.name,
+  //     quantity: 1,
+  //     total_amount: 10000, // Set your total amount
+  //     vat_amount: 0, // Set your VAT amount
+  //     tax_free_amount: 0, // Set your tax-free amount
+  //     approval_url: "rosemarry.kr",
+  //     fail_url: "YOUR_FAIL_URL",
+  //     cancel_url: "YOUR_CANCEL_URL",
+  //   });
+  // };
   useEffect(() => {
     const fetchOrder = async () => {
       try {
@@ -369,7 +365,7 @@ export default function OrderScreen() {
                           </>
                         ) : (
                           <>
-                            <Button onClick={handlePayment}>결제하기</Button>
+                            {/* <Button onClick={handlePayment}>결제하기</Button> */}
                           </>
                         )}
                       </div>
