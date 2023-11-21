@@ -22,8 +22,9 @@ const app = express();
 
 app.use(
   cors({
-    origin: "*",
+    origin: ["http://localhost:3000", "http://rosemarry.kr"],
     methods: "*",
+    credentials: true,
   })
 );
 app.use(express.json());

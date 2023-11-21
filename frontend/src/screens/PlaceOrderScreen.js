@@ -58,7 +58,7 @@ export default function PlaceOrderScreen() {
     if (loading) {
       return; // Prevent multiple clicks while the request is in progress
     }
-    console.log(userInfo.token);
+
     const updatedOrderItems = cart.cartItems.map((item) => ({
       ...item,
       color: [
