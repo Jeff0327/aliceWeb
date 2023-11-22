@@ -22,27 +22,19 @@ const app = express();
 
 app.use(
   cors({
-    origin: {
-      "Access-Control-Allow-Origin": [
-        "http://localhost:3000/",
-        "https://rosemarry.kr",
-      ],
-    },
+    origin: ["http://localhost:3000/", "https://rosemarry.kr"],
     methods: "*",
-    policy: ["same-origin", "same-origin-allow-popups"],
     credentials: true,
   })
 );
 app.options("*", cors());
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Methods", "*");
-//   res.header("Cross-Origin-Opener-Policy", [
-//     "same-origin",
-//     "same-origin-allow-popups",
-//   ]);
-//   next();
-// });
+app.use((req, res, next) => {
+  res.header(
+    "Cross-Origin-Opener-Policy",
+    "same-origin, same-origin-allow-popups"
+  );
+  next();
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
