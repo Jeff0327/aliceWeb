@@ -33,10 +33,9 @@ app.use(
 );
 app.options("*", cors());
 app.use((req, res, next) => {
-  res.header(
-    "Cross-Origin-Opener-Policy",
-    "same-origin, same-origin-allow-popups"
-  );
+  console.log("Received request:", req.method, req.url);
+
+  res.header("same-origin, same-origin-allow-popups");
   next();
 });
 app.use(express.json());

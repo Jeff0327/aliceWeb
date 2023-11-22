@@ -49,6 +49,7 @@ export default function PlaceOrderScreen() {
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
 
   const placeOrderHandler = async () => {
+    console.log(userInfo.token);
     if (!userInfo || !userInfo.token) {
       // Handle the case where the user is not authenticated
       // You might want to redirect the user to the login page
@@ -75,7 +76,7 @@ export default function PlaceOrderScreen() {
       dispatch({ type: "CREATE_REQUEST" });
 
       const { data } = await Axios.post(
-        "/api/orders",
+        `/api/orders`,
         {
           orderItems: updatedOrderItems,
           shippingAddress: cart.shippingAddress,
@@ -87,7 +88,7 @@ export default function PlaceOrderScreen() {
         },
         {
           headers: {
-            authorization: `Bearer ${userInfo.token}`,
+            Authorization: `Bearer ${userInfo.token}`,
           },
           withCredentials: true,
         }
