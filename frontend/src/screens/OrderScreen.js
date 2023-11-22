@@ -164,7 +164,7 @@ export default function OrderScreen() {
             // 더 많은 결제 정보 파라미터는 결제창 Javascript SDK에서 확인하세요.
             // https://docs.tosspayments.com/reference/js-sdk
             amount: 100, // 결제 금액
-            orderId: "XbzWM-_NPeab_jeg5dSkp", // 주문 ID
+            orderId: orderId, // 주문 ID
             orderName: "테스트 결제", // 주문명
             customerName: "김토스", // 구매자 이름
             successUrl:
