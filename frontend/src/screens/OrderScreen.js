@@ -155,11 +155,11 @@ export default function OrderScreen() {
   //   });
   // };
   const tosspayhandler = async () => {
-    await loadTossPayments(clientKey).then((tossPayments) => {
-      console.log(tossPayments);
-      // ------ 결제창 띄우기 ------
-      tossPayments
-        .requestPayment("카드", {
+    try {
+      await loadTossPayments(clientKey).then((tossPayments) => {
+        console.log(tossPayments);
+        // ------ 결제창 띄우기 ------
+        tossPayments.requestPayment("카드", {
           // 결제수단 파라미터
           // 결제 정보 파라미터
           // 더 많은 결제 정보 파라미터는 결제창 Javascript SDK에서 확인하세요.
@@ -170,19 +170,19 @@ export default function OrderScreen() {
           customerName: "구매자이름",
           successUrl: "https://naver.com",
           failUrl: "https://google.com",
-        })
-        // ------ 결제창을 띄울 수 없는 에러 처리 ------
-        // 메서드 실행에 실패해서 reject 된 에러를 처리하는 블록입니다.
-        // 결제창에서 발생할 수 있는 에러를 확인하세요.
-        // https://docs.tosspayments.com/reference/error-codes#결제창공통-sdk-에러
-        .catch(function (error) {
-          if (error.code === "USER_CANCEL") {
-            // 결제 고객이 결제창을 닫았을 때 에러 처리
-          } else if (error.code === "INVALID_CARD_COMPANY") {
-            // 유효하지 않은 카드 코드에 대한 에러 처리
-          }
         });
-    });
+      });
+      // ------ 결제창을 띄울 수 없는 에러 처리 ------
+      // 메서드 실행에 실패해서 reject 된 에러를 처리하는 블록입니다.
+      // 결제창에서 발생할 수 있는 에러를 확인하세요.
+      // https://docs.tosspayments.com/reference/error-codes#결제창공통-sdk-에러
+    } catch (err) {
+      if (error.code === "USER_CANCEL") {
+        // 결제 고객이 결제창을 닫았을 때 에러 처리
+      } else if (error.code === "INVALID_CARD_COMPANY") {
+        // 유효하지 않은 카드 코드에 대한 에러 처리
+      }
+    }
   };
   useEffect(() => {
     const fetchOrder = async () => {
