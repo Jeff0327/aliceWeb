@@ -154,8 +154,8 @@ export default function OrderScreen() {
   //     cancel_url: "YOUR_CANCEL_URL",
   //   });
   // };
-  const tosspayhandler = () => {
-    loadTossPayments(clientKey).then((tossPayments) => {
+  const tosspayhandler = async () => {
+    await loadTossPayments(clientKey).then((tossPayments) => {
       console.log(tossPayments);
       // ------ 결제창 띄우기 ------
       tossPayments
@@ -164,13 +164,12 @@ export default function OrderScreen() {
           // 결제 정보 파라미터
           // 더 많은 결제 정보 파라미터는 결제창 Javascript SDK에서 확인하세요.
           // https://docs.tosspayments.com/reference/js-sdk
-          amount: 100, // 결제 금액
-          orderId: orderId, // 주문 ID
-          orderName: "테스트 결제", // 주문명
-          customerName: "김토스", // 구매자 이름
-          successUrl:
-            "https://docs.tosspayments.com/guides/payment/test-success", // 결제 성공 시 이동할 페이지(이 주소는 예시입니다. 상점에서 직접 만들어주세요.)
-          failUrl: "https://docs.tosspayments.com/guides/payment/test-fail", // 결제 실패 시 이동할 페이지(이 주소는 예시입니다. 상점에서 직접 만들어주세요.)
+          amount: order.totalPrice, // Specify the amount to be paid
+          orderId: orderId,
+          orderName: order.name,
+          customerName: "구매자이름",
+          successUrl: "https://naver.com",
+          failUrl: "https://google.com",
         })
         // ------ 결제창을 띄울 수 없는 에러 처리 ------
         // 메서드 실행에 실패해서 reject 된 에러를 처리하는 블록입니다.
