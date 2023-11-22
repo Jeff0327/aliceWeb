@@ -25,32 +25,10 @@ app.use(
     origin: ["http://localhost:3000", "https://rosemarry.kr"],
     methods: "*",
     credentials: true,
-    allowedHeaders: {
-      "Access-Control-Allow-Origin": [
-        "http://localhost:3000",
-        "https://rosemarry.kr",
-      ],
-    },
   })
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "*");
-  res.header("Cross-Origin-Opener-Policy", [
-    "same-origin",
-    "same-origin-allow-popups",
-  ]);
-  next();
-});
-// app.use((req, res, next) => {
-//   if (req.headers.host !== "rosemarry.kr") {
-//     console.log(req.headers.host);
-//     return res.redirect(301, "http://rosemarry.kr" + req.originalUrl);
-//   }
-//   return next();
-// });
 
 app.get("/api/keys/paypal", (req, res) => {
   res.send(process.env.PAYPAL_CLIENT_ID || "sb");
