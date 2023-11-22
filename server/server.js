@@ -25,6 +25,12 @@ app.use(
     origin: ["http://localhost:3000", "https://rosemarry.kr"],
     methods: "*",
     credentials: true,
+    allowedHeaders: {
+      "Access-Control-Allow-Origin": [
+        "http://localhost:3000",
+        "https://rosemarry.kr",
+      ],
+    },
   })
 );
 app.use(express.json());
