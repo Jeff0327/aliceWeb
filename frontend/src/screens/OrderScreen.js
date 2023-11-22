@@ -154,8 +154,9 @@ export default function OrderScreen() {
   //   });
   // };
   const tosspayhandler = () => {
-    loadTossPayments(process.env.TOSSPAYMENT_CLIENT_KEY).then(
+    loadTossPayments(`${process.env.TOSSPAYMENT_CLIENT_KEY}`).then(
       (tossPayments) => {
+        console.log(tossPayments);
         // ------ 결제창 띄우기 ------
         tossPayments
           .requestPayment("카드", {
