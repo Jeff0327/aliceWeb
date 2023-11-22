@@ -69,7 +69,8 @@ export default function PlaceOrderScreen() {
         // Add more color objects if needed
       ],
     }));
-
+    console.log("cartItems:", cart.cartItems);
+    console.log("updatedOrderItems:", updatedOrderItems);
     try {
       dispatch({ type: "CREATE_REQUEST" });
 
@@ -88,6 +89,7 @@ export default function PlaceOrderScreen() {
           headers: {
             authorization: `Bearer ${userInfo.token}`,
           },
+          withCredentials: true,
         }
       );
       ctxDispatch({ type: "CART_CLEAR" });

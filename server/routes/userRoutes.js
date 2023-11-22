@@ -144,10 +144,7 @@ userRouter.post(
     res.status(401).send({ message: "이메일 또는 비밀번호가 틀립니다." });
   })
 );
-userRouter.post("/kakaosignin", async (req, res) => {
-  const { code } = req.body;
-  res.send({ message: "asd" });
-});
+
 userRouter.post(
   "/signup",
   expressAsyncHandler(async (req, res) => {
