@@ -1,5 +1,5 @@
+import { Bootpay } from "@bootpay/client-js";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
-import { loadTossPayments } from "@tosspayments/payment-sdk";
 import axios from "axios";
 import React, { useContext, useEffect, useReducer } from "react";
 import Button from "react-bootstrap/Button";
@@ -14,7 +14,6 @@ import { Store } from "../Store";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox.js";
 import { getError } from "../utils";
-
 function reducer(state, action) {
   switch (action.type) {
     case "FETCH_REQUEST":
@@ -53,7 +52,6 @@ export default function OrderScreen() {
   const { state } = useContext(Store);
   const { userInfo } = state;
 
-  const clientKey = process.env.TOSSPAYMENT_CLIENT_KEY;
   const params = useParams();
   const { id: orderId } = params;
   const navigate = useNavigate();
@@ -154,30 +152,35 @@ export default function OrderScreen() {
   //     cancel_url: "YOUR_CANCEL_URL",
   //   });
   // };
-  const tosspayhandler = async () => {
-    try {
-      const tossPayments = await loadTossPayments(clientKey);
-      tossPayments.requestPayment("카드", {
-        // 결제수단 파라미터
-        // 결제 정보 파라미터
-        // 더 많은 결제 정보 파라미터는 결제창 Javascript SDK에서 확인하세요.
-        // https://docs.tosspayments.com/reference/js-sdk
-        amount: order.totalPrice, // Specify the amount to be paid
-        orderId: orderId,
-        orderName: order.name,
-        customerName: "구매자이름",
-        successUrl: "https://naver.com",
-        failUrl: "https://google.com",
-      });
-    } catch (err) {
-      if (err.code === "USER_CANCEL") {
-        // 결제 고객이 결제창을 닫았을 때 에러 처리
-      } else if (err.code === "INVALID_CARD_COMPANY") {
-        // 유효하지 않은 카드 코드에 대한 에러 처리
-      } else {
-        console.error("Toss payment SDK error:", err);
-      }
-    }
+  const bootpayhandler = async () => {
+    await Bootpay.requestPayment({
+      application_id: "59a4d323396fa607cbe75de4",
+      price: 1000,
+      order_name: "테스트결제",
+      order_id: "TEST_ORDER_ID",
+      pg: "다날",
+      method: "카드",
+      tax_free: 0,
+      user: {
+        id: "회원아이디",
+        username: "회원이름",
+        phone: "01000000000",
+        email: "test@test.com",
+      },
+      items: [
+        {
+          id: "item_id",
+          name: "테스트아이템",
+          qty: 1,
+          price: 1000,
+        },
+      ],
+      extra: {
+        open_type: "iframe",
+        card_quota: "0,2,3",
+        escrow: false,
+      },
+    });
   };
   useEffect(() => {
     const fetchOrder = async () => {
@@ -389,7 +392,7 @@ export default function OrderScreen() {
                             {/* <Button id="naverPayBtn" onClick={naverpayHandler}>
                               네이버페이 결제
                             </Button> */}
-                            <Button onClick={tosspayhandler}>
+                            <Button onClick={bootpayhandler}>
                               토스결제하기
                             </Button>
                           </>
