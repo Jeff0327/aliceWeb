@@ -115,6 +115,8 @@ export default function OrderScreen() {
   }
 
   const bootpayhandler = async () => {
+    console.log(userInfo);
+    console.log(order);
     await Bootpay.requestPayment({
       application_id: "59a4d323396fa607cbe75de4",
       price: order.totalPrice,
