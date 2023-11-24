@@ -48,7 +48,6 @@ export default function PlaceOrderScreen() {
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
 
   const placeOrderHandler = async () => {
-    console.log(userInfo.token);
     if (!userInfo || !userInfo.token) {
       // Handle the case where the user is not authenticated
       // You might want to redirect the user to the login page
@@ -70,8 +69,7 @@ export default function PlaceOrderScreen() {
         // Add more color objects if needed
       ],
     }));
-    console.log("cartItems:", cart.cartItems);
-    console.log("updatedOrderItems:", updatedOrderItems);
+
     try {
       dispatch({ type: "CREATE_REQUEST" });
 
