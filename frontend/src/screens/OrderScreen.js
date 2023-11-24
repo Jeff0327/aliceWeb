@@ -55,7 +55,7 @@ export default function OrderScreen() {
   const params = useParams();
   const { id: orderId } = params;
   const navigate = useNavigate();
-  // const [oPay, setOPay] = useState(null);
+
   const [
     {
       loading,
@@ -115,27 +115,29 @@ export default function OrderScreen() {
   }
 
   const bootpayhandler = async () => {
-    console.log(userInfo);
-    console.log(order);
+    console.log("order:", order);
+
+    const bootpayItems = order.orderItems.map((item) => ({
+      name: item.name,
+    }));
     await Bootpay.requestPayment({
       application_id: "59a4d323396fa607cbe75de4",
       price: order.totalPrice,
-      order_name: order.name,
-      order_id: order._id,
+      order_name: order.shippingAddress.fullName,
+      order_id: order.user,
       user: {
         id: userInfo._id,
-        username: userInfo.name,
-        phone: userInfo.phoneNumber,
+        username: order.shippingAddress.phoneNumber,
+        phone: order.shippingAddress.phoneNumber,
         email: userInfo.email,
       },
-      items: [
-        {
-          id: order._id,
-          name: order.name,
-          qty: "상품갯수",
-          price: order.totalPrice,
-        },
-      ],
+      items: {
+        id: order._id,
+        name: bootpayItems.name,
+        qty: "1",
+        price: order.totalPrice,
+      },
+
       extra: {
         open_type: "iframe",
         card_quota: "0,2,3",

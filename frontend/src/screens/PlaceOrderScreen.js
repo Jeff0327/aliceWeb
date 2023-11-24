@@ -65,6 +65,7 @@ export default function PlaceOrderScreen() {
         {
           name: item.color.selectColor.name, // Include color.name
           value: item.color.selectColor.value, // Include other color properties
+          quantity: item.color.selectColor.quantity,
         },
         // Add more color objects if needed
       ],
