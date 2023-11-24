@@ -128,14 +128,6 @@ export default function OrderScreen() {
         phone: order.shippingAddress.phoneNumber,
         email: userInfo.email,
       },
-      items: [
-        {
-          id: order._id,
-          name: order.orderItems((item) => item.name),
-          qty: "1",
-          price: order.totalPrice,
-        },
-      ],
 
       extra: {
         open_type: "iframe",

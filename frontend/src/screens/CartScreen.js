@@ -17,38 +17,6 @@ export default function CartScreen() {
     cart: { cartItems },
   } = state;
 
-  // const updateCartHandler = async (item, quantity) => {
-  //   try {
-  //     const { data } = await axios.get(
-  //       `/api/products/${item._id}?color=${item.color.selectColor._id}`
-  //     );
-
-  //     const newColor = data.color.find(
-  //       (c) => c._id === item.color.selectColor._id
-  //     );
-
-  //     if (newColor && newColor.count < quantity) {
-  //       window.alert("매진");
-  //       return;
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-
-  //   ctxDispatch({
-  //     type: "CART_ADD_ITEM",
-  //     payload: {
-  //       ...item,
-  //       color: {
-  //         ...item.color,
-  //         selectColor: {
-  //           ...item.color.selectColor,
-  //           quantity: quantity,
-  //         },
-  //       },
-  //     },
-  //   });
-  // };
   const updateCartHandler = (item, quantity) => {
     if (item.color.selectColor.count < quantity) {
       toast.error("재고가 없습니다");
