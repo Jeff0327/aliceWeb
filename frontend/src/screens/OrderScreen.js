@@ -114,13 +114,13 @@ export default function OrderScreen() {
     toast.error(getError(err));
   }
 
+  const bootpayItem = order.orderItems.map((item) => ({
+    id: item._id,
+    name: item.name,
+  }));
   const bootpayhandler = async () => {
     console.log("order:", order);
 
-    const bootpayItem = order.orderItems.map((item) => ({
-      id: item._id,
-      name: item.name,
-    }));
     await Bootpay.requestPayment({
       application_id: "59a4d323396fa607cbe75de4",
       price: order.totalPrice,
