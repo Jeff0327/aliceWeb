@@ -127,10 +127,10 @@ export default function OrderScreen() {
         order_name: "상품명",
         order_id: "상품id",
         user: {
-          id: userInfo._id,
-          username: order.shippingAddress.fullName,
-          phone: order.shippingAddress.phoneNumber,
-          email: userInfo.email,
+          id: `${userInfo._id}`,
+          username: `${order.shippingAddress.fullName}`,
+          phone: `${order.shippingAddress.phoneNumber}`,
+          email: `${userInfo.email}`,
         },
 
         extra: {
