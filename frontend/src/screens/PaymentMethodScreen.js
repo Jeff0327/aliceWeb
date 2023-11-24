@@ -50,20 +50,10 @@ export default function PaymentMethodScreen() {
           <div className="mb-3">
             <Form.Check
               type="radio"
-              id="KakaoPay"
-              label="KakaoPay"
-              value="KakaoPay"
-              checked={paymentMethodName === "KakaoPay"}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <Form.Check
-              type="radio"
-              id="NaverPay"
-              label="네이버페이"
-              value="NaverPay"
-              checked={paymentMethodName === "NaverPay"}
+              id="일반결제"
+              label="일반결제"
+              value="일반결제"
+              checked={paymentMethodName === "일반결제"}
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
           </div>

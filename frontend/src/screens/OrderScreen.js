@@ -113,66 +113,25 @@ export default function OrderScreen() {
   function onError(err) {
     toast.error(getError(err));
   }
-  // useEffect(() => {
-  //   const loadNaverPayScript = async () => {
-  //     // Dynamically load the NaverPay script
-  //     const script = document.createElement("script");
-  //     script.src =
-  //       "https://dev.apis.naver.com/cocacola158500@gmail.com/naverpay/payments/v2.2/apply/payment";
-  //     script.async = true;
-  //     document.head.appendChild(script);
-  //     console.log(window.Naver);
-  //     script.onload = () => {
-  //       // Once the script is loaded, initialize NaverPay
-  //       const naverPayInstance = window.Naver.Pay.create({
-  //         mode: "production", // development or production
-  //         clientId: "zzGqNBIM5P9dLWFD3ByE",
-  //       });
-  //       setOPay(naverPayInstance);
-  //     };
-  //   };
 
-  //   // Load NaverPay script only if the payment method is NaverPay
-  //   if (order.paymentMethod === "NaverPay") {
-  //     loadNaverPayScript();
-  //   }
-  // }, [order.paymentMethod]);
-
-  // const handlePayment = () => {
-  //   window.KakaoPay.requestPayment({
-  //     partner_order_id: "YOUR_ORDER_ID",
-  //     partner_user_id: "asd",
-  //     item_name: order.name,
-  //     quantity: 1,
-  //     total_amount: 10000, // Set your total amount
-  //     vat_amount: 0, // Set your VAT amount
-  //     tax_free_amount: 0, // Set your tax-free amount
-  //     approval_url: "rosemarry.kr",
-  //     fail_url: "YOUR_FAIL_URL",
-  //     cancel_url: "YOUR_CANCEL_URL",
-  //   });
-  // };
   const bootpayhandler = async () => {
     await Bootpay.requestPayment({
       application_id: "59a4d323396fa607cbe75de4",
-      price: 1000,
-      order_name: "테스트결제",
-      order_id: "TEST_ORDER_ID",
-      pg: "다날",
-      method: "카드",
-      tax_free: 0,
+      price: order.totalPrice,
+      order_name: order.name,
+      order_id: order._id,
       user: {
-        id: "회원아이디",
-        username: "회원이름",
-        phone: "01000000000",
-        email: "test@test.com",
+        id: userInfo._id,
+        username: userInfo.name,
+        phone: userInfo.phoneNumber,
+        email: userInfo.email,
       },
       items: [
         {
-          id: "item_id",
-          name: "테스트아이템",
-          qty: 1,
-          price: 1000,
+          id: order._id,
+          name: order.name,
+          qty: "상품갯수",
+          price: order.totalPrice,
         },
       ],
       extra: {
@@ -254,20 +213,6 @@ export default function OrderScreen() {
       dispatch({ type: "DELIVER_FAIL" });
     }
   }
-
-  // const naverpayHandler = () => {
-  //   if (oPay) {
-  //     oPay.open({
-  //       merchantUserKey: "D0286BE0-E668-4139-82AD-564433286EE2",
-  //       merchantPayKey: "가맹점 주문 번호",
-  //       productName: "상품명을 입력하세요",
-  //       totalPayAmount: "1000",
-  //       taxScopeAmount: "1000",
-  //       taxExScopeAmount: "0",
-  //       returnUrl: "사용자 결제 완료 후 결제 결과를 받을 URL",
-  //     });
-  //   }
-  // };
 
   return loading ? (
     <LoadingBox></LoadingBox>
@@ -387,18 +332,15 @@ export default function OrderScreen() {
                             onApprove={onApprove}
                             onError={onError}
                           ></PayPalButtons>
-                        ) : order.paymentMethod === "NaverPay" ? (
-                          <>
-                            {/* <Button id="naverPayBtn" onClick={naverpayHandler}>
-                              네이버페이 결제
-                            </Button> */}
-                            <Button onClick={bootpayhandler}>
-                              토스결제하기
-                            </Button>
-                          </>
                         ) : (
                           <>
-                            {/* <Button onClick={handlePayment}>결제하기</Button> */}
+                            <Button
+                              type="button"
+                              class="btn btn-outline-success"
+                              onClick={bootpayhandler}
+                            >
+                              일반결제
+                            </Button>
                           </>
                         )}
                       </div>
