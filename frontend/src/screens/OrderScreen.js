@@ -117,9 +117,6 @@ export default function OrderScreen() {
   const bootpayhandler = async () => {
     console.log("order:", order);
 
-    const bootpayItems = order.orderItems.map((item) => ({
-      name: item.name,
-    }));
     await Bootpay.requestPayment({
       application_id: "59a4d323396fa607cbe75de4",
       price: order.totalPrice,
@@ -134,7 +131,7 @@ export default function OrderScreen() {
       items: [
         {
           id: order._id,
-          name: bootpayItems.name,
+          name: order.orderItems((item) => item.name),
           qty: "1",
           price: order.totalPrice,
         },

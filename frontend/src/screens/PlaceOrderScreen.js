@@ -97,7 +97,9 @@ export default function PlaceOrderScreen() {
       dispatch({ type: "CREATE_SUCCESS" });
       localStorage.removeItem("cartItems");
       navigate(`/order/${data.order._id}`, {
-        state: { colorName: updatedOrderItems.map((item) => item.color) },
+        state: {
+          colorName: updatedOrderItems.map((item) => item.color.selectColor),
+        },
       });
     } catch (err) {
       dispatch({ type: "CREATE_FAIL" });
