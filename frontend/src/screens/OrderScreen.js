@@ -114,31 +114,34 @@ export default function OrderScreen() {
     toast.error(getError(err));
   }
 
-  const bootpayItem = order.orderItems.map((item) => ({
-    id: item._id,
-    name: item.name,
-  }));
   const bootpayhandler = async () => {
     console.log("order:", order);
+    const bootpayItem = order.orderItems.map((item) => ({
+      id: item._id,
+      name: item.name,
+    }));
+    try {
+      await Bootpay.requestPayment({
+        application_id: "655c7fea00c78a001aaf57ac",
+        price: order.totalPrice,
+        order_name: bootpayItem.name,
+        order_id: bootpayItem.id,
+        user: {
+          id: userInfo._id,
+          username: order.shippingAddress.fullName,
+          phone: order.shippingAddress.phoneNumber,
+          email: userInfo.email,
+        },
 
-    await Bootpay.requestPayment({
-      application_id: "59a4d323396fa607cbe75de4",
-      price: order.totalPrice,
-      order_name: bootpayItem.name,
-      order_id: bootpayItem.id,
-      user: {
-        id: userInfo._id,
-        username: order.shippingAddress.fullName,
-        phone: order.shippingAddress.phoneNumber,
-        email: userInfo.email,
-      },
-
-      extra: {
-        open_type: "iframe",
-        card_quota: "0,2,3",
-        escrow: false,
-      },
-    });
+        extra: {
+          open_type: "iframe",
+          card_quota: "0,2,3",
+          escrow: false,
+        },
+      });
+    } catch (err) {
+      console.err(err);
+    }
   };
   useEffect(() => {
     const fetchOrder = async () => {
