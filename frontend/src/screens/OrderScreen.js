@@ -124,8 +124,8 @@ export default function OrderScreen() {
       await Bootpay.requestPayment({
         application_id: "655c7fea00c78a001aaf57ac",
         price: order.totalPrice,
-        order_name: bootpayItem.name,
-        order_id: bootpayItem.id,
+        order_name: "상품명",
+        order_id: "상품id",
         user: {
           id: userInfo._id,
           username: order.shippingAddress.fullName,
