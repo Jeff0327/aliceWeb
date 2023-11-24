@@ -140,7 +140,7 @@ export default function OrderScreen() {
         },
       });
     } catch (err) {
-      console.err(err);
+      console.log(err);
     }
   };
   useEffect(() => {
