@@ -122,7 +122,7 @@ export default function OrderScreen() {
     }));
     try {
       await Bootpay.requestPayment({
-        application_id: "655c7fea00c78a001aaf57ac",
+        application_id: `${process.env.BOOTPAY_APP_ID}`,
         price: order.totalPrice,
         order_name: `${bootpayItem.name}`,
         order_id: `${bootpayItem.name}`,
