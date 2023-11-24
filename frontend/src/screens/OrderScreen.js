@@ -131,12 +131,14 @@ export default function OrderScreen() {
         phone: order.shippingAddress.phoneNumber,
         email: userInfo.email,
       },
-      items: {
-        id: order._id,
-        name: bootpayItems.name,
-        qty: "1",
-        price: order.totalPrice,
-      },
+      items: [
+        {
+          id: order._id,
+          name: bootpayItems.name,
+          qty: "1",
+          price: order.totalPrice,
+        },
+      ],
 
       extra: {
         open_type: "iframe",
