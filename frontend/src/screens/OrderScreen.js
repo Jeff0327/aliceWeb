@@ -335,15 +335,17 @@ export default function OrderScreen() {
                             onError={onError}
                           ></PayPalButtons>
                         ) : (
-                          <>
-                            <Button
-                              type="button"
-                              class="btn btn-outline-success"
-                              onClick={bootpayhandler}
-                            >
-                              일반결제
-                            </Button>
-                          </>
+                          <Row>
+                            <Col>
+                              <Button
+                                type="button"
+                                class="btn btn-outline-success"
+                                onClick={bootpayhandler}
+                              >
+                                결제하기
+                              </Button>
+                            </Col>
+                          </Row>
                         )}
                       </div>
                     )}
