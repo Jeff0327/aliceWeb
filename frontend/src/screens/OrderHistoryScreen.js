@@ -3,9 +3,9 @@ import React, { useContext, useEffect, useReducer } from "react";
 import Button from "react-bootstrap/esm/Button";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
+import { Store } from "../Store";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox.js";
-import { Store } from "../Store";
 import { getError } from "../utils";
 
 const reducer = (state, action) => {
@@ -35,9 +35,14 @@ export default function OrderHistoryScreen() {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const { data } = await axios.get(
-          `/api/orders/mine`,
+          "/api/orders/mine",
 
-          { headers: { Authorization: `Bearer ${userInfo.token}` } }
+          {
+            headers: {
+              Authorization: `Bearer ${userInfo.token}`,
+              withCredentials: true,
+            },
+          }
         );
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (error) {
