@@ -47,7 +47,7 @@ function reducer(state, action) {
       return state;
   }
 }
-
+console.log(process.env.BOOTPAY_APP_ID);
 export default function OrderScreen() {
   const { state } = useContext(Store);
   const { userInfo } = state;
@@ -125,7 +125,7 @@ export default function OrderScreen() {
         application_id: `${process.env.BOOTPAY_APP_ID}`,
         price: order.totalPrice,
         order_name: `${bootpayItem.name}`,
-        order_id: `${bootpayItem.name}`,
+        order_id: `${bootpayItem.id}`,
         user: {
           id: `${userInfo._id}`,
           username: `${order.shippingAddress.fullName}`,
