@@ -51,7 +51,7 @@ console.log(process.env.BOOTPAY_APP_ID);
 export default function OrderScreen() {
   const { state } = useContext(Store);
   const { userInfo } = state;
-
+  const bootpayAppId = process.env.BOOTPAY_APP_ID;
   const params = useParams();
   const { id: orderId } = params;
   const navigate = useNavigate();
@@ -122,7 +122,7 @@ export default function OrderScreen() {
     }));
     try {
       await Bootpay.requestPayment({
-        application_id: `${process.env.BOOTPAY_APP_ID}`,
+        application_id: `${bootpayAppId}`,
         price: order.totalPrice,
         order_name: `${bootpayItem.name}`,
         order_id: `${bootpayItem.id}`,
