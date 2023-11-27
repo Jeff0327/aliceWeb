@@ -325,7 +325,7 @@ export default function OrderScreen() {
                     {isPending ? (
                       <LoadingBox />
                     ) : (
-                      <div>
+                      <div className="d-grid">
                         {order.paymentMethod === "PayPal" ? (
                           <PayPalButtons
                             createOrder={createOrder}
@@ -337,7 +337,7 @@ export default function OrderScreen() {
                             <Col>
                               <Button
                                 type="button"
-                                class="btn btn-outline-success"
+                                value="success"
                                 onClick={bootpayhandler}
                               >
                                 결제하기
