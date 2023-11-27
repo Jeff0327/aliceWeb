@@ -47,11 +47,11 @@ function reducer(state, action) {
       return state;
   }
 }
-console.log(process.env.BOOTPAY_APP_ID);
+
 export default function OrderScreen() {
   const { state } = useContext(Store);
   const { userInfo } = state;
-  const bootpayAppId = process.env.BOOTPAY_APP_ID;
+
   const params = useParams();
   const { id: orderId } = params;
   const navigate = useNavigate();
@@ -115,17 +115,12 @@ export default function OrderScreen() {
   }
 
   const bootpayhandler = async () => {
-    console.log("order:", order);
-    const bootpayItem = order.orderItems.map((item) => ({
-      id: item._id,
-      name: item.name,
-    }));
     try {
       await Bootpay.requestPayment({
         application_id: `655c7fea00c78a001aaf57ac`,
         price: order.totalPrice,
-        order_name: `${bootpayItem.name}`,
-        order_id: `${bootpayItem.id}`,
+        order_name: `${order.orderItems.map((e) => e.name)}`,
+        order_id: `${order.orderItems.map((e) => e._id)}`,
         user: {
           id: `${userInfo._id}`,
           username: `${order.shippingAddress.fullName}`,
