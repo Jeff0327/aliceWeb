@@ -34,7 +34,6 @@ app.use((req, res, next) => {
     "https://rosemarry.kr",
   ]);
   res.header("Access-Control-Allow-Methods", "*");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.header("Access-Control-Allow-Credentials", true);
   next();
 });
