@@ -128,18 +128,14 @@ export default function OrderScreen() {
             console.log("result:", response);
             console.log(response.result.AuthToken);
             dispatch({ type: "PAY_REQUEST" });
-            // Send the AuthToken to your server
-
-            const authToken = response.result.AuthToken;
-
-            // Use your backend API endpoint to confirm Bootpay payment
-            const data = await axios.post(
-              `/api/orders/${order._id}/bootpayment`,
-              { authToken },
-              { headers: { authorization: `Bearer ${userInfo.token}` } }
+            const { data } = await axios.put(
+              `/api/orders/${order._id}/bootpay`,
+              {
+                headers: `Bearer ${userInfo.token}`,
+              }
             );
             dispatch({ type: "PAY_SUCCESS", payload: data });
-            console.log(data.data);
+            toast.success("결제가 완료되었습니다.");
           } catch (err) {
             dispatch({ type: "PAY_FAIL", payload: getError(err) });
             toast.error(getError(err));
