@@ -20,13 +20,14 @@ mongoose
   });
 const app = express();
 
-const corsOptions = {
-  origin: ["http://localhost:3000", "https://rosemarry.kr"],
-  methods: "*",
-  credentials: true,
-  allowedHeaders: ["Content-Type", "Authorization"],
-};
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://rosemarry.kr"],
+    methods: "*",
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", [
     "http://localhost:3000",
