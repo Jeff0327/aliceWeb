@@ -136,7 +136,7 @@ export default function OrderScreen() {
 
           const confirmedData = await Bootpay.confirm(); //결제를 승인한다
           if (confirmedData.event === "done") {
-            //결제 성공
+            //결제성공
           }
 
           /**

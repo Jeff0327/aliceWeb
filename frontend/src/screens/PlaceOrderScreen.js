@@ -43,7 +43,7 @@ export default function PlaceOrderScreen() {
       0
     )
   );
-  cart.shippingPrice = cart.itemsPrice > 50000 ? 0 : 2500; //5만원 이상 결제시 배송료 무료 5만원미만 결제시 배송료 2500
+  cart.shippingPrice = cart.itemsPrice > 50000 ? 0 : 0; //5만원 이상 결제시 배송료 무료 5만원미만 결제시 배송료 2500
 
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
 
