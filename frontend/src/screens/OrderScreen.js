@@ -124,26 +124,31 @@ export default function OrderScreen() {
           // 가상계좌 입금 완료 처리
           break;
         case "done":
-          console.log("result:", response);
-          console.log(response.result.AuthToken);
+          try {
+            console.log("result:", response);
+            console.log(response.result.AuthToken);
+            dispatch({ type: "PAY_REQUEST" });
+            // Send the AuthToken to your server
 
-          // Send the AuthToken to your server
+            const authToken = response.result.AuthToken;
 
-          const authToken = response.result.AuthToken;
+            // Include userInfo.token in the request headers
+            const headers = {
+              authorization: `Bearer ${userInfo.token}`,
+            };
 
-          // Include userInfo.token in the request headers
-          const headers = {
-            authorization: `Bearer ${userInfo.token}`,
-          };
-
-          // Use your backend API endpoint to confirm Bootpay payment
-          const data = await axios.post(
-            `/api/orders/${order._id}/bootpayment`,
-            { authToken },
-            { headers }
-          );
-          dispatch({ type: "PAY_SUCCESS", payload: data });
-          console.log(data.data);
+            // Use your backend API endpoint to confirm Bootpay payment
+            const data = await axios.post(
+              `/api/orders/${order._id}/bootpayment`,
+              { authToken },
+              { headers }
+            );
+            dispatch({ type: "PAY_SUCCESS", payload: data });
+            console.log(data.data);
+          } catch (err) {
+            dispatch({ type: "PAY_FAIL", payload: getError(err) });
+            toast.error(getError(err));
+          }
 
           // Handle the completed payment on the client side if needed
 
