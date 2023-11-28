@@ -122,6 +122,29 @@ orderRouter.put(
     }
   })
 );
+orderRouter.post(
+  "/:id/bootpayment",
+  isAuth, // Add isAuth middleware to ensure the user is authenticated
+  expressAsyncHandler(async (req, res) => {
+    const orderId = req.params.id;
+    const authToken = req.body.authToken;
+
+    // Validate the AuthToken and perform any necessary checks
+
+    const order = await Order.findById(orderId);
+
+    if (order) {
+      order.isPaid = true;
+      // You can update other order information here based on the Bootpay confirmation
+      const updatedOrder = await order.save();
+
+      // Send a response back to the client
+      res.send({ message: "Bootpay payment confirmed", order: updatedOrder });
+    } else {
+      res.status(404).send({ message: "Order not found" });
+    }
+  })
+);
 orderRouter.put(
   "/:id/pay",
   isAuth,

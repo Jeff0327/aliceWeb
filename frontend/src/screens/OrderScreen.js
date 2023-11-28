@@ -124,7 +124,29 @@ export default function OrderScreen() {
           // 가상계좌 입금 완료 처리
           break;
         case "done":
-          console.log(response);
+          console.log("result:", response);
+          console.log(response.result.AuthToken);
+
+          // Send the AuthToken to your server
+
+          const authToken = response.result.AuthToken;
+
+          // Include userInfo.token in the request headers
+          const headers = {
+            authorization: `Bearer ${userInfo.token}`,
+          };
+
+          // Use your backend API endpoint to confirm Bootpay payment
+          const data = await axios.post(
+            `/api/orders/${order._id}/bootpayment`,
+            { authToken },
+            { headers }
+          );
+          dispatch({ type: "PAY_SUCCESS", payload: data });
+          console.log(data.data);
+
+          // Handle the completed payment on the client side if needed
+
           // 결제 완료 처리
           break;
         case "confirm": //payload.extra.separately_confirmed = true; 일 경우 승인 전 해당 이벤트가 호출됨
@@ -138,7 +160,6 @@ export default function OrderScreen() {
           if (confirmedData.event === "done") {
             //결제성공
           }
-
           /**
            * 2. 서버 승인을 하고자 할때
            * // requestServerConfirm(); //예시) 서버 승인을 할 수 있도록  API를 호출한다. 서버에서는 재고확인과 로직 검증 후 서버승인을 요청한다.
@@ -146,7 +167,7 @@ export default function OrderScreen() {
            */
           break;
         default:
-          // Handle other cases if needed
+          // 기본값 호출
           break;
       }
     } catch (e) {
@@ -154,18 +175,17 @@ export default function OrderScreen() {
       // e.error_code - 부트페이 오류 코드
       // e.pg_error_code - PG 오류 코드
       // e.message - 오류 내용
-      console.log(e.message);
+      toast.error(e.message);
+
       switch (e.event) {
         case "cancel":
           // 사용자가 결제창을 닫을때 호출
-          console.log(e.message);
           break;
         case "error":
-          // 결제 승인 중 오류 발생시 호출
-          console.log(e.error_code);
+          toast.error(`결제 중 오류가발생했습니다:${e.error_code}`);
           break;
         default:
-          // Handle other cases if needed
+          // 기본값 호출
           break;
       }
     }
