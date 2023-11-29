@@ -113,11 +113,52 @@ export default function OrderScreen() {
   function onError(err) {
     toast.error(getError(err));
   }
+  const bootpayhandler = async () => {
+    try {
+      await Bootpay.requestPayment({
+        application_id: `655c7fea00c78a001aaf57ac`,
+        price: order.totalPrice,
 
+        order_name: `${order.orderItems.map((e) => e.name)}`,
+        order_id: `${order.orderItems.map((e) => e._id)}`,
+        user: {
+          id: `${userInfo._id}`,
+          username: `${order.shippingAddress.fullName}`,
+          phone: `${order.shippingAddress.phoneNumber}`,
+          email: `${userInfo.email}`,
+        },
+
+        extra: {
+          open_type: "iframe",
+          card_quota: "0,2,3",
+          escrow: false,
+        },
+      });
+      await bootpayResult();
+    } catch (err) {
+      console.log("bootpayhandlerError:", err);
+    }
+  };
   const bootpayResult = async () => {
     try {
       const response = await Bootpay.requestPayment({
-        //- 요청 데이터
+        application_id: `655c7fea00c78a001aaf57ac`,
+        price: order.totalPrice,
+
+        order_name: `${order.orderItems.map((e) => e.name)}`,
+        order_id: `${order.orderItems.map((e) => e._id)}`,
+        user: {
+          id: `${userInfo._id}`,
+          username: `${order.shippingAddress.fullName}`,
+          phone: `${order.shippingAddress.phoneNumber}`,
+          email: `${userInfo.email}`,
+        },
+
+        extra: {
+          open_type: "iframe",
+          card_quota: "0,2,3",
+          escrow: false,
+        },
       });
       switch (response.event) {
         case "issued":
@@ -160,7 +201,7 @@ export default function OrderScreen() {
           /**
            * 2. 서버 승인을 하고자 할때
            * // requestServerConfirm(); //예시) 서버 승인을 할 수 있도록  API를 호출한다. 서버에서는 재고확인과 로직 검증 후 서버승인을 요청한다.
-           * Bootpay.destroy(); //결제창을 닫는다.
+          Bootpay.destroy(); 
            */
           break;
         default:
@@ -187,32 +228,7 @@ export default function OrderScreen() {
       }
     }
   };
-  const bootpayhandler = async () => {
-    try {
-      await Bootpay.requestPayment({
-        application_id: `655c7fea00c78a001aaf57ac`,
-        price: order.totalPrice,
 
-        order_name: `${order.orderItems.map((e) => e.name)}`,
-        order_id: `${order.orderItems.map((e) => e._id)}`,
-        user: {
-          id: `${userInfo._id}`,
-          username: `${order.shippingAddress.fullName}`,
-          phone: `${order.shippingAddress.phoneNumber}`,
-          email: `${userInfo.email}`,
-        },
-
-        extra: {
-          open_type: "iframe",
-          card_quota: "0,2,3",
-          escrow: false,
-        },
-      });
-      await bootpayResult();
-    } catch (err) {
-      console.log(err);
-    }
-  };
   useEffect(() => {
     const fetchOrder = async () => {
       try {
