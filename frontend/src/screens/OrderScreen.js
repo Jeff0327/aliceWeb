@@ -126,7 +126,10 @@ export default function OrderScreen() {
         case "done":
           try {
             console.log("result:", response);
-            console.log(response.result.AuthToken);
+            console.log(
+              "response.result.AuthToken:",
+              response.result.AuthToken
+            );
             dispatch({ type: "PAY_REQUEST" });
             const { data } = await axios.put(
               `/api/orders/${order._id}/bootpay`,
