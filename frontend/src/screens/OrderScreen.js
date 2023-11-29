@@ -115,32 +115,6 @@ export default function OrderScreen() {
   }
   const bootpayhandler = async () => {
     try {
-      await Bootpay.requestPayment({
-        application_id: `655c7fea00c78a001aaf57ac`,
-        price: order.totalPrice,
-
-        order_name: `${order.orderItems.map((e) => e.name)}`,
-        order_id: `${order.orderItems.map((e) => e._id)}`,
-        user: {
-          id: `${userInfo._id}`,
-          username: `${order.shippingAddress.fullName}`,
-          phone: `${order.shippingAddress.phoneNumber}`,
-          email: `${userInfo.email}`,
-        },
-
-        extra: {
-          open_type: "iframe",
-          card_quota: "0,2,3",
-          escrow: false,
-        },
-      });
-      await bootpayResult();
-    } catch (err) {
-      console.log("bootpayhandlerError:", err);
-    }
-  };
-  const bootpayResult = async () => {
-    try {
       const response = await Bootpay.requestPayment({
         application_id: `655c7fea00c78a001aaf57ac`,
         price: order.totalPrice,
@@ -208,24 +182,8 @@ export default function OrderScreen() {
           // 기본값 호출
           break;
       }
-    } catch (e) {
-      // // 결제 진행중 오류 발생
-      // e.error_code - 부트페이 오류 코드
-      // e.pg_error_code - PG 오류 코드
-      // e.message - 오류 내용
-      toast.error(e.message);
-
-      switch (e.event) {
-        case "cancel":
-          // 사용자가 결제창을 닫을때 호출
-          break;
-        case "error":
-          toast.error(`결제 중 오류가발생했습니다:${e.error_code}`);
-          break;
-        default:
-          // 기본값 호출
-          break;
-      }
+    } catch (err) {
+      console.log("bootpayhandlerError:", err);
     }
   };
 
