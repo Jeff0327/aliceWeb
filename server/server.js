@@ -36,19 +36,7 @@ app.use((req, res, next) => {
   ]);
   res.header("Access-Control-Allow-Methods", "*");
   res.header("Access-Control-Allow-Credentials", true);
-  res.header({
-    web: {
-      client_id:
-        "258796595331-i3a9759p2fjajsg80gr3fsuavbdko1ld.apps.googleusercontent.com",
-      project_id: "rosemarry-403217",
-      auth_uri: "https://accounts.google.com/o/oauth2/auth",
-      token_uri: "https://oauth2.googleapis.com/token",
-      auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
-      client_secret: "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",
-      redirect_uris: ["https://rosemarry.kr", "http://localhost:3000"],
-      javascript_origins: ["https://roseamrry.kr", "http://localhost:3000"],
-    },
-  });
+
   next();
 });
 app.use(express.json());
