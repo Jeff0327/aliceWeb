@@ -30,15 +30,18 @@ const app = express();
 // );
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", [
-    "http://localhost:3000",
-    "https://rosemarry.kr",
-  ]);
+  const allowedOrigins = ["http://localhost:3000", "https://rosemarry.kr"];
+  const origin = req.headers.origin;
+
+  if (allowedOrigins.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", origin);
+  }
+
   res.header("Access-Control-Allow-Methods", "*");
   res.header("Access-Control-Allow-Credentials", true);
   res.header(
     "Access-Control-Allow-Headers",
-    "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
+    "Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
   );
   next();
 });
