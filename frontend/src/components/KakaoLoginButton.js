@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect } from "react";
 import KakaoLogin from "react-kakao-login";
 const KakaoLoginButton = () => {
@@ -12,21 +13,16 @@ const KakaoLoginButton = () => {
   const kakaoOnFailure = (error) => {
     console.log("로그인 실패:", error);
   };
+  const kakaoLoginhandler = async () => {
+    const data = await axios.get("/api/users/kakaosignin");
+    console.log(data);
+  };
   return (
     <KakaoLogin
       token={`${process.env.KAKAO_JAVASCRIPT_KEY}`}
       onSuccess={kakaoOnSuccess}
       onFail={kakaoOnFailure}
-      render={({ onClick }) => (
-        <div
-          onClick={(e) => {
-            e.preventDefault();
-            onClick();
-          }}
-        >
-          카카오로 로그인하기
-        </div>
-      )}
+      onClick={kakaoLoginhandler}
     />
   );
 };
