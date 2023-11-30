@@ -3,7 +3,7 @@ import KakaoLogin from "react-kakao-login";
 const KakaoLoginButton = () => {
   useEffect(() => {
     if (typeof window !== "undefined" && window.kakao) {
-      window.Kakao.init({ apiKey: `${process.env.KAKAO_RESTAPI_KEY}` });
+      window.Kakao.init({ apiKey: `${process.env.KAKAO_JAVASCRIPT_KEY}` });
     }
   }, []);
   const kakaoOnSuccess = () => {
@@ -14,7 +14,7 @@ const KakaoLoginButton = () => {
   };
   return (
     <KakaoLogin
-      token={`${process.env.KAKAO_RESTAPI_KEY}`}
+      token={`${process.env.KAKAO_JAVASCRIPT_KEY}`}
       onSuccess={kakaoOnSuccess}
       onFail={kakaoOnFailure}
       render={({ onClick }) => (
