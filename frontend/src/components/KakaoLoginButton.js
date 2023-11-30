@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import KakaoLogin from "react-kakao-login";
 const KakaoLoginButton = () => {
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && window.kakao) {
       window.Kakao.init({ apiKey: `${process.env.KAKAO_JAVASCRIPT_KEY}` });
     }
   }, []);
