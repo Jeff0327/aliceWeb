@@ -126,14 +126,6 @@ userRouter.post(
   })
 );
 
-userRouter.get(
-  "/kakaosignin",
-  expressAsyncHandler(async (req, res) => {
-    const kakaoURI = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.KAKAO_RESTAPI_KEY}&redirect_uri=${process.env.KAKAO_REDIRECT_URI}`;
-
-    res.redirect(kakaoURI);
-  })
-);
 userRouter.post(
   "/signin",
   expressAsyncHandler(async (req, res) => {
