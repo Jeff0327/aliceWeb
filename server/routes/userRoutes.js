@@ -142,8 +142,8 @@ userRouter.get(
         "https://kauth.kakao.com/oauth/token",
         {
           grant_type: "authorization_code",
-          client_id: process.env.KAKAO_RESTAPI_KEY,
-          redirect_uri: process.env.KAKAO_REDIRECT_URI,
+          client_id: `${process.env.KAKAO_RESTAPI_KEY}`,
+          redirect_uri: `${process.env.KAKAO_REDIRECT_URI}`,
           code,
         },
         {
