@@ -7,15 +7,23 @@ const KakaoLoginButton = () => {
       window.Kakao.init({ apiKey: `${process.env.KAKAO_JAVASCRIPT_KEY}` });
     }
   }, []);
-  const kakaoOnSuccess = () => {
-    console.log("로그인 성공");
+  const kakaoOnSuccess = async () => {
+    const { data } = await axios.post("https://kauth.kakao.com/oauth/token", {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+      },
+    });
+    console.log(data);
   };
   const kakaoOnFailure = (error) => {
     console.log("로그인 실패:", error);
   };
   const kakaoLoginhandler = async () => {
-    const data = await axios.get("/api/users/kakaosignin");
-    console.log(data);
+    try {
+      await axios.get("/api/users/kakaosignin");
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <KakaoLogin
