@@ -4,6 +4,7 @@ const User = require("../models/userModel.js");
 const expressAsyncHandler = require("express-async-handler");
 const userRouter = express.Router();
 const jwt = require("jsonwebtoken");
+
 const {
   isAuth,
   isAdmin,
@@ -131,39 +132,6 @@ userRouter.get(
     const kakaoURI = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${process.env.KAKAO_RESTAPI_KEY}&redirect_uri=${process.env.KAKAO_REDIRECT_URI}`;
 
     res.redirect(kakaoURI);
-
-    const { code } = req.query;
-
-    if (!code) {
-      return res.status(400).send({ message: "Code not provided." });
-    }
-    try {
-      const response = await axios.post(
-        "https://kauth.kakao.com/oauth/token",
-        {
-          grant_type: "authorization_code",
-          client_id: `${process.env.KAKAO_RESTAPI_KEY}`,
-          redirect_uri: `${process.env.KAKAO_REDIRECT_URI}`,
-          code,
-        },
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-          },
-        }
-      );
-
-      // Now you can use the obtained access token (response.data.access_token) for further actions
-
-      // For example, you can store the token in the user session or database
-
-      res.send(response.data);
-    } catch (error) {
-      console.log(error);
-      res
-        .status(500)
-        .send({ message: "Error getting access token from Kakao." });
-    }
   })
 );
 userRouter.post(
