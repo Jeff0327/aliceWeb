@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect } from "react";
 import KakaoLogin from "react-kakao-login";
 const KakaoLoginButton = () => {
@@ -7,23 +6,14 @@ const KakaoLoginButton = () => {
       window.Kakao.init({ apiKey: `${process.env.KAKAO_JAVASCRIPT_KEY}` });
     }
   }, []);
-  const kakaoOnSuccess = async () => {
-    const { data } = await axios.post("https://kauth.kakao.com/oauth/token", {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-      },
-    });
-    console.log(data);
+  const kakaoOnSuccess = () => {
+    console.log("로그인 성공");
   };
   const kakaoOnFailure = (error) => {
     console.log("로그인 실패:", error);
   };
-  const kakaoLoginhandler = async () => {
-    try {
-      await axios.get("/api/users/kakaosignin");
-    } catch (err) {
-      console.log(err);
-    }
+  const kakaoLoginhandler = () => {
+    window.location.href = "/api/users/kakaosignin";
   };
   return (
     <KakaoLogin
