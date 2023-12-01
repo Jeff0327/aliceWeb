@@ -148,7 +148,7 @@ export default function OrderScreen() {
               `/api/orders/${order._id}/bootpay`,
               payId,
               {
-                headers: `Bearer ${userInfo.token}`,
+                headers: { Authorization: `Bearer ${userInfo.token}` },
               }
             );
             dispatch({ type: "PAY_SUCCESS", payload: data });
