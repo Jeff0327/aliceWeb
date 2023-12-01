@@ -37,7 +37,10 @@ const isAuth = (req, res, next) => {
       }
     });
   } else {
-    res.status(401).send({ message: "인증이 만료되었습니다.[error code:022]" });
+    res
+      .status(401)
+      .send({ message: "인증이 만료되었습니다.[error code:022]", err });
+    //토큰없음
   }
 };
 const isAdmin = (req, res, next) => {
