@@ -7,7 +7,7 @@ import { Helmet } from "react-helmet-async";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Store } from "../Store";
-import KakaoLogin from "../components/KakaoLoginButton";
+// import KakaoLogin from "../components/KakaoLoginButton";
 import { getError } from "../utils";
 export default function SigninScreen() {
   const navigate = useNavigate();
@@ -140,9 +140,9 @@ export default function SigninScreen() {
           비밀번호를 잊어버렸나요?{" "}
           <Link to={`/forget-password`}>비밀번호 찾기</Link>
         </div>
-        <Form.Group className="mb-3">
-          <KakaoLogin />
-        </Form.Group>
+        {/* <Form.Group className="mb-3">
+          <KakaoLogin /> 
+  </Form.Group>*/}
 
         {/* <Form.Group className="mb-3" controlId="GoogleForm">
           <GoogleOAuthProvider clientId={`${process.env.GOOGLE_CLIENT_ID}`}>
