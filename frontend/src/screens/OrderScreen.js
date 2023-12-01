@@ -140,6 +140,7 @@ export default function OrderScreen() {
           break;
         case "done":
           try {
+            dispatch({ type: "PAY_REQUEST" });
             console.log("result:", response);
 
             dispatch({ type: "PAY_REQUEST" });
