@@ -4,8 +4,8 @@ const data = {
   users: [
     {
       name: "Admin",
-      email: "cocacola158500@gmail.com",
-      password: bcrypt.hashSync("2583147kjs"),
+      email: `${process.env.ADMIN_ID}`,
+      password: bcrypt.hashSync(`${process.env.ADMIN_PW}`),
       isAdmin: true,
     },
   ],
