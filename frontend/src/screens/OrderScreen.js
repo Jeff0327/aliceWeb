@@ -141,7 +141,7 @@ export default function OrderScreen() {
         case "done":
           try {
             dispatch({ type: "PAY_REQUEST" });
-            console.log("result:", response.order_id);
+
             const payId = response.order_id;
             dispatch({ type: "PAY_REQUEST" });
             const { data } = await axios.put(

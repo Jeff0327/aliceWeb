@@ -140,6 +140,23 @@ orderRouter.put(
         email_address: req.body.email_address,
       };
       const updatedOrder = await order.save();
+      mailgun()
+        .messages()
+        .send(
+          {
+            from: `RoseMarry <cocacola158500@gmail.com>`,
+            to: `${order.user.name} <${order.user.email}>`,
+            subject: `구매해주셔서 감사합니다.  주문번호:[${order._id}]`,
+            html: payOrderEmailTemplate(order),
+          },
+          (error, body) => {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log(body);
+            }
+          }
+        );
       res.send({ message: "주문 완료", order: updatedOrder });
     } else {
       res.status(404).send({ message: "주문을 찾을 수 없습니다." });
