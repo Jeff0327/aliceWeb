@@ -376,7 +376,7 @@ export default function OrderScreen() {
                             onError={onError}
                           ></PayPalButtons>
                         ) : (
-                          <Row>
+                          <Row className="w-100">
                             <Col>
                               <Button
                                 type="button"
