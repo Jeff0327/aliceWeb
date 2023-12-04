@@ -3,8 +3,8 @@ import KakaoLogin from "react-kakao-login";
 
 const KakaoLoginButton = () => {
   useEffect(() => {
-    if (window.Kakao) {
-      window.Kakao.init({ apiKey: `${process.env.KAKAO_JAVASCRIPT_KEY}` });
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init(`${process.env.KAKAO_JAVASCRIPT_KEY}`);
     }
   }, []);
 

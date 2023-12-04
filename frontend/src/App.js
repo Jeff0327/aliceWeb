@@ -117,7 +117,11 @@ function App() {
         <div
           className="loading-screen fade-out"
           style={{
-            backgroundImage: `url(${process.env.PUBLIC_URL}/images/backgroundImg.jpg)`,
+            backgroundColor: "#36352D",
+            backgroundSize: "contain",
+            backgroundImage: `url(${process.env.PUBLIC_URL}/images/backImg.png)`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
           }}
         ></div>
       ) : (

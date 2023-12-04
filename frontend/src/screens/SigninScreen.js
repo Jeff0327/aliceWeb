@@ -1,3 +1,4 @@
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import Axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
@@ -9,10 +10,11 @@ import { toast } from "react-toastify";
 import { Store } from "../Store";
 // import KakaoLogin from "../components/KakaoLoginButton";
 import { getError } from "../utils";
+
 export default function SigninScreen() {
   const navigate = useNavigate();
   const { search } = useLocation();
-  const redirectInUrl = new URLSearchParams(search).get("redirect");
+  const redirectInUrl = new URLSearchParams(search).get("redirect") || "/";
   const redirect = redirectInUrl ? redirectInUrl : "/";
 
   const [email, setEmail] = useState("");
@@ -40,11 +42,6 @@ export default function SigninScreen() {
       navigate(redirect);
     }
   }, [navigate, redirect, userInfo]);
-  // useEffect(() => {
-  //   if (!window.Kakao.isInitialized()) {
-  //     window.Kakao.init(`${process.env.KAKAO_JAVASCRIPT_KEY}`);
-  //   }
-  // }, []);
 
   // useEffect(() => {
   //   const loadKakaoAPI = async () => {
@@ -101,6 +98,28 @@ export default function SigninScreen() {
   //   });
   // };
 
+  // const naverLoginHandler = async () => {
+  //   try {
+  //     const response = await Axios.get("/api/users/naverlogin", {
+  //       params: { redirectInUrl },
+  //     });
+
+  //     console.log(response); // Log the server response
+
+  //     // Open a new window or redirect to the Naver login page
+  //     window.location.href = response.data;
+  //   } catch (err) {
+  //     console.error("Axios error details:", err);
+
+  //     // Log specific details about the response
+  //     if (err.response) {
+  //       console.error("Response data:", err.response.data);
+  //       console.error("Response status:", err.response.status);
+  //       console.error("Response headers:", err.response.headers);
+  //     }
+  //   }
+  // };
+
   return (
     <Container className="small-container">
       <Helmet>
@@ -141,23 +160,30 @@ export default function SigninScreen() {
           <Link to={`/forget-password`}>비밀번호 찾기</Link>
         </div>
         {/* <Form.Group className="mb-3">
-          <KakaoLogin /> 
-  </Form.Group>*/}
-
-        {/* <Form.Group className="mb-3" controlId="GoogleForm">
-          <GoogleOAuthProvider clientId={`${process.env.GOOGLE_CLIENT_ID}`}>
+          <KakaoLogin />
+        </Form.Group> */}
+        {/* <Form.Group className="mb-3">
+          <img
+            onClick={naverLoginHandler}
+            alt="네이버 로그인"
+            style={{ width: "20%", height: 35 }}
+            src={`${process.env.PUBLIC_URL}/images/NaverLoginBtn.png`}
+          />
+        </Form.Group> */}
+        <Form.Group className="mb-3" controlId="GoogleForm">
+          <GoogleOAuthProvider
+            clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}
+          >
             <GoogleLogin
-              buttonText="Google 로그인"
               onSuccess={(res) => {
                 console.log(res);
               }}
               onFailure={(err) => {
                 console.log(err);
               }}
-              cookiePolicy={"single_host_origin"}
             />
           </GoogleOAuthProvider>
-        </Form.Group> */}
+        </Form.Group>
       </Form>
     </Container>
   );

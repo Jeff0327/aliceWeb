@@ -4,7 +4,7 @@ const User = require("../models/userModel.js");
 const expressAsyncHandler = require("express-async-handler");
 const userRouter = express.Router();
 const jwt = require("jsonwebtoken");
-
+const request = require("request");
 const {
   isAuth,
   isAdmin,
@@ -125,7 +125,67 @@ userRouter.post(
     });
   })
 );
+userRouter.get("/naverlogin", (req, res) => {
+  try {
+    const redirectURI = req.params.redirectInUrl; // Set this to your actual redirect URI
+    const state = Math.random().toString(36).substring(7); // Generate a random state
 
+    const api_url = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.NAVER_CLIENT_ID}&redirect_uri=${redirectURI}&state=${state}`;
+
+    res.writeHead(200, { "Content-Type": "text/html;charset=utf-8" });
+    res.end(
+      `<a href='${api_url}'><img height='50' src='http://static.nid.naver.com/oauth/small_g_in.PNG'/></a>`
+    );
+  } catch (error) {
+    console.error("Error in Naver Login:", error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+});
+
+// Naver Callback Route
+userRouter.get("/naver/callback", (req, res) => {
+  try {
+    const code = req.query.code;
+    const state = req.query.state;
+
+    // Add your actual redirect URI here
+    const redirectURI = req.query.redirectInUrl;
+    console.log("Received parameters:", { code, state, redirectURI });
+
+    // Verify that the received state matches the one sent initially
+    if (state !== req.query.state) {
+      return res.status(400).send({ message: "Invalid state parameter." });
+    }
+
+    const tokenURL = "https://nid.naver.com/oauth2.0/token";
+    const options = {
+      uri: tokenURL,
+      method: "POST",
+      form: {
+        grant_type: "authorization_code",
+        client_id: `${process.env.NAVER_CLIENT_ID}`,
+        client_secret: `${process.env.NAVER_CLIENT_SECRET}`,
+        code,
+        state,
+        redirect_uri: redirectURI,
+      },
+    };
+
+    request.post(options, (error, response, body) => {
+      if (!error && response.statusCode == 200) {
+        const tokenInfo = JSON.parse(body);
+        // Use tokenInfo.access_token to make requests to Naver API on behalf of the user
+        res.send(tokenInfo);
+      } else {
+        res.status(response?.statusCode || 500).end();
+        console.error("Error in Naver Callback:", error);
+      }
+    });
+  } catch (error) {
+    console.error("Error in Naver Callback:", error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+});
 userRouter.post(
   "/signin",
   expressAsyncHandler(async (req, res) => {
