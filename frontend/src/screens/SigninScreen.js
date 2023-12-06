@@ -1,4 +1,3 @@
-import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import Axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
@@ -9,8 +8,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Store } from "../Store";
 // import KakaoLogin from "../components/KakaoLoginButton";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { getError } from "../utils";
-
 export default function SigninScreen() {
   const navigate = useNavigate();
   const { search } = useLocation();
@@ -22,6 +21,8 @@ export default function SigninScreen() {
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
+  const clientId =
+    "258796595331-i3a9759p2fjajsg80gr3fsuavbdko1ld.apps.googleusercontent.com";
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -170,13 +171,21 @@ export default function SigninScreen() {
             src={`${process.env.PUBLIC_URL}/images/NaverLoginBtn.png`}
           />
         </Form.Group> */}
-        <Form.Group className="mb-3" controlId="GoogleForm">
-          <GoogleOAuthProvider
-            clientId={`${process.env.REACT_APP_GOOGLE_CLIENT_ID}`}
-          >
+        <Form.Group className="mb-3">
+          <GoogleOAuthProvider clientId={clientId}>
             <GoogleLogin
-              onSuccess={(res) => {
+              onSuccess={async (res) => {
                 console.log(res);
+                try {
+                  const { data } = await Axios.get(
+                    "/api/users/googlelogin",
+                    res
+                  );
+                  const result = await data.json();
+                  console.log(result);
+                } catch (error) {
+                  console.error("Error calling /googlelogin:", error);
+                }
               }}
               onFailure={(err) => {
                 console.log(err);

@@ -125,6 +125,23 @@ userRouter.post(
     });
   })
 );
+
+userRouter.get(
+  "/googlelogin",
+  expressAsyncHandler(async (req, res) => {
+    try {
+      const googleToken = req.body.credential;
+
+      const decodedToken = jwt.verify(googleToken, process.env.JWT_SECRET);
+
+      res.send({ decodedToken });
+    } catch (err) {
+      console.log(err);
+      res.status(401).send({ message: "Invalid or expired token" });
+      res.status(500).send(err);
+    }
+  })
+);
 userRouter.get("/naverlogin", (req, res) => {
   try {
     const redirectURI = req.params.redirectInUrl; // Set this to your actual redirect URI
