@@ -175,17 +175,15 @@ export default function SigninScreen() {
           <GoogleOAuthProvider clientId={clientId}>
             <GoogleLogin
               onSuccess={async (res) => {
-                console.log(res);
-                try {
-                  const { data } = await Axios.get(
-                    "/api/users/googlelogin",
-                    res
-                  );
-                  const result = await data.json();
-                  console.log(result);
-                } catch (error) {
-                  console.error("Error calling /googlelogin:", error);
-                }
+                console.log("Google login success:", res);
+                // try {
+                //   const { data } = await Axios.post("/api/users/googlelogin", {
+                //     token: res.credential,
+                //   });
+                //   console.log(data);
+                // } catch (err) {
+                //   console.log(err);
+                // }
               }}
               onFailure={(err) => {
                 console.log(err);
