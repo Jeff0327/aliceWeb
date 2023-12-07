@@ -8,7 +8,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Store } from "../Store";
 // import KakaoLogin from "../components/KakaoLoginButton";
-import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import GoogleLoginButton from "../components/SocialGoogleLogin";
 import { getError } from "../utils";
 export default function SigninScreen() {
   const navigate = useNavigate();
@@ -173,22 +174,7 @@ export default function SigninScreen() {
         </Form.Group> */}
         <Form.Group className="mb-3">
           <GoogleOAuthProvider clientId={clientId}>
-            <GoogleLogin
-              onSuccess={async (res) => {
-                console.log("Google login success:", res);
-                // try {
-                //   const { data } = await Axios.post("/api/users/googlelogin", {
-                //     token: res.credential,
-                //   });
-                //   console.log(data);
-                // } catch (err) {
-                //   console.log(err);
-                // }
-              }}
-              onFailure={(err) => {
-                console.log(err);
-              }}
-            />
+            <GoogleLoginButton />
           </GoogleOAuthProvider>
         </Form.Group>
       </Form>

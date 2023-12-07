@@ -436,6 +436,37 @@ button.thumbnail {
   width: 60%; 
   border-top: 1px solid #ccc;
 }
+/*SigninScreen*/
+.social-google-login {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  background-color: #ffffff;
+  color: #5c5757;
+  border: solid 0.5px;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  
+
+}  
+
+.googleIcon-img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.social_login_text_box {
+  font-size: 14px;
+  font-weight: 700;
+  
+}
+
+.social_login_blank_box {
+  flex-grow: 1;
+}
 
 /*SignupScreen*/
 .info-text{
