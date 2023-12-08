@@ -5,6 +5,7 @@ const expressAsyncHandler = require("express-async-handler");
 const userRouter = express.Router();
 const jwt = require("jsonwebtoken");
 const request = require("request");
+const { OAuth2Client } = require("google-auth-library");
 const {
   isAuth,
   isAdmin,
@@ -130,7 +131,15 @@ userRouter.get(
   "/googlelogin",
   expressAsyncHandler(async (req, res) => {
     try {
-      console.log("its try");
+      const oAuth2Client = new OAuth2Client(
+        process.env.GOOGLE_CLIENT_ID,
+        process.env.GOOGLE_CLIENT_SECRET_PASSWORD,
+        "postmessage"
+      );
+      const { tokens } = await oAuth2Client.getToken(req.body.res); // exchange code for tokens
+      console.log(tokens);
+
+      res.json(tokens);
     } catch (err) {
       console.log(err);
     }

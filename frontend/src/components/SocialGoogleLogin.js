@@ -1,8 +1,17 @@
 import { useGoogleLogin } from "@react-oauth/google";
-
+import axios from "axios";
 const SocialGoogleLogin = () => {
   const googleSocialLogin = useGoogleLogin({
-    onSuccess: (codeResponse) => console.log("codeResponse:", codeResponse),
+    onSuccess: async (res) => {
+      console.log("codeResponse:", res);
+
+      const tokens = await axios.get("/api/users/googlelogin", {
+        headers: { Authorization: `Bearer ${res.code}` },
+      });
+
+      console.log(tokens);
+    },
+
     flow: "auth-code",
   });
   return (
