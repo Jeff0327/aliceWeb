@@ -162,7 +162,7 @@ userRouter.get("/naver/callback", async (req, res) => {
     // Exchange the code for an access token
     const naverTokenResponse = await axios.post(
       "https://nid.naver.com/oauth2.0/token",
-
+      `grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&state=${req.query.state}`,
       {
         form: {
           grant_type: "authorization_code",
@@ -214,7 +214,8 @@ userRouter.get("/naver/callback", async (req, res) => {
       token: generateToken(user),
     });
   } catch (error) {
-    console.log(error);
+    console.error("Error in /naver/callback:", error);
+
     res.status(500).send({ message: "Internal Server Error" });
   }
 });
