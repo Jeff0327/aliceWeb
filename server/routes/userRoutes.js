@@ -146,13 +146,6 @@ userRouter.get(
     }
   })
 );
-userRouter.get("/naverlogin", (req, res) => {
-  try {
-    res.send({ message: "asd" });
-  } catch (error) {
-    console.log(error);
-  }
-});
 
 // Naver Callback Route
 userRouter.get("/naver/callback", async (req, res) => {
@@ -164,13 +157,6 @@ userRouter.get("/naver/callback", async (req, res) => {
       "https://nid.naver.com/oauth2.0/token",
       `grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&state=${req.query.state}`,
       {
-        form: {
-          grant_type: "authorization_code",
-          client_id: process.env.NAVER_CLIENT_ID,
-          client_secret: process.env.NAVER_CLIENT_SECRET,
-          code: code,
-          state: req.query.state,
-        },
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
