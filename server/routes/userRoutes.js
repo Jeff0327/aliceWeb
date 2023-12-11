@@ -5,6 +5,7 @@ const expressAsyncHandler = require("express-async-handler");
 const userRouter = express.Router();
 const jwt = require("jsonwebtoken");
 const request = require("request");
+const axios = require("axios");
 const { OAuth2Client } = require("google-auth-library");
 const {
   isAuth,
@@ -147,62 +148,73 @@ userRouter.get(
 );
 userRouter.get("/naverlogin", (req, res) => {
   try {
-    const redirectURI = req.params.redirectInUrl; // Set this to your actual redirect URI
-    const state = Math.random().toString(36).substring(7); // Generate a random state
-
-    const api_url = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.NAVER_CLIENT_ID}&redirect_uri=${redirectURI}&state=${state}`;
-
-    res.writeHead(200, { "Content-Type": "text/html;charset=utf-8" });
-    res.end(
-      `<a href='${api_url}'><img height='50' src='http://static.nid.naver.com/oauth/small_g_in.PNG'/></a>`
-    );
+    res.send({ message: "asd" });
   } catch (error) {
-    console.error("Error in Naver Login:", error);
-    res.status(500).send({ message: "Internal Server Error" });
+    console.log(error);
   }
 });
 
 // Naver Callback Route
-userRouter.get("/naver/callback", (req, res) => {
+userRouter.get("/naver/callback", async (req, res) => {
   try {
-    const code = req.query.code;
-    const state = req.query.state;
+    const { code } = req.query;
 
-    // Add your actual redirect URI here
-    const redirectURI = req.query.redirectInUrl;
-    console.log("Received parameters:", { code, state, redirectURI });
+    // Exchange the code for an access token
+    const naverTokenResponse = await axios.post(
+      "https://nid.naver.com/oauth2.0/token",
 
-    // Verify that the received state matches the one sent initially
-    if (state !== req.query.state) {
-      return res.status(400).send({ message: "Invalid state parameter." });
+      {
+        form: {
+          grant_type: "authorization_code",
+          client_id: process.env.NAVER_CLIENT_ID,
+          client_secret: process.env.NAVER_CLIENT_SECRET,
+          code: code,
+          state: req.query.state,
+        },
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+
+    const accessToken = naverTokenResponse.data.access_token;
+
+    // Use the access token to get user information
+    const naverUserInfoResponse = await axios.get(
+      "https://openapi.naver.com/v1/nid/me",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    const naverUserInfo = naverUserInfoResponse.data.response;
+
+    // Check if the user already exists in your database
+    let user = await User.findOne({ email: naverUserInfo.email });
+
+    if (!user) {
+      // If the user doesn't exist, create a new user in your database
+      user = new User({
+        name: naverUserInfo.name,
+        email: naverUserInfo.email,
+        // Add other necessary fields based on your User model
+      });
+
+      await user.save();
     }
 
-    const tokenURL = "https://nid.naver.com/oauth2.0/token";
-    const options = {
-      uri: tokenURL,
-      method: "POST",
-      form: {
-        grant_type: "authorization_code",
-        client_id: `${process.env.NAVER_CLIENT_ID}`,
-        client_secret: `${process.env.NAVER_CLIENT_SECRET}`,
-        code,
-        state,
-        redirect_uri: redirectURI,
-      },
-    };
-
-    request.post(options, (error, response, body) => {
-      if (!error && response.statusCode == 200) {
-        const tokenInfo = JSON.parse(body);
-        // Use tokenInfo.access_token to make requests to Naver API on behalf of the user
-        res.send(tokenInfo);
-      } else {
-        res.status(response?.statusCode || 500).end();
-        console.error("Error in Naver Callback:", error);
-      }
+    // Generate a token and send it in the response
+    res.send({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      token: generateToken(user),
     });
   } catch (error) {
-    console.error("Error in Naver Callback:", error);
+    console.log(error);
     res.status(500).send({ message: "Internal Server Error" });
   }
 });

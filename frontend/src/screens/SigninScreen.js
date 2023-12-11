@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { Store } from "../Store";
 // import KakaoLogin from "../components/KakaoLoginButton";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import NaverLogin from "../components/NaverLogin";
 import GoogleLoginButton from "../components/SocialGoogleLogin";
 import { getError } from "../utils";
 export default function SigninScreen() {
@@ -23,7 +24,7 @@ export default function SigninScreen() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const clientId =
-    "258796595331-i3a9759p2fjajsg80gr3fsuavbdko1ld.apps.googleusercontent.com";
+    "258796595331-7cb6sehma9pnihkr8dkhth4apjlkd37j.apps.googleusercontent.com";
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -176,6 +177,7 @@ export default function SigninScreen() {
           <GoogleOAuthProvider clientId={clientId}>
             <GoogleLoginButton />
           </GoogleOAuthProvider>
+          <NaverLogin />
         </Form.Group>
       </Form>
     </Container>
