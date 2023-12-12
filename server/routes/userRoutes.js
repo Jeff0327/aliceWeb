@@ -153,6 +153,9 @@ userRouter.get("/naver/callback", async (req, res) => {
   try {
     const { code } = req.query;
 
+    if (code === "undefine" || null) {
+      res.send({ message: "is not find code" });
+    }
     const naverTokenResponse = await axios.post(
       "https://nid.naver.com/oauth2.0/token",
       `grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&state=${req.query.state}`,
@@ -210,7 +213,7 @@ userRouter.get("/naver/callback", async (req, res) => {
   } catch (error) {
     console.error("Error in /naver/callback:", error);
 
-    res.status(500).send({ message: "Internal Server Error" });
+    res.status(500).send({ message: "Internal Server Error!!", error });
   }
 });
 userRouter.post(
