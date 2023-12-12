@@ -173,43 +173,48 @@ userRouter.get("/naver/callback", async (req, res) => {
       }
     );
 
+    console.log("naverTokenResponse:", naverTokenResponse);
     const accessToken = naverTokenResponse.data.access_token;
-    console.log(accessToken);
-
-    // Use the access token to get user information
-    const naverUserInfoResponse = await axios.get(
-      "https://openapi.naver.com/v1/nid/me",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
-
-    const naverUserInfo = naverUserInfoResponse.data.response;
-
-    // Check if the user already exists in your database
-    let user = await User.findOne({ email: naverUserInfo.email });
-
-    if (!user) {
-      // If the user doesn't exist, create a new user in your database
-      user = new User({
-        name: naverUserInfo.name,
-        email: naverUserInfo.email,
-        // Add other necessary fields based on your User model
-      });
-
-      await user.save();
+    if (!accessToken) {
+      res.status(401).send({ message: "Access token is 401 error" });
+    } else {
+      console.log(accessToken);
     }
 
-    // Generate a token and send it in the response
-    res.send({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      token: generateToken(user),
-    });
+    // Use the access token to get user information
+    // const naverUserInfoResponse = await axios.get(
+    //   "https://openapi.naver.com/v1/nid/me",
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${accessToken}`,
+    //     },
+    //   }
+    // );
+
+    // const naverUserInfo = naverUserInfoResponse.data.response;
+
+    // // Check if the user already exists in your database
+    // let user = await User.findOne({ email: naverUserInfo.email });
+
+    // if (!user) {
+    //   // If the user doesn't exist, create a new user in your database
+    //   user = new User({
+    //     name: naverUserInfo.name,
+    //     email: naverUserInfo.email,
+    //     // Add other necessary fields based on your User model
+    //   });
+
+    //   await user.save();
+    // }
+
+    // // Generate a token and send it in the response
+    // res.send({
+    //   _id: user._id,
+    //   name: user.name,
+    //   email: user.email,
+    //   isAdmin: user.isAdmin,
+    //   token: generateToken(user),
+    // });
   } catch (error) {
     console.error("Error in /naver/callback:", error);
 
