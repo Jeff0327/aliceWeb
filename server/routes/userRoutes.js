@@ -155,6 +155,7 @@ userRouter.get("/naver/callback", async (req, res) => {
     const { code } = req.query;
     const { state } = req.query.state;
     const { req } = req;
+    res.send({ req: req });
     if (code === "undefine" || null) {
       res.send({ message: "is not find code" });
     } else {
