@@ -153,23 +153,24 @@ userRouter.get(
 userRouter.get("/naver/callback", async (req, res) => {
   try {
     const { code } = req.query;
-
+    const { state } = req.query.state;
     if (code === "undefine" || null) {
       res.send({ message: "is not find code" });
     } else {
-      res.send({ message: code });
+      res.send({ message: code, state });
     }
+    //여기가 문제
     const naverTokenResponse = await axios.post(
       "https://nid.naver.com/oauth2.0/token",
-      `grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&state=${req.query.state}`,
+
       {
-        // params: {
-        //   grant_type: "authorization_code",
-        //   client_id: `${process.env.NAVER_CLIENT_ID}`,
-        //   client_secret: `${process.env.NAVER_CLIENT_SECRET}`,
-        //   code: code,
-        //   state: req.query.state,
-        // },
+        params: {
+          grant_type: "authorization_code",
+          client_id: `${process.env.NAVER_CLIENT_ID}`,
+          client_secret: `${process.env.NAVER_CLIENT_SECRET}`,
+          code: code,
+          state: state,
+        },
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
