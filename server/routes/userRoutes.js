@@ -156,18 +156,20 @@ userRouter.get("/naver/callback", async (req, res) => {
 
     if (code === "undefine" || null) {
       res.send({ message: "is not find code" });
+    } else {
+      res.send({ message: code });
     }
     const naverTokenResponse = await axios.post(
       "https://nid.naver.com/oauth2.0/token",
-      // `grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&state=${req.query.state}`,
+      `grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&state=${req.query.state}`,
       {
-        params: {
-          grant_type: "authorization_code",
-          client_id: `${process.env.NAVER_CLIENT_ID}`,
-          client_secret: `${process.env.NAVER_CLIENT_SECRET}`,
-          code: code,
-          state: req.query.state,
-        },
+        // params: {
+        //   grant_type: "authorization_code",
+        //   client_id: `${process.env.NAVER_CLIENT_ID}`,
+        //   client_secret: `${process.env.NAVER_CLIENT_SECRET}`,
+        //   code: code,
+        //   state: req.query.state,
+        // },
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
