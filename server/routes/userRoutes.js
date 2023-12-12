@@ -148,11 +148,11 @@ userRouter.get(
 );
 
 // Naver Callback Route
+
 userRouter.get("/naver/callback", async (req, res) => {
   try {
     const { code } = req.query;
 
-    // Exchange the code for an access token
     const naverTokenResponse = await axios.post(
       "https://nid.naver.com/oauth2.0/token",
       `grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&state=${req.query.state}`,
@@ -164,6 +164,7 @@ userRouter.get("/naver/callback", async (req, res) => {
     );
 
     const accessToken = naverTokenResponse.data.access_token;
+    console.log(accessToken);
 
     // Use the access token to get user information
     const naverUserInfoResponse = await axios.get(
