@@ -157,6 +157,13 @@ userRouter.get("/naver/callback", async (req, res) => {
       "https://nid.naver.com/oauth2.0/token",
       `grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&state=${req.query.state}`,
       {
+        params: {
+          grant_type: "authorization_code",
+          client_id: encodeURIComponent(process.env.NAVER_CLIENT_ID),
+          client_secret: encodeURIComponent(process.env.NAVER_CLIENT_SECRET),
+          code: code,
+          state: req.query.state,
+        },
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
