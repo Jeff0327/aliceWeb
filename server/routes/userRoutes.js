@@ -154,11 +154,11 @@ userRouter.get("/naver/callback", async (req, res) => {
   try {
     const { code } = req.query;
     const { state } = req.query.state;
+    const { req } = req;
     if (code === "undefine" || null) {
       res.send({ message: "is not find code" });
     } else {
-      res.send({ message: code });
-      res.send({ message: state });
+      res.send({ code: code, state: state, req: req });
     }
     //여기가 문제
     const naverTokenResponse = await axios.post(
