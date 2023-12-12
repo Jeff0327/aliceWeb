@@ -14,6 +14,7 @@ const {
   baseUrl,
   mailgun,
 } = require("../utils.js");
+const { send } = require("process");
 
 userRouter.get(
   "/",
@@ -158,12 +159,12 @@ userRouter.get("/naver/callback", async (req, res) => {
     }
     const naverTokenResponse = await axios.post(
       "https://nid.naver.com/oauth2.0/token",
-      `grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&state=${req.query.state}`,
+      // `grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&state=${req.query.state}`,
       {
         params: {
           grant_type: "authorization_code",
-          client_id: encodeURIComponent(process.env.NAVER_CLIENT_ID),
-          client_secret: encodeURIComponent(process.env.NAVER_CLIENT_SECRET),
+          client_id: `${process.env.NAVER_CLIENT_ID}`,
+          client_secret: `${process.env.NAVER_CLIENT_SECRET}`,
           code: code,
           state: req.query.state,
         },
@@ -172,8 +173,10 @@ userRouter.get("/naver/callback", async (req, res) => {
         },
       }
     );
+    if (naverTokenResponse) {
+      res.send({ message: "this is naverTokenRes:", naverTokenResponse });
+    }
 
-    console.log("naverTokenResponse:", naverTokenResponse);
     const accessToken = naverTokenResponse.data.access_token;
     if (!accessToken) {
       res.status(401).send({ message: "Access token is 401 error" });
