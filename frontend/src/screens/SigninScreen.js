@@ -29,8 +29,8 @@ export default function SigninScreen() {
 
   const naverLoginHandler = async () => {
     try {
-      // Redirect the user to the Naver authorization URL
-      window.location.href = "/api/users/naverlogin";
+      const data = await Axios.get("/api/users/naverlogin");
+      window.location.href = data.naverUrl;
     } catch (err) {
       console.error(err);
     }

@@ -153,9 +153,9 @@ userRouter.get("/naverlogin", (req, res) => {
   const REDIRECT_URI = "https://rosemarry.kr/api/users/naver/callback";
   const state = "false";
 
-  res.redirect(
-    `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.NAVER_CLIENT_ID}&state=${state}&redirect_uri=${REDIRECT_URI}`
-  );
+  res.send({
+    naverUrl: `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.NAVER_CLIENT_ID}&state=${state}&redirect_uri=${REDIRECT_URI}`,
+  });
 });
 userRouter.get("/naver/callback", async (req, res) => {
   try {
