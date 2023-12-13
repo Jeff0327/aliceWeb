@@ -24,15 +24,21 @@ export default function SigninScreen() {
   const { userInfo } = state;
   const clientId =
     "258796595331-7cb6sehma9pnihkr8dkhth4apjlkd37j.apps.googleusercontent.com";
-
+  const REDIRECT_URI = "https://rosemarry.kr/api/users/naver/callback";
   // const naverurl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naver_id}&state=${naverState}&redirect_uri=${REDIRECT_URI}`;
 
   const naverLoginHandler = async () => {
+    // try {
+    //   const REDIRECT_URI = encodeURIComponent("https://rosemarry.kr/api/users/naver/callback");
+    //   window.location.href = `/api/users/naverlogin?REDIRECT_URI=${REDIRECT_URI}`;
+    // } catch (err) {
+    //   console.error(err);
+    // }
     try {
-      const data = await Axios.get("/api/users/naverlogin");
-      window.location.href = data.naverUrl;
+      const res = await Axios.get("/api/users/naverlogin");
+      console.log(res.data);
     } catch (err) {
-      console.error(err);
+      console.log(err);
     }
   };
   const submitHandler = async (e) => {

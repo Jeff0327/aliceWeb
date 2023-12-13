@@ -149,13 +149,31 @@ userRouter.get(
 );
 
 // Naver Callback Route
-userRouter.get("/naverlogin", (req, res) => {
-  const REDIRECT_URI = "https://rosemarry.kr/api/users/naver/callback";
-  const state = "false";
+// userRouter.get(
+//   "/naverlogin",
+//   expressAsyncHandler(async (req, res) => {
+//     try {
+//       const REDIRECT_URI = req.query.REDIRECT_URI || ""; // Use req.query to get the REDIRECT_URI
+//       const state = "false";
 
-  res.send({
-    naverUrl: `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.NAVER_CLIENT_ID}&state=${state}&redirect_uri=${REDIRECT_URI}`,
-  });
+//       const url = await axios.get(
+//         `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.NAVER_CLIENT_ID}&state=${state}&redirect_uri=${REDIRECT_URI}`
+//       );
+
+//       res.send({ naverUrl: url.data }); // Send the Naver URL in the response
+//     } catch (error) {
+//       console.error("Error in /naverlogin:", error);
+//       res.status(500).send({ message: "Internal Server Error!!", error });
+//     }
+//   })
+// );
+userRouter.get("/naverlogin", (req, res) => {
+  const a = 10;
+  try {
+    res.send({ a });
+  } catch (err) {
+    console.log(err);
+  }
 });
 userRouter.get("/naver/callback", async (req, res) => {
   try {
