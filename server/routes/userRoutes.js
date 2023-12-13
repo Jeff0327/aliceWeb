@@ -149,17 +149,13 @@ userRouter.get(
 );
 
 // Naver Callback Route
-userRouter.get("/naverlogin", async (req, res) => {
+userRouter.get("/naverlogin", (req, res) => {
   const REDIRECT_URI = "https://rosemarry.kr/api/users/naver/callback";
   const state = "false";
-  try {
-    const { code } = await axios.get(
-      `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.NAVER_CLIENT_ID}&state=${state}&redirect_uri=${REDIRECT_URI}`
-    );
-    res.send({ code });
-  } catch (err) {
-    console.log(err);
-  }
+
+  res.redirect(
+    `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.NAVER_CLIENT_ID}&state=${state}&redirect_uri=${REDIRECT_URI}`
+  );
 });
 userRouter.get("/naver/callback", async (req, res) => {
   try {

@@ -28,9 +28,12 @@ export default function SigninScreen() {
   // const naverurl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naver_id}&state=${naverState}&redirect_uri=${REDIRECT_URI}`;
 
   const naverLoginHandler = async () => {
-    const { data } = await Axios.get("/api/users/naverlogin");
-
-    window.location.href = data;
+    try {
+      // Redirect the user to the Naver authorization URL
+      window.location.href = "/api/users/naverlogin";
+    } catch (err) {
+      console.error(err);
+    }
   };
   const submitHandler = async (e) => {
     e.preventDefault();
