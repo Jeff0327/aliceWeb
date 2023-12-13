@@ -168,10 +168,15 @@ userRouter.get("/naver/callback", async (req, res) => {
         },
       }
     );
-    if (naverTokenResponse) {
-      res.send({ message: "this is naverTokenRes:", naverTokenResponse });
-    }
 
+    if (naverTokenResponse.data.error) {
+      return res
+        .status(500)
+        .send({
+          message: "Naver API Error",
+          error: naverTokenResponse.data.error,
+        });
+    }
     // const accessToken = naverTokenResponse.data.access_token;
     // if (!accessToken) {
     //   res.status(401).send({ message: "Access token is 401 error" });
