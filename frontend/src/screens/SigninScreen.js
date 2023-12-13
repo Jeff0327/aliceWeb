@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 import { Store } from "../Store";
 // import KakaoLogin from "../components/KakaoLoginButton";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import NaverLogin from "../components/NaverLogin";
 import GoogleLoginButton from "../components/SocialGoogleLogin";
 import { getError } from "../utils";
 export default function SigninScreen() {
@@ -25,7 +24,29 @@ export default function SigninScreen() {
   const { userInfo } = state;
   const clientId =
     "258796595331-7cb6sehma9pnihkr8dkhth4apjlkd37j.apps.googleusercontent.com";
+  const naver_id = "zzGqNBIM5P9dLWFD3ByE";
 
+  const REDIRECT_URI = "https://rosemarry.kr/api/users/naver/callback";
+  const naverState = "false";
+  const naverurl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naver_id}&state=${naverState}&redirect_uri=${REDIRECT_URI}`;
+
+  const naverLoginHandler = async () => {
+    window.location.href = naverurl;
+    if (window.location.href === naverurl) {
+      const { data } = await Axios.get("/api/users/naver/callback");
+
+      const naverTokenResponse = await Axios.post(
+        "https://nid.naver.com/oauth2.0/token",
+        `grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${data.code}&state=${data.naverState}`,
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+      console.log(naverTokenResponse);
+    }
+  };
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -177,7 +198,20 @@ export default function SigninScreen() {
           <GoogleOAuthProvider clientId={clientId}>
             <GoogleLoginButton />
           </GoogleOAuthProvider>
-          <NaverLogin />
+          <div
+            className="social-login-container"
+            onClick={() => naverLoginHandler()}
+          >
+            <div>
+              <img
+                src={`${process.env.PUBLIC_URL}/images/Naverlogo.png`}
+                alt="네이버_로그인"
+                className="social-Icon-img"
+              />
+            </div>
+            <div className="social_login_text_box">네이버로 시작하기</div>
+            <div className="social_login_blank_box"> </div>
+          </div>
         </Form.Group>
       </Form>
     </Container>

@@ -158,25 +158,7 @@ userRouter.get("/naver/callback", async (req, res) => {
       res.status(400).send({ message: "Code is missing or invalid" });
       return;
     }
-    //여기가 문제
-    const naverTokenResponse = await axios.post(
-      "https://nid.naver.com/oauth2.0/token",
-      `grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&state=${state}`,
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }
-    );
 
-    if (naverTokenResponse.data.error) {
-      return res
-        .status(500)
-        .send({
-          message: "Naver API Error",
-          error: naverTokenResponse.data.error,
-        });
-    }
     // const accessToken = naverTokenResponse.data.access_token;
     // if (!accessToken) {
     //   res.status(401).send({ message: "Access token is 401 error" });
