@@ -152,13 +152,11 @@ userRouter.get(
 
 userRouter.get("/naver/callback", async (req, res) => {
   try {
-    const { code } = req.query;
-    const { state } = req.query.state;
+    const { code, state } = req.query;
 
-    if (code === "undefine" || null) {
-      res.send({ message: "is not find code" });
-    } else {
-      res.send({ code: code, state: state, req: req });
+    if (!code || code === "undefined" || code === null) {
+      res.status(400).send({ message: "Code is missing or invalid" });
+      return;
     }
     //여기가 문제
     // const naverTokenResponse = await axios.post(
@@ -221,6 +219,7 @@ userRouter.get("/naver/callback", async (req, res) => {
     //   isAdmin: user.isAdmin,
     //   token: generateToken(user),
     // });
+    res.send({ code: code, state: state });
   } catch (error) {
     console.error("Error in /naver/callback:", error);
 
