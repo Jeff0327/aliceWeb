@@ -161,31 +161,31 @@ userRouter.get("/naver/callback", async (req, res) => {
       res.send({ code: code, state: state, req: req });
     }
     //여기가 문제
-    const naverTokenResponse = await axios.post(
-      `https://nid.naver.com/oauth2.0/token`,
-      {
-        params: {
-          grant_type: "authorization_code",
-          client_id: `${process.env.NAVER_CLIENT_ID}`,
-          client_secret: `${process.env.NAVER_CLIENT_SECRET}`,
-          code: code,
-          state: state,
-        },
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }
-    );
-    if (naverTokenResponse) {
-      res.send({ message: "this is naverTokenRes:", naverTokenResponse });
-    }
+    // const naverTokenResponse = await axios.post(
+    //   `https://nid.naver.com/oauth2.0/token`,
+    //   {
+    //     params: {
+    //       grant_type: "authorization_code",
+    //       client_id: `${process.env.NAVER_CLIENT_ID}`,
+    //       client_secret: `${process.env.NAVER_CLIENT_SECRET}`,
+    //       code: code,
+    //       state: state,
+    //     },
+    //     headers: {
+    //       "Content-Type": "application/x-www-form-urlencoded",
+    //     },
+    //   }
+    // );
+    // if (naverTokenResponse) {
+    //   res.send({ message: "this is naverTokenRes:", naverTokenResponse });
+    // }
 
-    const accessToken = naverTokenResponse.data.access_token;
-    if (!accessToken) {
-      res.status(401).send({ message: "Access token is 401 error" });
-    } else {
-      console.log(accessToken);
-    }
+    // const accessToken = naverTokenResponse.data.access_token;
+    // if (!accessToken) {
+    //   res.status(401).send({ message: "Access token is 401 error" });
+    // } else {
+    //   console.log(accessToken);
+    // }
 
     // Use the access token to get user information
     // const naverUserInfoResponse = await axios.get(
