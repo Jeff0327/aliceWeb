@@ -2,8 +2,8 @@ function NaverLogin() {
   const naver_id = "zzGqNBIM5P9dLWFD3ByE";
 
   const REDIRECT_URI = "https://rosemarry.kr/api/users/naver/callback";
-  const STATE = "false";
-  const naverurl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naver_id}&state=${STATE}&redirect_uri=${REDIRECT_URI}`;
+  const state = "false";
+  const naverurl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naver_id}&state=${state}&redirect_uri=${REDIRECT_URI}`;
 
   const naverLoginHandler = () => {
     window.location.href = naverurl;
