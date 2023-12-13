@@ -149,7 +149,18 @@ userRouter.get(
 );
 
 // Naver Callback Route
-
+userRouter.get("/naverlogin", async (req, res) => {
+  const REDIRECT_URI = "https://rosemarry.kr/api/users/naver/callback";
+  const state = "false";
+  try {
+    const { code } = await axios.get(
+      `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.NAVER_CLIENT_ID}&state=${state}&redirect_uri=${REDIRECT_URI}`
+    );
+    res.send({ code });
+  } catch (err) {
+    console.log(err);
+  }
+});
 userRouter.get("/naver/callback", async (req, res) => {
   try {
     const { code, state } = req.query;
@@ -158,7 +169,15 @@ userRouter.get("/naver/callback", async (req, res) => {
       res.status(400).send({ message: "Code is missing or invalid" });
       return;
     }
-
+    const naverTokenResponse = await axios.post(
+      "https://nid.naver.com/oauth2.0/token",
+      `grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&state=${state}`,
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
     // const accessToken = naverTokenResponse.data.access_token;
     // if (!accessToken) {
     //   res.status(401).send({ message: "Access token is 401 error" });
@@ -199,7 +218,7 @@ userRouter.get("/naver/callback", async (req, res) => {
     //   isAdmin: user.isAdmin,
     //   token: generateToken(user),
     // });
-    res.send({ code: code, state: state });
+    res.send({ naverTokenResponse: naverTokenResponse });
   } catch (error) {
     console.error("Error in /naver/callback:", error);
 

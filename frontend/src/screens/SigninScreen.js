@@ -24,28 +24,13 @@ export default function SigninScreen() {
   const { userInfo } = state;
   const clientId =
     "258796595331-7cb6sehma9pnihkr8dkhth4apjlkd37j.apps.googleusercontent.com";
-  const naver_id = "zzGqNBIM5P9dLWFD3ByE";
 
-  const REDIRECT_URI = "https://rosemarry.kr/api/users/naver/callback";
-  const naverState = "false";
-  const naverurl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naver_id}&state=${naverState}&redirect_uri=${REDIRECT_URI}`;
+  // const naverurl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naver_id}&state=${naverState}&redirect_uri=${REDIRECT_URI}`;
 
   const naverLoginHandler = async () => {
-    window.location.href = naverurl;
-    if (window.location.href === naverurl) {
-      const { data } = await Axios.get("/api/users/naver/callback");
+    const { data } = await Axios.get("/api/users/naverlogin");
 
-      const naverTokenResponse = await Axios.post(
-        "https://nid.naver.com/oauth2.0/token",
-        `grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${data.code}&state=${data.naverState}`,
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      );
-      console.log(naverTokenResponse);
-    }
+    window.location.href = data;
   };
   const submitHandler = async (e) => {
     e.preventDefault();
