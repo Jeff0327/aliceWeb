@@ -92,11 +92,24 @@ function App() {
     fetchCategories();
   }, []);
   const onPopKBAuthMark = () => {
-    window.open(
+    const popup = window.open(
       "",
       "KB_AUTHMARK",
       "height=604, width=648, status=yes, toolbar=no, menubar=no, location=no"
     );
+    if (popup) {
+      const checkClosedInterval = setInterval(() => {
+        // Perform actions when the popup is closed
+        if (popup.closed) {
+          clearInterval(checkClosedInterval);
+
+          // Code to execute when the popup is closed
+          console.log("Popup is closed!");
+          // Add your specific actions here
+        }
+      }, 1000); // Check every second (adjust as needed)
+    }
+
     document.KB_AUTHMARK_FORM.action = "https://okbfex.kbstar.com/quics";
     document.KB_AUTHMARK_FORM.target = "KB_AUTHMARK";
     document.KB_AUTHMARK_FORM.submit();
