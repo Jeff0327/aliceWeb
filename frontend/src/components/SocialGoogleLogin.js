@@ -14,7 +14,7 @@ const SocialGoogleLogin = () => {
             client_id:
               "258796595331-i3a9759p2fjajsg80gr3fsuavbdko1ld.apps.googleusercontent.com",
             client_secret: "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",
-            redirect_uri: "http://localhost:3000/googleLoginBtn",
+            redirect_uri: "https://rosemarry.kr/api/users/google/callback/",
             grant_type: "authorization_code",
           }
         );
@@ -34,9 +34,9 @@ const SocialGoogleLogin = () => {
   const getUserInfo = async (accessToken) => {
     try {
       const response = await axios.get(
-        `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${accessToken}`
+        `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`
       );
-      console.log(response);
+      console.log(response.data);
 
       const userInfo = response.data;
       console.log("User Info:", userInfo);

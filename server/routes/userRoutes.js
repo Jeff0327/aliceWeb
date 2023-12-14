@@ -126,7 +126,7 @@ userRouter.post(
     });
   })
 );
-
+// 구글 로그인
 userRouter.get(
   "/googlelogin",
   expressAsyncHandler(async (req, res) => {
@@ -145,7 +145,9 @@ userRouter.get(
     }
   })
 );
-
+userRouter.get("google/callback", (req, res) => {
+  res.send({ token: "asd" });
+});
 // Naver Callback Route
 // userRouter.get(
 //   "/naverlogin",
