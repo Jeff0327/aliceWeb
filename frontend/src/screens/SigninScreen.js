@@ -35,6 +35,10 @@ export default function SigninScreen() {
       const naverurl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClient_id}&state=${bufferState}&redirect_uri=${REDIRECT_URI}`;
 
       window.location.href = naverurl;
+      if (window.location.href === naverurl) {
+        const { data } = await Axios.get("/api/users/naver/callback");
+        console.log(data);
+      }
     } catch (err) {
       console.error(err);
     }
