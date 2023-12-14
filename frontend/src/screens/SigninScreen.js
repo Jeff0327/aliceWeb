@@ -30,22 +30,10 @@ export default function SigninScreen() {
       const REDIRECT_URI = "https://rosemarry.kr/api/users/naver/callback";
       const state = "false";
       const naverClient_id = "zzGqNBIM5P9dLWFD3ByE";
-      const naverClient_secret = "naFQ6amvf3";
+
       const naverurl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClient_id}&state=${state}&redirect_uri=${REDIRECT_URI}`;
 
       window.location.href = naverurl;
-
-      const { code } = await Axios.get(REDIRECT_URI);
-      const naverTokenResponse = await Axios.post(
-        "https://nid.naver.com/oauth2.0/token",
-        `grant_type=authorization_code&client_id=${naverClient_id}&client_secret=${naverClient_secret}&code=${code}&state=${state}`,
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
-      );
-      console.log(naverTokenResponse);
     } catch (err) {
       console.error(err);
     }
