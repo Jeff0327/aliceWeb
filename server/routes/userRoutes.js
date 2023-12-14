@@ -171,17 +171,14 @@ userRouter.get("/naver/callback", async (req, res) => {
     const { code, state } = req.query;
 
     const stateBuffer = Buffer.from(state).toString("base64");
-    // if (!code || code === "undefined" || code === null) {
-    //   res.status(400).send({ message: "Code is missing or invalid" });
-    //   return;
-    // }
+
     const naverToken = await axios.get(
       `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&state=${stateBuffer}`,
       { headers: { "Content-Type": "application/json" } }
     );
-    if (naverToken) {
-      res.send({ naverToken: naverToken });
-    }
+
+    res.send({ naverToken: naverToken });
+
     // const accessToken = naverTokenResponse.data.access_token;
     // if (!accessToken) {
     //   res.status(401).send({ message: "Access token is 401 error" });
