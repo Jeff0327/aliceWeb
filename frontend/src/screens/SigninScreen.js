@@ -24,21 +24,30 @@ export default function SigninScreen() {
   const { userInfo } = state;
   const clientId =
     "258796595331-7cb6sehma9pnihkr8dkhth4apjlkd37j.apps.googleusercontent.com";
-  const REDIRECT_URI = "https://rosemarry.kr/api/users/naver/callback";
-  // const naverurl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naver_id}&state=${naverState}&redirect_uri=${REDIRECT_URI}`;
 
   const naverLoginHandler = async () => {
-    // try {
-    //   const REDIRECT_URI = encodeURIComponent("https://rosemarry.kr/api/users/naver/callback");
-    //   window.location.href = `/api/users/naverlogin?REDIRECT_URI=${REDIRECT_URI}`;
-    // } catch (err) {
-    //   console.error(err);
-    // }
     try {
-      const res = await Axios.get("/api/users/naverlogin");
-      console.log(res.data);
+      const REDIRECT_URI = "https://rosemarry.kr/api/users/naver/callback";
+      const state = "false";
+      const naverClient_id = "zzGqNBIM5P9dLWFD3ByE";
+      const naverClient_secret = "naFQ6amvf3";
+      const naverurl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClient_id}&state=${state}&redirect_uri=${REDIRECT_URI}`;
+
+      window.location.href = naverurl;
+
+      const { code } = await Axios.get(REDIRECT_URI);
+      const naverTokenResponse = await Axios.post(
+        "https://nid.naver.com/oauth2.0/token",
+        `grant_type=authorization_code&client_id=${naverClient_id}&client_secret=${naverClient_secret}&code=${code}&state=${state}`,
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+      console.log(naverTokenResponse);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
   const submitHandler = async (e) => {
