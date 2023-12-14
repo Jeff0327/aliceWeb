@@ -176,7 +176,8 @@ userRouter.get("/naver/callback", async (req, res) => {
     //   return;
     // }
     const naverToken = await axios.get(
-      `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&state=${stateBuffer}`
+      `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&state=${stateBuffer}`,
+      { headers: { "Content-Type": "application/json" } }
     );
     if (naverToken) {
       res.send({ naverToken: naverToken });
