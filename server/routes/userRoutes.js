@@ -4,7 +4,6 @@ const User = require("../models/userModel.js");
 const expressAsyncHandler = require("express-async-handler");
 const userRouter = express.Router();
 const jwt = require("jsonwebtoken");
-const request = require("request");
 const axios = require("axios");
 const { OAuth2Client } = require("google-auth-library");
 const {
@@ -166,13 +165,7 @@ userRouter.get(
 //     }
 //   })
 // );
-userRouter.get("/naverlogin", async (req, res) => {
-  const url = req.body.REDIRECT_URI;
-  const state = "false";
-  const naverurl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.NAVER_CLIENT_ID}&state=${state}&redirect_uri=${url}`;
 
-  res.send(naverurl);
-});
 userRouter.get("/naver/callback", async (req, res) => {
   try {
     const { code, state } = req.query;
@@ -182,13 +175,8 @@ userRouter.get("/naver/callback", async (req, res) => {
     //   res.status(400).send({ message: "Code is missing or invalid" });
     //   return;
     // }
-    const naverTokenResponse = await axios.post(
-      `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&state=${state}`,
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }
+    const naverTokenResponse = await axios.get(
+      `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&state=${state}`
     );
     // const accessToken = naverTokenResponse.data.access_token;
     // if (!accessToken) {
