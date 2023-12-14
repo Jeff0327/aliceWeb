@@ -175,9 +175,12 @@ userRouter.get("/naver/callback", async (req, res) => {
     //   res.status(400).send({ message: "Code is missing or invalid" });
     //   return;
     // }
-    // const naverTokenResponse = await axios.get(
-    //   `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&state=${state}`
-    // );
+    const naverToken = await axios.get(
+      `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&state=${stateBuffer}`
+    );
+    if (naverToken) {
+      res.send({ naverToken: naverToken });
+    }
     // const accessToken = naverTokenResponse.data.access_token;
     // if (!accessToken) {
     //   res.status(401).send({ message: "Access token is 401 error" });
@@ -218,13 +221,13 @@ userRouter.get("/naver/callback", async (req, res) => {
     //   isAdmin: user.isAdmin,
     //   token: generateToken(user),
     // });
-    res.send({
-      NAVERCLIENT_ID: process.env.NAVER_CLIENT_ID,
-      NAVER_CLIENT_SECRET: process.env.NAVER_CLIENT_SECRET,
-      code: code,
-      state: state,
-      stateBuffer: stateBuffer,
-    });
+    // res.send({
+    //   NAVERCLIENT_ID: process.env.NAVER_CLIENT_ID,
+    //   NAVER_CLIENT_SECRET: process.env.NAVER_CLIENT_SECRET,
+    //   code: code,
+    //   state: state,
+    //   stateBuffer: stateBuffer,
+    // });
   } catch (error) {
     console.error("Error in /naver/callback:", error);
 
