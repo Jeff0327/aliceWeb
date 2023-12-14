@@ -3,7 +3,7 @@ import axios from "axios";
 const SocialGoogleLogin = () => {
   const googleSocialLogin = useGoogleLogin({
     onSuccess: async (res) => {
-      console.log("codeResponse:", res);
+      console.log("codeResponse:", res.code);
 
       const accessToken = res.code;
       await getUserInfo(accessToken);
@@ -14,13 +14,9 @@ const SocialGoogleLogin = () => {
   const getUserInfo = async (accessToken) => {
     try {
       const response = await axios.get(
-        "https://www.googleapis.com/oauth2/v2/userinfo",
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
+        `https://www.googleapis.com/oauth2/v2/userinfo?access_token=${accessToken}`
       );
+      console.log(response);
 
       // Access user information in the response.data object
       const userInfo = response.data;
