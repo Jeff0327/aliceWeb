@@ -168,12 +168,7 @@ userRouter.get(
 //   })
 // );
 userRouter.get("/naverlogin", (req, res) => {
-  const a = 10;
-  try {
-    res.send({ a });
-  } catch (err) {
-    console.log(err);
-  }
+  res.send("hi");
 });
 userRouter.get("/naver/callback", async (req, res) => {
   try {
