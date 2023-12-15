@@ -146,7 +146,7 @@ userRouter.get(
   })
 );
 userRouter.get("google/callback", (req, res) => {
-  res.send({ token: "asd" });
+  res.send({ token: "test" });
 });
 // Naver Callback Route
 // userRouter.get(

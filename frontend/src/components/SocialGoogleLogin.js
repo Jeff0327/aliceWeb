@@ -3,30 +3,15 @@ import axios from "axios";
 
 const SocialGoogleLogin = () => {
   const googleSocialLogin = useGoogleLogin({
-    onSuccess: async (res) => {
-      console.log("Authorization Code:", res.code);
+    onSuccess: async (accessToken) => {
+      const client_id =
+        "258796595331-7cb6sehma9pnihkr8dkhth4apjlkd37j.apps.googleusercontent.com";
+      // Modify the authentication URL to use the Implicit Grant flow
+      const authUrl = `https://accounts.google.com/o/oauth2/auth?response_type=token&scope=https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile&client_id=${client_id}&redirect_uri=https://rosemarry.kr/api/users/google/callback/`;
 
-      try {
-        const response = await axios.post(
-          "https://www.googleapis.com/oauth2/v4/token",
-          {
-            code: res.code,
-            client_id:
-              "258796595331-i3a9759p2fjajsg80gr3fsuavbdko1ld.apps.googleusercontent.com",
-            client_secret: "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",
-            redirect_uri: "https://rosemarry.kr/api/users/google/callback/",
-            grant_type: "authorization_code",
-          }
-        );
-
-        const accessToken = response.data.access_token;
-        console.log("Access Token:", accessToken);
-
-        // Now you can use the access token to fetch user information
-        await getUserInfo(accessToken);
-      } catch (error) {
-        console.error("Error exchanging code for access token:", error);
-      }
+      // Redirect the user to the modified authentication URL
+      window.location.href = authUrl;
+      await getUserInfo(accessToken);
     },
     flow: "auth-code",
   });
@@ -34,7 +19,7 @@ const SocialGoogleLogin = () => {
   const getUserInfo = async (accessToken) => {
     try {
       const response = await axios.get(
-        `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`
+        `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accessToken}`
       );
       console.log(response.data);
 
