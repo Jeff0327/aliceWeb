@@ -21,7 +21,12 @@ const SocialGoogleLogin = () => {
     try {
       const response = await axios.get(
         "https://www.googleapis.com/auth/v1/userinfo.email",
-        { headers: { Authorization: `Bearer ${accessToken}` } }
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
       console.log(response);
     } catch (error) {
