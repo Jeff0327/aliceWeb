@@ -10,23 +10,22 @@ const SocialGoogleLogin = () => {
       const authUrl = `https://accounts.google.com/o/oauth2/auth?response_type=token&scope=https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile&client_id=${client_id}&redirect_uri=https://rosemarry.kr/api/users/google/callback/`;
 
       // Redirect the user to the modified authentication URL
-      window.location.href = authUrl;
-      await getUserInfo(accessToken);
+      console.log(authUrl);
+
+      await getUserInfo(accessToken.code);
     },
-    flow: "auth-code",
+    flow: "token",
   });
 
   const getUserInfo = async (accessToken) => {
     try {
       const response = await axios.get(
-        `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accessToken}`
+        "https://www.googleapis.com/auth/v1/userinfo.email",
+        { headers: { Authorization: `Bearer ${accessToken}` } }
       );
-      console.log(response.data);
-
-      const userInfo = response.data;
-      console.log("User Info:", userInfo);
+      console.log(response);
     } catch (error) {
-      console.error("Error fetching user information:", error.response.data);
+      console.error("Error fetching user information:", error);
     }
   };
 
