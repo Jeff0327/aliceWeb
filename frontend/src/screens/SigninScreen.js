@@ -32,10 +32,12 @@ export default function SigninScreen() {
       const bufferState = encodeURI(state);
       const naverClient_id = "zzGqNBIM5P9dLWFD3ByE";
 
-      const naverurl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClient_id}&state=${bufferState}&redirect_uri=${REDIRECT_URI}`;
+      const { data } = Axios.get(
+        `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClient_id}&state=${bufferState}&redirect_uri=${REDIRECT_URI}`
+      );
 
-      window.location.href = naverurl;
-      if (window.location.href === naverurl) {
+      window.location.href = data;
+      if (window.location.href === data) {
         const { data } = await Axios.get("/api/users/naver/callback");
         console.log(data);
       }
