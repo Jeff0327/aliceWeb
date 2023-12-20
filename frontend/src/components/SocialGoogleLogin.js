@@ -1,40 +1,36 @@
 import { useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
 
 const SocialGoogleLogin = () => {
   const googleSocialLogin = useGoogleLogin({
     onSuccess: async (accessToken) => {
-      const client_id =
-        "258796595331-7cb6sehma9pnihkr8dkhth4apjlkd37j.apps.googleusercontent.com";
-      // Modify the authentication URL to use the Implicit Grant flow
-      const authUrl = `https://accounts.google.com/o/oauth2/auth?response_type=token&scope=https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/userinfo.profile&client_id=${client_id}&redirect_uri=https://rosemarry.kr/api/users/google/callback/`;
+      const profile = accessToken.getBasicProfile();
+      const userdata = {
+        email: profile.getEmail(),
+        image: profile.getImageUrl(),
+        name: profile.getName(),
+      };
 
-      // Redirect the user to the modified authentication URL
-      console.log(authUrl);
-
-      await getUserInfo(accessToken.code);
+      console.log(userdata);
     },
     flow: "token",
   });
 
-  const getUserInfo = async (accessToken) => {
-    try {
-      const response = await axios.get(
-        "https://www.googleapis.com/auth/v1/userinfo.email",
-        {
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "*",
-            "Access-Control-Allow-Headers": "*",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-      console.log(response);
-    } catch (error) {
-      console.error("Error fetching user information:", error);
-    }
-  };
+  // const getUserInfo = async (accessToken) => {
+  //   try {
+  //     const response = await axios.get(
+  //       "https://www.googleapis.com/auth/v1/userinfo.email",
+  //       {
+  //         headers: {
+
+  //           Authorization: `Bearer ${accessToken}`,
+  //         },
+  //       }
+  //     );
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.error("Error fetching user information:", error);
+  //   }
+  // };
 
   return (
     <div className="social-login-container" onClick={() => googleSocialLogin()}>

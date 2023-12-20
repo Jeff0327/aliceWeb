@@ -7,6 +7,7 @@ const productRouter = require("./routes/productRoutes.js");
 const userRouter = require("./routes/userRoutes.js");
 const orderRouter = require("./routes/orderRoutes.js");
 const uploadRouter = require("./routes/uploadRoutes.js");
+
 const port = process.env.PORT || 3000;
 const cors = require("cors");
 
@@ -38,6 +39,8 @@ app.use((req, res, next) => {
     "same-origin",
     "same-origin-allow-popups",
   ]);
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+  res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
   next();
 });
 app.use(express.json());

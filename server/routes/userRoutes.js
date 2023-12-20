@@ -167,68 +167,71 @@ userRouter.get("google/callback", (req, res) => {
 //     }
 //   })
 // );
+userRouter.get("/googleclientId", (req, res) => {
+  const { clientId } =
+    "258796595331-7cb6sehma9pnihkr8dkhth4apjlkd37j.apps.googleusercontent.com";
+  res.send({ clientId });
+});
+userRouter.get("/naver/login", async (req, res) => {
+  const { state } = req.query;
+  const REDIRECT_URI = encodeURIComponent(
+    "https://rosemarry.kr/api/users/naver/login"
+  );
+  const naverAuthorizeUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.NAVER_CLIENT_ID}&state=${state}&redirect_uri=${REDIRECT_URI}`;
 
+  try {
+    const response = await axios.get(naverAuthorizeUrl);
+    res.redirect(response.data);
+  } catch (error) {
+    console.error("Error calling Naver authorization:", error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+});
 userRouter.get("/naver/callback", async (req, res) => {
   try {
     const { code, state } = req.query;
-
-    const stateBuffer = Buffer.from(state).toString("base64");
-
+    const REDIRECT_URI =
+      req.query.redirect_uri || "https://rosemarry.kr/api/users/naver/callback";
     const naverToken = await axios.get(
-      `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}`,
+      `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&redirect_uri=${REDIRECT_URI}`,
       { headers: { "Content-Type": "application/json" } }
     );
     console.log("Naver API Response:", naverToken.data);
 
-    res.send({ naverToken: naverToken });
+    const accessToken = naverToken.data.access_token;
+    const naverUserInfoResponse = await axios.get(
+      "https://openapi.naver.com/v1/nid/me",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
 
-    // const accessToken = naverTokenResponse.data.access_token;
-    // if (!accessToken) {
-    //   res.status(401).send({ message: "Access token is 401 error" });
-    // } else {
-    //   console.log(accessToken);
-    // }
+    const naverUserInfo = naverUserInfoResponse.data.response;
 
-    // const naverUserInfoResponse = await axios.get(
-    //   "https://openapi.naver.com/v1/nid/me",
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${accessToken}`,
-    //     },
-    //   }
-    // );
+    // Check if the user already exists in your database
+    let user = await User.findOne({ email: naverUserInfo.email });
 
-    // const naverUserInfo = naverUserInfoResponse.data.response;
+    if (!user) {
+      // If the user doesn't exist, create a new user in your database
+      user = new User({
+        name: naverUserInfo.name,
+        email: naverUserInfo.email,
+        // Add other necessary fields based on your User model
+      });
 
-    // // Check if the user already exists in your database
-    // let user = await User.findOne({ email: naverUserInfo.email });
+      await user.save();
+    }
 
-    // if (!user) {
-    //   // If the user doesn't exist, create a new user in your database
-    //   user = new User({
-    //     name: naverUserInfo.name,
-    //     email: naverUserInfo.email,
-    //     // Add other necessary fields based on your User model
-    //   });
-
-    //   await user.save();
-    // }
-
-    // // Generate a token and send it in the response
-    // res.send({
-    //   _id: user._id,
-    //   name: user.name,
-    //   email: user.email,
-    //   isAdmin: user.isAdmin,
-    //   token: generateToken(user),
-    // });
-    // res.send({
-    //   NAVERCLIENT_ID: process.env.NAVER_CLIENT_ID,
-    //   NAVER_CLIENT_SECRET: process.env.NAVER_CLIENT_SECRET,
-    //   code: code,
-    //   state: state,
-    //   stateBuffer: stateBuffer,
-    // });
+    // Generate a token and send it in the response
+    res.send({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      token: generateToken(user),
+    });
   } catch (error) {
     console.error("Error in /naver/callback:", error);
 

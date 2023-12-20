@@ -8,9 +8,11 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Store } from "../Store";
 // import KakaoLogin from "../components/KakaoLoginButton";
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import GoogleLoginButton from "../components/SocialGoogleLogin";
+// import { GoogleOAuthProvider } from "@react-oauth/google";
+// import GoogleLoginButton from "../components/SocialGoogleLogin";
+import { GoogleLogin } from "react-google-login";
 import { getError } from "../utils";
+
 export default function SigninScreen() {
   const navigate = useNavigate();
   const { search } = useLocation();
@@ -22,29 +24,23 @@ export default function SigninScreen() {
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
-  const clientId =
+  const client_id =
     "258796595331-7cb6sehma9pnihkr8dkhth4apjlkd37j.apps.googleusercontent.com";
 
   const naverLoginHandler = async () => {
     try {
-      const REDIRECT_URI = "https://rosemarry.kr/api/users/naver/callback";
       const state = "false";
-      const bufferState = encodeURI(state);
-      const naverClient_id = "zzGqNBIM5P9dLWFD3ByE";
-
-      const { data } = Axios.get(
-        `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClient_id}&state=${bufferState}&redirect_uri=${REDIRECT_URI}`
-      );
-
-      window.location.href = data;
-      if (window.location.href === data) {
-        const { data } = await Axios.get("/api/users/naver/callback");
-        console.log(data);
-      }
-    } catch (err) {
-      console.error(err);
+      const { data } = await Axios.get("/api/users/naver/login", {
+        params: {
+          state: state,
+        },
+      });
+      console.log(data);
+    } catch (error) {
+      console.error("Error during Naver login:", error);
     }
   };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -141,7 +137,21 @@ export default function SigninScreen() {
   //     }
   //   }
   // };
+  async function onSuccess(res) {
+    const profile = res.getBasicProfile();
+    const userdata = {
+      email: profile.getEmail(),
+      image: profile.getImageUrl(),
+      name: profile.getName(),
+    };
+    // 로그인 성공 후 실행하기 원하는 코드 작성.
 
+    console.log(userdata);
+  }
+
+  const onFailure = (res) => {
+    console.log("err", res);
+  };
   return (
     <Container className="small-container">
       <Helmet>
@@ -193,9 +203,17 @@ export default function SigninScreen() {
           />
         </Form.Group> */}
         <Form.Group className="mb-3">
-          <GoogleOAuthProvider clientId={clientId}>
+          {/* <GoogleOAuthProvider clientId={client_id}>
             <GoogleLoginButton />
-          </GoogleOAuthProvider>
+          </GoogleOAuthProvider> */}
+          <GoogleLogin
+            className="google-button"
+            clientId={client_id}
+            buttonText="Login with Google" // 버튼에 뜨는 텍스트
+            onSuccess={onSuccess}
+            onFailure={onFailure}
+            cookiePolicy={"single_host_origin"}
+          />
           <div
             className="social-login-container"
             onClick={() => naverLoginHandler()}
