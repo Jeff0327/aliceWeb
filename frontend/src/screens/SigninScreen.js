@@ -1,3 +1,4 @@
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import Axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
@@ -7,12 +8,10 @@ import { Helmet } from "react-helmet-async";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Store } from "../Store";
-// import KakaoLogin from "../components/KakaoLoginButton";
-// import { GoogleOAuthProvider } from "@react-oauth/google";
-// import GoogleLoginButton from "../components/SocialGoogleLogin";
-import { GoogleLogin } from "react-google-login";
+import GoogleLogin from "../components/GoogleLogin";
+import KakaoLogin from "../components/KakaoLoginButton";
+import NaverLogin from "../components/NaverLogin";
 import { getError } from "../utils";
-
 export default function SigninScreen() {
   const navigate = useNavigate();
   const { search } = useLocation();
@@ -26,20 +25,6 @@ export default function SigninScreen() {
   const { userInfo } = state;
   const client_id =
     "258796595331-7cb6sehma9pnihkr8dkhth4apjlkd37j.apps.googleusercontent.com";
-
-  const naverLoginHandler = async () => {
-    try {
-      const state = "false";
-      const { data } = await Axios.get("/api/users/naver/login", {
-        params: {
-          state: state,
-        },
-      });
-      console.log(data);
-    } catch (error) {
-      console.error("Error during Naver login:", error);
-    }
-  };
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -137,21 +122,20 @@ export default function SigninScreen() {
   //     }
   //   }
   // };
-  async function onSuccess(res) {
-    const profile = res.getBasicProfile();
-    const userdata = {
-      email: profile.getEmail(),
-      image: profile.getImageUrl(),
-      name: profile.getName(),
-    };
-    // 로그인 성공 후 실행하기 원하는 코드 작성.
+  // async function onSuccess(res) {
+  //   const profile = res.getBasicProfile();
+  //   const userdata = {
+  //     email: profile.getEmail(),
+  //     image: profile.getImageUrl(),
+  //     name: profile.getName(),
+  //   };
+  //   // 로그인 성공 후 실행하기 원하는 코드 작성.
 
-    console.log(userdata);
-  }
+  // }
 
-  const onFailure = (res) => {
-    console.log("err", res);
-  };
+  // const onFailure = (res) => {
+  //   console.log("err", res);
+  // };
   return (
     <Container className="small-container">
       <Helmet>
@@ -191,43 +175,13 @@ export default function SigninScreen() {
           비밀번호를 잊어버렸나요?{" "}
           <Link to={`/forget-password`}>비밀번호 찾기</Link>
         </div>
-        {/* <Form.Group className="mb-3">
-          <KakaoLogin />
-        </Form.Group> */}
-        {/* <Form.Group className="mb-3">
-          <img
-            onClick={naverLoginHandler}
-            alt="네이버 로그인"
-            style={{ width: "20%", height: 35 }}
-            src={`${process.env.PUBLIC_URL}/images/NaverLoginBtn.png`}
-          />
-        </Form.Group> */}
+
         <Form.Group className="mb-3">
-          {/* <GoogleOAuthProvider clientId={client_id}>
-            <GoogleLoginButton />
-          </GoogleOAuthProvider> */}
-          <GoogleLogin
-            className="google-button"
-            clientId={client_id}
-            buttonText="Login with Google" // 버튼에 뜨는 텍스트
-            onSuccess={onSuccess}
-            onFailure={onFailure}
-            cookiePolicy={"single_host_origin"}
-          />
-          <div
-            className="social-login-container"
-            onClick={() => naverLoginHandler()}
-          >
-            <div>
-              <img
-                src={`${process.env.PUBLIC_URL}/images/Naverlogo.png`}
-                alt="네이버_로그인"
-                className="social-Icon-img"
-              />
-            </div>
-            <div className="social_login_text_box">네이버로 시작하기</div>
-            <div className="social_login_blank_box"> </div>
-          </div>
+          <KakaoLogin />
+          <NaverLogin />
+          <GoogleOAuthProvider clientId={client_id}>
+            <GoogleLogin />
+          </GoogleOAuthProvider>
         </Form.Group>
       </Form>
     </Container>

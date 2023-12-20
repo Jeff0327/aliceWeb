@@ -1,31 +1,19 @@
 import { useGoogleLogin } from "@react-oauth/google";
-
-const SocialGoogleLogin = () => {
+const GoogleLogin = () => {
   const googleSocialLogin = useGoogleLogin({
     onSuccess: async (accessToken) => {
-      const profile = accessToken.getBasicProfile();
-      const userdata = {
-        email: profile.getEmail(),
-        image: profile.getImageUrl(),
-        name: profile.getName(),
-      };
-
-      console.log(userdata);
+      const token = accessToken.code;
+      console.log(token);
+      // await getUserInfo(token);
     },
     flow: "token",
   });
 
   // const getUserInfo = async (accessToken) => {
   //   try {
-  //     const response = await axios.get(
-  //       "https://www.googleapis.com/auth/v1/userinfo.email",
-  //       {
-  //         headers: {
-
-  //           Authorization: `Bearer ${accessToken}`,
-  //         },
-  //       }
-  //     );
+  //     const response = await axios.get("/api/users/getUserInfo", {
+  //       params: { accessToken },
+  //     });
   //     console.log(response);
   //   } catch (error) {
   //     console.error("Error fetching user information:", error);
@@ -47,4 +35,4 @@ const SocialGoogleLogin = () => {
   );
 };
 
-export default SocialGoogleLogin;
+export default GoogleLogin;

@@ -167,6 +167,30 @@ userRouter.get("google/callback", (req, res) => {
 //     }
 //   })
 // );
+userRouter.get("/getUserInfo", async (req, res) => {
+  const { accessToken } = req.query;
+
+  try {
+    const response = await axios.get(
+      "https://www.googleapis.com/oauth2/v2/userinfo",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    res.send({ userInfo: response.data });
+  } catch (error) {
+    console.error("Error fetching user information:", error);
+
+    // Return a meaningful error response
+    res.status(error.response?.status || 500).json({
+      error: "Failed to fetch user information",
+      details: error.message,
+    });
+  }
+});
 userRouter.get("/googleclientId", (req, res) => {
   const { clientId } =
     "258796595331-7cb6sehma9pnihkr8dkhth4apjlkd37j.apps.googleusercontent.com";
@@ -303,6 +327,9 @@ userRouter.put(
     }
   })
 );
+userRouter.get("/kakaokey", (req, res) => {
+  res.send({ kakaoAppKey: process.env.KAKAO_RESTAPI_KEY });
+});
 userRouter.put(
   "/:id",
   isAuth,
