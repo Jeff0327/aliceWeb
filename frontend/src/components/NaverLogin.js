@@ -2,6 +2,7 @@ import axios from "axios";
 import React from "react";
 function NaverLogin() {
   const naverLoginHandler = async () => {
+    alert("서비스 준비중입니다.");
     try {
       const state = "false";
       const { data } = await axios.get("/api/users/naver/login", {

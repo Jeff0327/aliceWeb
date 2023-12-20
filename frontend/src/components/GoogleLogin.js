@@ -2,6 +2,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 const GoogleLogin = () => {
   const googleSocialLogin = useGoogleLogin({
     onSuccess: async (accessToken) => {
+      alert("서비스 준비중입니다.");
       const token = accessToken.code;
       console.log(token);
       // await getUserInfo(token);

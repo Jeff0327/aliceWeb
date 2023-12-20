@@ -22,6 +22,7 @@ const KakaoLoginButton = () => {
   };
 
   const kakaoLoginhandler = () => {
+    alert("서비스 준비중입니다.");
     // Check if Kakao.Auth is defined before calling login
     if (window.Kakao.Auth) {
       window.Kakao.Auth.login({
