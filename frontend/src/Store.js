@@ -7,7 +7,9 @@ const initialState = {
   userInfo: localStorage.getItem("userInfo")
     ? JSON.parse(localStorage.getItem("userInfo"))
     : null,
-
+  kakaoUser: localStorage.getItem("kakaoUser")
+    ? JSON.parse(localStorage.getItem("kakaoUser"))
+    : null,
   cart: {
     shippingAddress:
       localStorage.getItem("shippingAddress") &&
@@ -29,8 +31,6 @@ function reducer(state, action) {
       return { ...state, fullBox: true };
     case "SET_FULLBOX_OFF":
       return { ...state, fullBox: false };
-    // case "CART_CLEAR ":
-    //   return { ...state, cart: { ...state.cart, cartItems: [] } };
     case "CART_ADD_ITEM": {
       const newItem = action.payload;
       const existItemIndex = state.cart.cartItems.findIndex(
@@ -40,13 +40,11 @@ function reducer(state, action) {
       );
 
       if (existItemIndex === -1) {
-        // If the item doesn't exist in the cart, simply add it.
         const cartItems = [...state.cart.cartItems, newItem];
         localStorage.setItem("cartItems", JSON.stringify(cartItems));
         return { ...state, cart: { ...state.cart, cartItems } };
       }
 
-      // If the same item with the same color exists, update the quantity.
       const cartItems = state.cart.cartItems.map((item, index) =>
         index === existItemIndex
           ? { ...item, quantity: item.quantity + newItem.quantity }
@@ -57,7 +55,7 @@ function reducer(state, action) {
       return { ...state, cart: { ...state.cart, cartItems } };
     }
     case "UPDATE_CART_ITEM": {
-      const updatedItem = action.payload; // The payload should contain the updated item
+      const updatedItem = action.payload;
 
       const updatedCartItems = state.cart.cartItems.map((item) => {
         if (
@@ -90,6 +88,20 @@ function reducer(state, action) {
 
     case "USER_SIGNIN":
       return { ...state, userInfo: action.payload };
+
+    case "KAKAO_SIGNIN":
+      return { ...state, kakaoUser: action.payload };
+    case "KAKAO_SIGNOUT":
+      return {
+        ...state,
+        kakaoUser: null,
+        cart: {
+          cartItems: [],
+          shippingAddress: {},
+          detailAddress: {},
+          paymentMethod: "",
+        },
+      };
     case "USER_SIGNOUT":
       return {
         ...state,

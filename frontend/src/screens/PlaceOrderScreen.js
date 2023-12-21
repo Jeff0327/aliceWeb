@@ -34,7 +34,7 @@ export default function PlaceOrderScreen() {
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
 
-  const { cart, userInfo } = state;
+  const { cart, userInfo, kakaoUser } = state;
 
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100; // 123.2345 => 123.23
   cart.itemsPrice = round2(
@@ -48,25 +48,27 @@ export default function PlaceOrderScreen() {
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
 
   const placeOrderHandler = async () => {
+    // const isAuthenticated = localStorage.getItem("kakaoToken") !== null;
     if (!userInfo || !userInfo.token) {
-      // Handle the case where the user is not authenticated
-      // You might want to redirect the user to the login page
-      navigate("/login");
-      return;
+      // Check for Kakao user token
+      if (!kakaoUser) {
+        navigate("/signin");
+        return;
+      }
     }
+
     if (loading) {
-      return; // Prevent multiple clicks while the request is in progress
+      return;
     }
 
     const updatedOrderItems = cart.cartItems.map((item) => ({
       ...item,
       color: [
         {
-          name: item.color.selectColor.name, // Include color.name
-          value: item.color.selectColor.value, // Include other color properties
-          quantity: item.color.selectColor.quantity,
+          name: item.color.selectColor.name, //색상이름
+          value: item.color.selectColor.value, //색상코드표값
+          quantity: item.color.selectColor.quantity, //제품색상재고
         },
-        // Add more color objects if needed
       ],
     }));
 

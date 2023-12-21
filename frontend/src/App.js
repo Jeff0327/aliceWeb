@@ -59,13 +59,15 @@ function App() {
   });
   const { state, dispatch: ctxDispatch } = useContext(Store);
 
-  const { cart, userInfo } = state;
+  const { cart, userInfo, kakaoUser } = state;
+
   const signoutHandler = () => {
     ctxDispatch({ type: "USER_SIGNOUT" });
     localStorage.removeItem("userInfo");
     localStorage.removeItem("shippingAddress");
     localStorage.removeItem("detailAddress");
     localStorage.removeItem("paymentMethod");
+    localStorage.removeItem("kakaoUser");
     window.location.href = "/signin";
   };
 
@@ -141,7 +143,6 @@ function App() {
         <div>
           <ToastContainer position="bottom-center" limit={1} />
           <header>
-            {/* {loading ? "asd" : "dfg"} */}
             <Navbar bg="white" expand="lg">
               <Container>
                 <LinkContainer to="/">
@@ -196,6 +197,36 @@ function App() {
                           로그아웃
                         </Link>
                       </NavDropdown>
+                    ) : kakaoUser ? (
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <img
+                          src={`${process.env.PUBLIC_URL}/images/kakaotalk-logo.png`}
+                          alt="카카오_이미지"
+                          className="social-profileIcon-img"
+                        />
+                        <NavDropdown
+                          title={kakaoUser.email}
+                          id="basic-nav-dropdown"
+                        >
+                          <LinkContainer to="/orderhistory">
+                            <NavDropdown.Item>주문내역</NavDropdown.Item>
+                          </LinkContainer>
+                          <NavDropdown.Divider />
+                          <Link
+                            className="dropdown-item"
+                            to="#signout"
+                            onClick={signoutHandler}
+                          >
+                            로그아웃
+                          </Link>
+                        </NavDropdown>
+                      </div>
                     ) : (
                       <Link className="nav-link" to="/signin">
                         로그인

@@ -15,6 +15,7 @@ export default function ShippingAddressScreen() {
   const {
     fullBox,
     userInfo,
+    kakaoUser,
     cart: { shippingAddress },
   } = state;
   const [fullName, setFullName] = useState(shippingAddress.fullName || "");
@@ -32,10 +33,10 @@ export default function ShippingAddressScreen() {
     shippingAddress.deliveryMsg || ""
   );
   useEffect(() => {
-    if (!userInfo) {
+    if (!userInfo && !kakaoUser) {
       navigate("/signin?redirect=/shipping");
     }
-  }, [userInfo, navigate]);
+  }, [userInfo, navigate, kakaoUser]);
   useEffect(() => {
     if (phoneNumber.length === 11) {
       setIsPhoneNumberValid(true);

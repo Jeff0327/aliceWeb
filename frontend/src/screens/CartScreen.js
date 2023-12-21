@@ -51,7 +51,13 @@ export default function CartScreen() {
   };
 
   const checkoutHandler = () => {
-    navigate("/signin?redirect=/shipping");
+    const isAuthenticated = localStorage.getItem("kakaoToken") !== null;
+
+    if (isAuthenticated) {
+      navigate("/shipping");
+    } else {
+      navigate("/signin?redirect=/shipping");
+    }
   };
 
   return (

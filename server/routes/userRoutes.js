@@ -327,9 +327,6 @@ userRouter.put(
     }
   })
 );
-userRouter.get("/kakaokey", (req, res) => {
-  res.send({ kakaoAppKey: process.env.KAKAO_RESTAPI_KEY });
-});
 userRouter.put(
   "/:id",
   isAuth,

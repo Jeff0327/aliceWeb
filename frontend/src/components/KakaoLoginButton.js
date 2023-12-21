@@ -1,20 +1,51 @@
-import React, { useEffect, useState } from "react";
-
+import axios from "axios";
+import React, { useContext, useEffect } from "react";
+import { toast } from "react-toastify";
+import { Store } from "../Store";
 const KakaoLoginButton = () => {
-  const [kakaoAppKey, setKakaoAppKey] = useState(null);
-  const virtuKey = "f6ed75310902e580d4049cec52bae4d0";
-
+  // const [kakaoAppKey, setKakaoAppKey] = useState(null);
+  const virtuKey = "6ab943e0d2ab9971181a9bde00bba505";
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { kakaoUser } = state;
   useEffect(() => {
     // Initialize Kakao SDK with the virtual key
     if (!window.Kakao.isInitialized()) {
       window.Kakao.init(virtuKey);
     }
-  }, []);
+  }, [kakaoUser]);
 
-  const kakaoOnSuccess = async (result) => {
-    console.log("로그인 성공", result);
-    // You can use the result to perform additional actions
-    // Handle the server response accordingly
+  const kakaoOnSuccess = async () => {
+    try {
+      if (window.Kakao.Auth && window.Kakao.Auth.getAccessToken()) {
+        const response = await axios.get("https://kapi.kakao.com/v2/user/me", {
+          headers: {
+            Authorization: `Bearer ${window.Kakao.Auth.getAccessToken()}`,
+          },
+        });
+        localStorage.setItem(
+          "kakaoToken",
+          JSON.stringify(window.Kakao.Auth.getAccessToken())
+        );
+        ctxDispatch({
+          type: "KAKAO_SIGNIN",
+          payload: response.data.kakao_account,
+        });
+        localStorage.setItem(
+          "kakaoUser",
+          JSON.stringify(response.data.kakao_account)
+        );
+
+        if (response.data) {
+          window.location.href = "/";
+        }
+      } else {
+        toast.error(
+          "토큰이 만료되었습니다. 관리자에게 문의하세요[error code:100]"
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching Kakao user data:", error);
+    }
   };
 
   const kakaoOnFailure = (error) => {
