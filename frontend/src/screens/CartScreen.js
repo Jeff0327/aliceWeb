@@ -53,7 +53,7 @@ export default function CartScreen() {
   };
 
   const checkoutHandler = () => {
-    if (kakaoUser.has_email) {
+    if (kakaoUser && kakaoUser.has_email) {
       navigate("/shipping");
     } else {
       navigate("/signin?redirect=/shipping");
