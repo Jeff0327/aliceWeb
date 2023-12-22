@@ -48,13 +48,16 @@ export default function PlaceOrderScreen() {
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
 
   const placeOrderHandler = async () => {
-    // const isAuthenticated = localStorage.getItem("kakaoToken") !== null;
-    if (!userInfo || !userInfo.token) {
-      // Check for Kakao user token
-      if (!kakaoUser) {
-        navigate("/signin");
-        return;
-      }
+    const tokenToUse =
+      userInfo && userInfo.token
+        ? userInfo.token
+        : kakaoUser && kakaoUser.kakaoToken
+        ? kakaoUser.kakaoToken
+        : false;
+
+    if (!tokenToUse) {
+      navigate("/signin");
+      return;
     }
 
     if (loading) {
@@ -88,7 +91,7 @@ export default function PlaceOrderScreen() {
         },
         {
           headers: {
-            Authorization: `Bearer ${userInfo.token}`,
+            Authorization: `Bearer ${tokenToUse}`,
           },
           withCredentials: true,
         }

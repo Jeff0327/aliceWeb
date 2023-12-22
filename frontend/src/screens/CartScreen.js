@@ -14,9 +14,11 @@ export default function CartScreen() {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
+    kakaoUser,
     cart: { cartItems },
   } = state;
 
+  console.log(kakaoUser);
   const updateCartHandler = (item, quantity) => {
     if (item.color.selectColor.count < quantity) {
       toast.error("재고가 없습니다");
@@ -51,9 +53,7 @@ export default function CartScreen() {
   };
 
   const checkoutHandler = () => {
-    const isAuthenticated = localStorage.getItem("kakaoToken") !== null;
-
-    if (isAuthenticated) {
+    if (kakaoUser.has_email) {
       navigate("/shipping");
     } else {
       navigate("/signin?redirect=/shipping");

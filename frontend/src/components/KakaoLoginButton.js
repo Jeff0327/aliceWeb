@@ -22,18 +22,18 @@ const KakaoLoginButton = () => {
             Authorization: `Bearer ${window.Kakao.Auth.getAccessToken()}`,
           },
         });
-        localStorage.setItem(
-          "kakaoToken",
-          JSON.stringify(window.Kakao.Auth.getAccessToken())
-        );
+        const kakaoInfo = {
+          email: response.data.kakao_account.email,
+          has_email: response.data.kakao_account.has_email,
+          kakaoToken: window.Kakao.Auth.getAccessToken(),
+        };
         ctxDispatch({
           type: "KAKAO_SIGNIN",
-          payload: response.data.kakao_account,
+          payload: {
+            kakaoInfo,
+          },
         });
-        localStorage.setItem(
-          "kakaoUser",
-          JSON.stringify(response.data.kakao_account)
-        );
+        localStorage.setItem("kakaoUser", JSON.stringify(kakaoInfo));
 
         if (response.data) {
           window.location.href = "/";
