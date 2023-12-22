@@ -92,6 +92,7 @@ export default function PlaceOrderScreen() {
         {
           headers: {
             Authorization: `Bearer ${tokenToUse}`,
+            "Content-Type": "Authorization",
           },
           withCredentials: true,
         }
