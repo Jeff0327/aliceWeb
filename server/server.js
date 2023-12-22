@@ -37,18 +37,19 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", origin);
   }
 
-  const allowedHeaders = [
-    "Origin",
-    "X-Requested-With",
-    "Content-Type",
-    "Accept",
-    "Authorization",
-  ];
-  allowedHeaders.forEach((header) => {
-    if (req.headers[header]) {
-      res.setHeader("Access-Control-Allow-Headers", header);
-    }
-  });
+  // const allowedHeaders = [
+  //   "Origin",
+  //   "X-Requested-With",
+  //   "Content-Type",
+  //   "Accept",
+  //   "Authorization",
+  // ];
+  // allowedHeaders.forEach((header) => {
+  //   if (req.headers[header]) {
+  //     res.setHeader("Access-Control-Allow-Headers", header);
+  //   }
+  // });
+  res.setHeader("Access-Control-Allow-Headers", "*");
   res.header("Access-Control-Allow-Methods", "*");
   res.header("Access-Control-Allow-Credentials", true);
 

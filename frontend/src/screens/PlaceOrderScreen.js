@@ -36,6 +36,7 @@ export default function PlaceOrderScreen() {
 
   const { cart, userInfo, kakaoUser } = state;
 
+  console.log(userInfo);
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100; // 123.2345 => 123.23
   cart.itemsPrice = round2(
     cart.cartItems.reduce(
@@ -48,14 +49,14 @@ export default function PlaceOrderScreen() {
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
 
   const placeOrderHandler = async () => {
-    const tokenToUse =
-      userInfo && userInfo.token
-        ? userInfo.token
-        : kakaoUser && kakaoUser.kakaoToken
-        ? kakaoUser.kakaoToken
-        : false;
+    // const tokenToUse =
+    //   userInfo && userInfo.token
+    //     ? userInfo.token
+    //     : kakaoUser && kakaoUser.kakaoToken
+    //     ? kakaoUser.kakaoToken
+    //     : false;
 
-    if (!tokenToUse) {
+    if (!userInfo || userInfo.token) {
       navigate("/signin");
       return;
     }
@@ -91,8 +92,7 @@ export default function PlaceOrderScreen() {
         },
         {
           headers: {
-            Authorization: `Bearer ${tokenToUse}`,
-            "Content-Type": "Authorization",
+            Authorization: `Bearer ${userInfo.token}`,
           },
           withCredentials: true,
         }
