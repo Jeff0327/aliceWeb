@@ -59,6 +59,9 @@ export default function PlaceOrderScreen() {
     if (!userInfo || !userInfo.token) {
       navigate("/signin");
       return;
+    } else if (!kakaoUser || !kakaoUser.token) {
+      navigate("/signin");
+      return;
     }
 
     if (loading) {
