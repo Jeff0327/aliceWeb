@@ -49,15 +49,16 @@ app.use((req, res, next) => {
   //     res.setHeader("Access-Control-Allow-Headers", header);
   //   }
   // });
-  res.header("Access-Control-Allow-Headers", "content-type");
   res.header(
-    "Access-Control-Allow-Methods",
-    "*",
+    "Access-Control-Allow-Headers",
+    "content-type",
     "Origin",
-    "Content-Type",
+    "X-Api-Key",
+    "X-Requested-With",
     "Accept",
     "Authorization"
   );
+  res.header("Access-Control-Allow-Methods", "*");
   res.header("Access-Control-Allow-Credentials", true);
 
   res.header("Cross-Origin-Opener-Policy", [
