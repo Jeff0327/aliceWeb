@@ -50,13 +50,7 @@ app.use((req, res, next) => {
   //   }
   // });
   res.header(
-    "Access-Control-Allow-Headers",
-    "content-type",
-    "Origin",
-    "X-Api-Key",
-    "X-Requested-With",
-    "Accept",
-    "Authorization"
+    "Access-Control-Allow-Headers,content-type,Origin,X-Api-Key,X-Requested-With,Accept,Authorization"
   );
   res.header("Access-Control-Allow-Methods", "*");
   res.header("Access-Control-Allow-Credentials", true);
