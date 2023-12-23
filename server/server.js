@@ -49,8 +49,15 @@ app.use((req, res, next) => {
   //     res.setHeader("Access-Control-Allow-Headers", header);
   //   }
   // });
-  res.header("Access-Control-Allow-Headers", "*");
-  res.header("Access-Control-Allow-Methods", "*");
+  res.header("Access-Control-Allow-Headers", "content-type");
+  res.header(
+    "Access-Control-Allow-Methods",
+    "*",
+    "Origin",
+    "Content-Type",
+    "Accept",
+    "Authorization"
+  );
   res.header("Access-Control-Allow-Credentials", true);
 
   res.header("Cross-Origin-Opener-Policy", [
