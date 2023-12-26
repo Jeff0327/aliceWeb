@@ -59,7 +59,7 @@ orderRouter.post(
         itemsPrice: req.body.itemsPrice,
         shippingPrice: req.body.shippingPrice,
         totalPrice: req.body.totalPrice,
-        user: req.kakaoUser,
+        user: req.kakaoUser._id,
       });
       const order = await newOrder.save();
 
