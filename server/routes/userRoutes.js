@@ -1,6 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const User = require("../models/userModel.js");
+const SocialUser = require("../models/userModel.js");
 const expressAsyncHandler = require("express-async-handler");
 const userRouter = express.Router();
 const jwt = require("jsonwebtoken");
@@ -297,6 +298,23 @@ userRouter.post(
       email: user.email,
       isAdmin: user.isAdmin,
       token: generateToken(user),
+    });
+  })
+);
+userRouter.post(
+  "/socialsignup",
+  expressAsyncHandler(async (req, res) => {
+    const newSocialUser = new SocialUser({
+      email: req.body.kakaoInfo.email,
+      has_email: req.body.kakaoInfo.has_email,
+      kakaoToken: req.body.kakaoInfo.kakaoToken,
+    });
+    const socialUser = await newSocialUser.save();
+    res.send({
+      socialUser_id: socialUser._id,
+      email: socialUser.email,
+      has_email: socialUser.has_email,
+      kakaoToken: socialUser.kakaoToken,
     });
   })
 );

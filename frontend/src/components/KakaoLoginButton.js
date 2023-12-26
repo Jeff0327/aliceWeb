@@ -27,13 +27,17 @@ const KakaoLoginButton = () => {
           has_email: response.data.kakao_account.has_email,
           kakaoToken: `${window.Kakao.Auth.getAccessToken()}`,
         };
+
+        const { data } = await axios.post("/api/users/socialsignup", {
+          kakaoInfo,
+        });
         ctxDispatch({
           type: "KAKAO_SIGNIN",
           payload: {
-            kakaoInfo,
+            data,
           },
         });
-        localStorage.setItem("kakaoUser", JSON.stringify(kakaoInfo));
+        localStorage.setItem("kakaoUser", JSON.stringify(data));
 
         if (response.data) {
           window.location.href = "/";

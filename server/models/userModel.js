@@ -12,5 +12,13 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+const socialUserSchema = new mongoose.Schema({
+  email: { type: String, required: true },
+  has_email: { type: Boolean, required: true },
+  kakaoToken: { type: String, required: true },
+});
 
-module.exports = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+const SocialUser = mongoose.model("SocialUser", socialUserSchema);
+
+module.exports = { User, SocialUser };
