@@ -1,7 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
-const User = require("../models/userModel.js");
-const SocialUser = require("../models/userModel.js");
+const { User, SocialUser } = require("../models/userModel.js");
 const expressAsyncHandler = require("express-async-handler");
 const userRouter = express.Router();
 const jwt = require("jsonwebtoken");
@@ -305,9 +304,9 @@ userRouter.post(
   "/socialsignup",
   expressAsyncHandler(async (req, res) => {
     const newSocialUser = new SocialUser({
-      email: req.body.kakaoInfo.email,
-      has_email: req.body.kakaoInfo.has_email,
-      kakaoToken: req.body.kakaoInfo.kakaoToken,
+      email: req.body.email,
+      has_email: req.body.has_email,
+      kakaoToken: req.body.kakaoToken,
     });
     const socialUser = await newSocialUser.save();
     res.send({

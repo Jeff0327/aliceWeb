@@ -22,15 +22,13 @@ const KakaoLoginButton = () => {
             Authorization: `Bearer ${window.Kakao.Auth.getAccessToken()}`,
           },
         });
-        const kakaoInfo = {
+
+        const { data } = await axios.post("/api/users/socialsignup", {
           email: response.data.kakao_account.email,
           has_email: response.data.kakao_account.has_email,
           kakaoToken: `${window.Kakao.Auth.getAccessToken()}`,
-        };
-
-        const { data } = await axios.post("/api/users/socialsignup", {
-          kakaoInfo,
         });
+        console.log(data);
         ctxDispatch({
           type: "KAKAO_SIGNIN",
           payload: {
