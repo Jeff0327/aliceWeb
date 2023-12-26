@@ -47,6 +47,15 @@ export default function PlaceOrderScreen() {
 
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
 
+  useEffect(() => {
+    if (kakaoUser) {
+      setGetToken(kakaoUser.kakaoToken);
+    }
+
+    if (userInfo) {
+      setGetToken(userInfo.token);
+    }
+  }, [kakaoUser, userInfo]);
   const placeOrderHandler = async () => {
     // const tokenToUse =
     //   userInfo && userInfo.token
@@ -59,15 +68,11 @@ export default function PlaceOrderScreen() {
       if (!kakaoUser || !kakaoUser.kakaoToken) {
         navigate("/login");
         return;
-      } else {
-        setGetToken(kakaoUser.kakaoToken);
       }
-    } else {
-      setGetToken(userInfo.token);
     }
 
     console.log(userInfo);
-    console.log(getToken);
+    console.log("getToken:", getToken);
     if (loading) {
       return;
     }
