@@ -1,5 +1,5 @@
 import Axios from "axios";
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
@@ -27,14 +27,14 @@ const reducer = (state, action) => {
 
 export default function PlaceOrderScreen() {
   const navigate = useNavigate();
-  const [getToken, setGetToken] = useState("");
+
   const [{ loading }, dispatch] = useReducer(reducer, {
     loading: false,
   });
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
 
-  const { cart, userInfo, kakaoUser } = state;
+  const { cart, userInfo } = state;
 
   console.log(userInfo);
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100; // 123.2345 => 123.23
@@ -57,15 +57,7 @@ export default function PlaceOrderScreen() {
     //     : false;
 
     if (!userInfo || !userInfo.token) {
-      if (!kakaoUser || !kakaoUser.kakaoToken) {
-        navigate("/signin");
-        return;
-      } else {
-        setGetToken(kakaoUser.kakaoToken);
-      }
-    } else {
-      setGetToken(userInfo.token);
-      console.log(`${getToken}`);
+      navigate("/signin");
     }
 
     if (loading) {
@@ -82,74 +74,39 @@ export default function PlaceOrderScreen() {
         },
       ],
     }));
-    if (userInfo) {
-      try {
-        dispatch({ type: "CREATE_REQUEST" });
 
-        const { data } = await Axios.post(
-          `/api/orders`,
-          {
-            orderItems: updatedOrderItems,
-            shippingAddress: cart.shippingAddress,
-            detailAddress: cart.detailAddress,
-            paymentMethod: cart.paymentMethod,
-            itemsPrice: cart.itemsPrice,
-            shippingPrice: cart.shippingPrice,
-            totalPrice: cart.totalPrice,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${getToken}`,
-            },
-            withCredentials: true,
-          }
-        );
-        ctxDispatch({ type: "CART_CLEAR" });
-        dispatch({ type: "CREATE_SUCCESS" });
-        localStorage.removeItem("cartItems");
-        navigate(`/order/${data.order._id}`, {
-          state: {
-            colorName: updatedOrderItems.map((item) => item.color.selectColor),
-          },
-        });
-      } catch (err) {
-        dispatch({ type: "CREATE_FAIL" });
-        toast.error(getError(err));
-      }
-    } else if (kakaoUser) {
-      try {
-        dispatch({ type: "CREATE_REQUEST" });
+    try {
+      dispatch({ type: "CREATE_REQUEST" });
 
-        const { data } = await Axios.post(
-          `/api/orders/social`,
-          {
-            orderItems: updatedOrderItems,
-            shippingAddress: cart.shippingAddress,
-            detailAddress: cart.detailAddress,
-            paymentMethod: cart.paymentMethod,
-            itemsPrice: cart.itemsPrice,
-            shippingPrice: cart.shippingPrice,
-            totalPrice: cart.totalPrice,
+      const { data } = await Axios.post(
+        `/api/orders`,
+        {
+          orderItems: updatedOrderItems,
+          shippingAddress: cart.shippingAddress,
+          detailAddress: cart.detailAddress,
+          paymentMethod: cart.paymentMethod,
+          itemsPrice: cart.itemsPrice,
+          shippingPrice: cart.shippingPrice,
+          totalPrice: cart.totalPrice,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${getToken}`,
-            },
-            withCredentials: true,
-          }
-        );
-        ctxDispatch({ type: "CART_CLEAR" });
-        dispatch({ type: "CREATE_SUCCESS" });
-        localStorage.removeItem("cartItems");
-        navigate(`/order/${data.order._id}`, {
-          state: {
-            colorName: updatedOrderItems.map((item) => item.color.selectColor),
-          },
-        });
-      } catch (err) {
-        dispatch({ type: "CREATE_FAIL" });
-        toast.error(getError(err));
-      }
+          withCredentials: true,
+        }
+      );
+      ctxDispatch({ type: "CART_CLEAR" });
+      dispatch({ type: "CREATE_SUCCESS" });
+      localStorage.removeItem("cartItems");
+      navigate(`/order/${data.order._id}`, {
+        state: {
+          colorName: updatedOrderItems.map((item) => item.color.selectColor),
+        },
+      });
+    } catch (err) {
+      dispatch({ type: "CREATE_FAIL" });
+      toast.error(getError(err));
     }
   };
 
