@@ -1,5 +1,5 @@
 import Axios from "axios";
-import React, { useContext, useEffect, useReducer } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
@@ -27,16 +27,15 @@ const reducer = (state, action) => {
 
 export default function PlaceOrderScreen() {
   const navigate = useNavigate();
-
+  const [getToken, setGetToken] = useState("");
   const [{ loading }, dispatch] = useReducer(reducer, {
     loading: false,
   });
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
 
-  const { cart, userInfo } = state;
+  const { cart, userInfo, kakaoUser } = state;
 
-  console.log(userInfo);
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100; // 123.2345 => 123.23
   cart.itemsPrice = round2(
     cart.cartItems.reduce(
@@ -57,10 +56,17 @@ export default function PlaceOrderScreen() {
     //     : false;
 
     if (!userInfo || !userInfo.token) {
-      navigate("/login");
-      return;
+      if (!kakaoUser || !kakaoUser.kakaoToken) {
+        navigate("/login");
+        return;
+      } else {
+        setGetToken(kakaoUser.kakaoToken);
+      }
+    } else {
+      setGetToken(userInfo.token);
     }
 
+    console.log(userInfo);
     if (loading) {
       return;
     }
@@ -92,7 +98,7 @@ export default function PlaceOrderScreen() {
         },
         {
           headers: {
-            Authorization: `Bearer ${userInfo.token}`,
+            Authorization: `Bearer ${getToken}`,
           },
           withCredentials: true,
         }
