@@ -42,6 +42,32 @@ orderRouter.post(
     res.status(201).send({ message: "주문되었습니다.", order });
   })
 );
+orderRouter.post(
+  "/social",
+  isKakaoAuth,
+  expressAsyncHandler(async (req, res) => {
+    try {
+      const newOrder = new Order({
+        orderItems: req.body.orderItems.map((x) => ({
+          ...x,
+          product: x._id,
+        })),
+        shippingAddress: req.body.shippingAddress,
+        detailAddress: req.body.detailAddress,
+        paymentMethod: req.body.paymentMethod,
+        itemsPrice: req.body.itemsPrice,
+        shippingPrice: req.body.shippingPrice,
+        totalPrice: req.body.totalPrice,
+        user: req.kakaoUser,
+      });
+      const order = await newOrder.save();
+
+      res.status(201).send({ message: "주문되었습니다.", order });
+    } catch (err) {
+      console.error(err);
+    }
+  })
+);
 orderRouter.get(
   "/summary",
   isAuth,

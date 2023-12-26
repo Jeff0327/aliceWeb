@@ -31,7 +31,7 @@ const isKakaoAuth = (req, res, next) => {
           .status(401)
           .send({ message: "인증이 만료되었습니다. [error code:021]" });
       } else {
-        req.user = decode;
+        req.kakaoUser = decode;
         next();
       }
     });
@@ -63,6 +63,7 @@ const isAuth = (req, res, next) => {
     //토큰없음
   }
 };
+
 const isAdmin = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
     next();

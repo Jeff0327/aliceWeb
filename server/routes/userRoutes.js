@@ -211,57 +211,57 @@ userRouter.get("/naver/login", async (req, res) => {
     res.status(500).send({ message: "Internal Server Error" });
   }
 });
-userRouter.get("/naver/callback", async (req, res) => {
-  try {
-    const { code, state } = req.query;
-    const REDIRECT_URI =
-      req.query.redirect_uri || "https://rosemarry.kr/api/users/naver/callback";
-    const naverToken = await axios.get(
-      `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&redirect_uri=${REDIRECT_URI}`,
-      { headers: { "Content-Type": "application/json" } }
-    );
-    console.log("Naver API Response:", naverToken.data);
+// userRouter.get("/naver/callback", async (req, res) => {
+//   try {
+//     const { code, state } = req.query;
+//     const REDIRECT_URI =
+//       req.query.redirect_uri || "https://rosemarry.kr/api/users/naver/callback";
+//     const naverToken = await axios.get(
+//       `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${process.env.NAVER_CLIENT_ID}&client_secret=${process.env.NAVER_CLIENT_SECRET}&code=${code}&redirect_uri=${REDIRECT_URI}`,
+//       { headers: { "Content-Type": "application/json" } }
+//     );
+//     console.log("Naver API Response:", naverToken.data);
 
-    const accessToken = naverToken.data.access_token;
-    const naverUserInfoResponse = await axios.get(
-      "https://openapi.naver.com/v1/nid/me",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+//     const accessToken = naverToken.data.access_token;
+//     const naverUserInfoResponse = await axios.get(
+//       "https://openapi.naver.com/v1/nid/me",
+//       {
+//         headers: {
+//           Authorization: `Bearer ${accessToken}`,
+//         },
+//       }
+//     );
 
-    const naverUserInfo = naverUserInfoResponse.data.response;
+//     const naverUserInfo = naverUserInfoResponse.data.response;
 
-    // Check if the user already exists in your database
-    let user = await User.findOne({ email: naverUserInfo.email });
+//     // Check if the user already exists in your database
+//     let user = await User.findOne({ email: naverUserInfo.email });
 
-    if (!user) {
-      // If the user doesn't exist, create a new user in your database
-      user = new User({
-        name: naverUserInfo.name,
-        email: naverUserInfo.email,
-        // Add other necessary fields based on your User model
-      });
+//     if (!user) {
+//       // If the user doesn't exist, create a new user in your database
+//       user = new User({
+//         name: naverUserInfo.name,
+//         email: naverUserInfo.email,
+//         // Add other necessary fields based on your User model
+//       });
 
-      await user.save();
-    }
+//       await user.save();
+//     }
 
-    // Generate a token and send it in the response
-    res.send({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      token: generateToken(user),
-    });
-  } catch (error) {
-    console.error("Error in /naver/callback:", error);
+//     // Generate a token and send it in the response
+//     res.send({
+//       _id: user._id,
+//       name: user.name,
+//       email: user.email,
+//       isAdmin: user.isAdmin,
+//       token: generateToken(user),
+//     });
+//   } catch (error) {
+//     console.error("Error in /naver/callback:", error);
 
-    res.status(500).send({ message: "Internal Server Error!!", error });
-  }
-});
+//     res.status(500).send({ message: "Internal Server Error!!", error });
+//   }
+// });
 userRouter.post(
   "/signin",
   expressAsyncHandler(async (req, res) => {
