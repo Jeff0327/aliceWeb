@@ -57,7 +57,8 @@ export default function PlaceOrderScreen() {
     //     : false;
 
     if (!userInfo || !userInfo.token) {
-      navigate("/signin");
+      navigate("/login");
+      return;
     }
 
     if (loading) {
