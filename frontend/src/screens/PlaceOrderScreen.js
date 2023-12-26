@@ -67,6 +67,7 @@ export default function PlaceOrderScreen() {
     }
 
     console.log(userInfo);
+    console.log(getToken);
     if (loading) {
       return;
     }
