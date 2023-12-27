@@ -378,21 +378,17 @@ export default function OrderScreen() {
                             onError={onError}
                           ></PayPalButtons>
                         ) : (
-                          <Row className="w-100">
-                            <Col>
-                              <div className="d-grid">
-                                <Button
-                                  type="button"
-                                  variant="success"
-                                  className="btn btn-success btn-width"
-                                  onClick={bootpayhandler}
-                                  style={{ width: 100 }}
-                                >
-                                  결제하기
-                                </Button>
-                              </div>
-                            </Col>
-                          </Row>
+                          <div className="d-grid">
+                            <Button
+                              type="button"
+                              variant="success"
+                              className="btn btn-success btn-width"
+                              onClick={bootpayhandler}
+                              style={{ width: 100 }}
+                            >
+                              결제하기
+                            </Button>
+                          </div>
                         )}
                       </div>
                     )}
