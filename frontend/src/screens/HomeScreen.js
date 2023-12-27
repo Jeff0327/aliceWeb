@@ -4,11 +4,11 @@ import Carousel from "react-bootstrap/Carousel";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { Helmet } from "react-helmet-async";
+import { useMediaQuery } from "react-responsive";
 import { Link } from "react-router-dom";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox.js";
 import Product from "../components/Product";
-
 const reducer = (state, action) => {
   switch (action.type) {
     case "FETCH_REQUEST":
@@ -23,6 +23,7 @@ const reducer = (state, action) => {
 };
 
 export default function HomeScreen() {
+  const isMobile = useMediaQuery({ maxWidth: 767 });
   const [{ loading, error, products }, dispatch] = useReducer(reducer, {
     products: [],
     loading: true,
@@ -65,27 +66,42 @@ export default function HomeScreen() {
                       maxHeight: "500px",
                     }}
                   >
-                    {product.images.slice(0, 3).map((image, index) => (
-                      <Col
-                        key={index}
-                        style={{
-                          alignContent: "space-between",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <Link to={`/product/${product.slug}`}>
-                          <img
+                    {isMobile
+                      ? // If isMobile is true, render only the first image
+                        product.images.slice(0, 1).map((image, colIndex) => (
+                          <Col
+                            key={colIndex}
                             style={{
-                              width: "415px",
-                              height: "500px",
-                              overflow: "auto",
+                              alignContent: "space-between",
+                              justifyContent: "space-between",
                             }}
-                            src={`${process.env.PUBLIC_URL}${image}`}
-                            alt={`Event: ${product.name}`}
-                          />
-                        </Link>
-                      </Col>
-                    ))}
+                          >
+                            <Link to={`/product/${product.slug}`}>
+                              <img
+                                className="carouselImg"
+                                src={`${process.env.PUBLIC_URL}${image}`}
+                                alt={`Event: ${product.name}`}
+                              />
+                            </Link>
+                          </Col>
+                        ))
+                      : product.images.slice(0, 3).map((image, index) => (
+                          <Col
+                            key={index}
+                            style={{
+                              alignContent: "space-between",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Link to={`/product/${product.slug}`}>
+                              <img
+                                className="carouselImg"
+                                src={`${process.env.PUBLIC_URL}${image}`}
+                                alt={`Event: ${product.name}`}
+                              />
+                            </Link>
+                          </Col>
+                        ))}
                   </Row>
                 </Carousel.Item>
               )
