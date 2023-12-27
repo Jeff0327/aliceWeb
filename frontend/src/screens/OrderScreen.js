@@ -384,7 +384,6 @@ export default function OrderScreen() {
                               variant="success"
                               className="btn btn-success btn-width"
                               onClick={bootpayhandler}
-                              style={{ width: 100 }}
                             >
                               결제하기
                             </Button>
