@@ -148,5 +148,4 @@ module.exports = {
   mailgun,
   payOrderEmailTemplate,
   baseUrl,
-  isKakaoAuth,
 };
