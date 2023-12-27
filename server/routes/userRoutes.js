@@ -303,18 +303,28 @@ userRouter.post(
 userRouter.post(
   "/socialsignup",
   expressAsyncHandler(async (req, res) => {
-    const newSocialUser = new SocialUser({
-      email: req.body.email,
-      has_email: req.body.has_email,
-      kakaoToken: req.body.kakaoToken,
-    });
-    const socialUser = await newSocialUser.save();
-    res.send({
-      _id: socialUser._id,
-      email: socialUser.email,
-      has_email: socialUser.has_email,
-      kakaoToken: socialUser.kakaoToken,
-    });
+    const existSocialUser = await SocialUser.findOne({ email: req.body.email });
+    if (!existSocialUser) {
+      const newSocialUser = new SocialUser({
+        email: req.body.email,
+        has_email: req.body.has_email,
+        kakaoToken: req.body.kakaoToken,
+      });
+      const socialUser = await newSocialUser.save();
+      res.send({
+        _id: socialUser._id,
+        email: socialUser.email,
+        has_email: socialUser.has_email,
+        kakaoToken: socialUser.kakaoToken,
+      });
+    } else {
+      res.send({
+        _id: existSocialUser._id,
+        email: existSocialUser.email,
+        has_email: existSocialUser.has_email,
+        kakaoToken: existSocialUser.kakaoToken,
+      });
+    }
   })
 );
 userRouter.put(
