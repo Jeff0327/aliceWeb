@@ -310,7 +310,7 @@ userRouter.post(
     });
     const socialUser = await newSocialUser.save();
     res.send({
-      socialUser_id: socialUser._id,
+      _id: socialUser._id,
       email: socialUser.email,
       has_email: socialUser.has_email,
       kakaoToken: socialUser.kakaoToken,
