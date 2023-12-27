@@ -49,6 +49,7 @@ orderRouter.post(
 );
 orderRouter.post(
   "/social",
+  isKakaoAuth,
   expressAsyncHandler(async (req, res) => {
     try {
       const newOrder = new Order({
@@ -62,7 +63,7 @@ orderRouter.post(
         itemsPrice: req.body.itemsPrice,
         shippingPrice: req.body.shippingPrice,
         totalPrice: req.body.totalPrice,
-        socialUser: req.socialUser._id,
+        kakaoUser: req.kakaoUser._id,
       });
       const order = await newOrder.save();
 
