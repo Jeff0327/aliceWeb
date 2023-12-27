@@ -4,9 +4,9 @@ import Button from "react-bootstrap/Button";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Store } from "../Store";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
-import { Store } from "../Store";
 import { getError } from "../utils";
 const reducer = (state, action) => {
   switch (action.type) {
@@ -36,7 +36,7 @@ export default function UserListScreen() {
       error: "",
     });
   const { state } = useContext(Store);
-  const { userInfo } = state;
+  const { userInfo, kakaoUser } = state;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,6 +76,7 @@ export default function UserListScreen() {
       }
     }
   };
+  console.log(kakaoUser);
   return (
     <div>
       <Helmet>
