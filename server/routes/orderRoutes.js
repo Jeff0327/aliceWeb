@@ -49,7 +49,6 @@ orderRouter.post(
 );
 orderRouter.post(
   "/social",
-  isKakaoAuth,
   expressAsyncHandler(async (req, res) => {
     try {
       const newOrder = new Order({
