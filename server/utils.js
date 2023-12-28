@@ -28,7 +28,7 @@ const isAuth = (req, res, next) => {
     const token = authorization.slice(7, authorization.length); // Bearer XXXXXXX
     jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
       if (err) {
-        const kakaoToken = req.kakaoUser.kakaoToken;
+        const kakaoToken = req.kakaoUser;
         if (kakaoToken) {
           const newKakaoToken = kakaoToken.slice(7, kakaoToken.length);
           jwt.verify(
