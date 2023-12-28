@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useContext, useEffect, useReducer } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import Button from "react-bootstrap/Button";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
@@ -30,6 +30,7 @@ const reducer = (state, action) => {
 };
 export default function UserListScreen() {
   const navigate = useNavigate();
+  const [getToken, setGetToken] = useState("");
   const [{ loading, error, users, loadingDelete, successDelete }, dispatch] =
     useReducer(reducer, {
       loading: true,
@@ -39,11 +40,16 @@ export default function UserListScreen() {
   const { userInfo, kakaoUser } = state;
 
   useEffect(() => {
+    if (userInfo) {
+      setGetToken(userInfo.token);
+    } else if (kakaoUser) {
+      setGetToken(kakaoUser.kakaoToken);
+    }
     const fetchData = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
         const { data } = await axios.get(`/api/users`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${getToken}` },
         });
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
@@ -58,7 +64,7 @@ export default function UserListScreen() {
     } else {
       fetchData();
     }
-  }, [userInfo, successDelete]);
+  }, [userInfo, successDelete, kakaoUser, getToken]);
   const deleteHandler = async (user) => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
       try {
