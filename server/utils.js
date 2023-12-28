@@ -28,21 +28,20 @@ const isAuth = (req, res, next) => {
     const token = authorization.slice(7, authorization.length); // Bearer XXXXXXX
     jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
       if (err) {
-        const kakaoToken = req.kakaoUser && req.kakaoUser.kakaoToken;
+        const kakaoToken = req.kakaoUser.kakaoToken;
         if (kakaoToken) {
+          const newKakaoToken = kakaoToken.slice(7, kakaoToken.length);
           jwt.verify(
-            kakaoToken,
-            process.env.KAKAO_JWT_SECRET,
+            newKakaoToken,
+            process.env.SOCIAL_SECRET,
             (err, decodedKakao)
           );
           if (err) {
-            res
-              .status(401)
-              .send({
-                message: "카카오 인증이 만료되었습니다.[error code:032]",
-              });
+            res.status(401).send({
+              message: "카카오 인증이 만료되었습니다.[error code:032]",
+            });
           } else {
-            req.kakaoUser = decodedKakao;
+            req.kakaoUser.kakaoToken = decodedKakao;
             next();
           }
         } else {
