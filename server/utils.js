@@ -41,7 +41,7 @@ const isAuth = (req, res, next) => {
               message: "카카오 인증이 만료되었습니다.[error code:032]",
             });
           } else {
-            req.kakaoUser.kakaoToken = decodedKakao;
+            req.kakaoUser = decodedKakao;
             next();
           }
         } else {
