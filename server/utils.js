@@ -34,8 +34,8 @@ const isAuth = (req, res, next) => {
       } else {
         console.log("Decoded Token:", decode);
 
-        if (decode.kakaoUser) {
-          req.kakaoUser = decode;
+        if (req.socialUser) {
+          req.socialUser = decode;
         } else {
           req.user = decode;
         }
