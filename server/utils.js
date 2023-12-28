@@ -32,19 +32,20 @@ const isAuth = (req, res, next) => {
           .status(401)
           .send({ message: "인증이 만료되었습니다. [error code:021]", err });
       } else {
-        if (req.kakaoUser) {
+        console.log("Decoded Token:", decode);
+
+        if (decode.kakaoUser) {
           req.kakaoUser = decode;
-          next();
         } else {
           req.user = decode;
-          next();
         }
+        next();
       }
     });
   } else {
     res
       .status(401)
-      .send({ message: "인증이 만료되었습니다.[error code:022]", err });
+      .send({ message: "인증이 만료되었습니다.[error code:022]", err, decode });
     //토큰없음
   }
 };
