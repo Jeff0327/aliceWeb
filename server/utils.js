@@ -37,7 +37,7 @@ const isAuth = (req, res, next) => {
         if (req.socialUser) {
           req.socialUser = decode;
         } else {
-          req.kakaoUser = decode;
+          req.user = decode;
         }
         next();
       }
