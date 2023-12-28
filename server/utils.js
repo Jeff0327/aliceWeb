@@ -32,13 +32,14 @@ const isAuth = (req, res, next) => {
           .status(401)
           .send({ message: "인증이 만료되었습니다. [error code:021]", err });
       } else {
-        console.log("Decoded Token:", decode);
-
-        if (req.socialUser) {
-          req.socialUser = decode;
+        if (decode.kakaoUser) {
+          req.kakaoUser = decode.kakaoUser; // Adjust this line based on the structure of your decoded token
+        } else if (decode.socialUser) {
+          req.socialUser = decode.socialUser; // Adjust this line based on the structure of your decoded token
         } else {
           req.user = decode;
         }
+
         next();
       }
     });

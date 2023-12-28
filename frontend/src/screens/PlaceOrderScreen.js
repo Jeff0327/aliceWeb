@@ -55,6 +55,8 @@ export default function PlaceOrderScreen() {
     }
   }, [kakaoUser, userInfo]);
 
+  console.log(userInfo);
+  console.log("getToken:", getToken);
   const placeOrderHandler = async () => {
     if (!userInfo || !userInfo.token) {
       if (!kakaoUser || !kakaoUser.kakaoToken) {
