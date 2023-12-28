@@ -54,7 +54,7 @@ export default function PlaceOrderScreen() {
       setGetToken(userInfo.token);
     }
   }, [kakaoUser, userInfo]);
-  console.log("cartItems:", cart.cartItems);
+
   const placeOrderHandler = async () => {
     if (!userInfo || !userInfo.token) {
       if (!kakaoUser || !kakaoUser.kakaoToken) {

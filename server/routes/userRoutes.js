@@ -39,8 +39,11 @@ userRouter.get(
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
+    const socialUser = await kakaoUser.findById(req.params.id);
     if (user) {
       res.send(user);
+    } else if (socialUser) {
+      res.send(socialUser);
     } else {
       res
         .status(404)
@@ -55,13 +58,18 @@ userRouter.delete(
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
+    const socialUser = await KakaoUser.findById(req.params.id);
     if (user) {
       if (user.email === process.env.ADMIN_ID) {
         res.status(400).send({ message: "관리자 계정은 삭제할 수 없습니다." });
         return;
       }
       await user.deleteOne();
+
       res.send({ message: "유저가 삭제되었습니다." });
+    } else if (socialUser) {
+      await socialUser.deleteOne();
+      res.send({ message: "소셜로그인 유저가 삭제되었습니다." });
     } else {
       res
         .status(404)
