@@ -53,7 +53,7 @@ export default function PlaceOrderScreen() {
     } else if (userInfo) {
       setGetToken(userInfo.token);
     }
-  }, [kakaoUser, userInfo]);
+  }, [kakaoUser, userInfo, getToken]);
   const placeOrderHandler = async () => {
     // const tokenToUse =
     //   userInfo && userInfo.token
