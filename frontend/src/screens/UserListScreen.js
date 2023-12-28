@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import Button from "react-bootstrap/Button";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
@@ -30,7 +30,7 @@ const reducer = (state, action) => {
 };
 export default function UserListScreen() {
   const navigate = useNavigate();
-  const [getToken, setGetToken] = useState("");
+
   const [{ loading, error, users, loadingDelete, successDelete }, dispatch] =
     useReducer(reducer, {
       loading: true,
@@ -40,16 +40,25 @@ export default function UserListScreen() {
   const { userInfo, kakaoUser } = state;
 
   useEffect(() => {
-    if (userInfo) {
-      setGetToken(userInfo.token);
-    } else if (kakaoUser) {
-      setGetToken(kakaoUser.kakaoToken);
-    }
+    const fetchSocialUser = async () => {
+      try {
+        dispatch({ type: "FETCH_REQUEST" });
+        const { data } = await axios.get(`/api/users/getSocialUser`, {
+          headers: { Authorization: `Bearer ${kakaoUser.kakaoToken}` },
+        });
+        dispatch({ type: "FETCH_SUCCESS", payload: data });
+      } catch (err) {
+        dispatch({
+          type: "FETCH_FAIL",
+          payload: getError(err),
+        });
+      }
+    };
     const fetchData = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
         const { data } = await axios.get(`/api/users`, {
-          headers: { Authorization: `Bearer ${getToken}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` },
         });
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
@@ -63,8 +72,9 @@ export default function UserListScreen() {
       dispatch({ type: "DELETE_RESET" });
     } else {
       fetchData();
+      fetchSocialUser();
     }
-  }, [userInfo, successDelete, kakaoUser, getToken]);
+  }, [userInfo, successDelete, kakaoUser]);
   const deleteHandler = async (user) => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
       try {

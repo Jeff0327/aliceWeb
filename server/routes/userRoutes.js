@@ -23,6 +23,16 @@ userRouter.get(
     res.send(users);
   })
 );
+
+userRouter.get(
+  "/getSocialUser",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const socialUser = await kakaoUser.find({});
+    res.send(socialUser);
+  })
+);
 userRouter.get(
   "/:id",
   isAuth,
