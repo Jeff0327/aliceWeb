@@ -79,34 +79,65 @@ export default function PlaceOrderScreen() {
     }));
 
     try {
-      dispatch({ type: "CREATE_REQUEST" });
+      if (userInfo) {
+        dispatch({ type: "CREATE_REQUEST" });
 
-      const { data } = await Axios.post(
-        userInfo.token ? "/api/orders" : "/api/orders/socialOrder",
-        {
-          orderItems: updatedOrderItems,
-          shippingAddress: cart.shippingAddress,
-          detailAddress: cart.detailAddress,
-          paymentMethod: cart.paymentMethod,
-          itemsPrice: cart.itemsPrice,
-          shippingPrice: cart.shippingPrice,
-          totalPrice: cart.totalPrice,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${getToken}`,
+        const { data } = await Axios.post(
+          `/api/orders`,
+          {
+            orderItems: updatedOrderItems,
+            shippingAddress: cart.shippingAddress,
+            detailAddress: cart.detailAddress,
+            paymentMethod: cart.paymentMethod,
+            itemsPrice: cart.itemsPrice,
+            shippingPrice: cart.shippingPrice,
+            totalPrice: cart.totalPrice,
           },
-          withCredentials: true,
-        }
-      );
-      ctxDispatch({ type: "CART_CLEAR" });
-      dispatch({ type: "CREATE_SUCCESS" });
-      localStorage.removeItem("cartItems");
-      navigate(`/order/${data.order._id}`, {
-        state: {
-          colorName: updatedOrderItems.map((item) => item.color.selectColor),
-        },
-      });
+          {
+            headers: {
+              Authorization: `Bearer ${getToken}`,
+            },
+            withCredentials: true,
+          }
+        );
+        ctxDispatch({ type: "CART_CLEAR" });
+        dispatch({ type: "CREATE_SUCCESS" });
+        localStorage.removeItem("cartItems");
+        navigate(`/order/${data.order._id}`, {
+          state: {
+            colorName: updatedOrderItems.map((item) => item.color.selectColor),
+          },
+        });
+      } else if (kakaoUser) {
+        dispatch({ type: "CREATE_REQUEST" });
+
+        const { data } = await Axios.post(
+          `/api/orders/socialOrder`,
+          {
+            orderItems: updatedOrderItems,
+            shippingAddress: cart.shippingAddress,
+            detailAddress: cart.detailAddress,
+            paymentMethod: cart.paymentMethod,
+            itemsPrice: cart.itemsPrice,
+            shippingPrice: cart.shippingPrice,
+            totalPrice: cart.totalPrice,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${getToken}`,
+            },
+            withCredentials: true,
+          }
+        );
+        ctxDispatch({ type: "CART_CLEAR" });
+        dispatch({ type: "CREATE_SUCCESS" });
+        localStorage.removeItem("cartItems");
+        navigate(`/order/${data.order._id}`, {
+          state: {
+            colorName: updatedOrderItems.map((item) => item.color.selectColor),
+          },
+        });
+      }
     } catch (err) {
       dispatch({ type: "CREATE_FAIL" });
       toast.error(getError(err));
