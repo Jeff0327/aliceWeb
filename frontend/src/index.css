@@ -258,7 +258,7 @@ button.thumbnail {
     display: flex;
   }
   .cardImageContainer{
-    height: 200px; overflow: hidden
+    height: 200px; overflow: hidden;
   }
   .title-name{
     font-size: 1rem;
@@ -299,7 +299,7 @@ button.thumbnail {
 }
 
 /*ProductScreen*/
-.cardImageContainer{ height: 300px; overflow: hidden}
+
 .detail-product{
   justify-content: center;
   max-width: 100%;
