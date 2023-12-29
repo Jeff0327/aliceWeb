@@ -258,7 +258,7 @@ button.thumbnail {
     display: flex;
   }
   .cardImageContainer{
-    height: 200px; overflow: hidden;
+    height: 45vh; overflow: hidden;
   }
   .title-name{
     font-size: 1rem;
