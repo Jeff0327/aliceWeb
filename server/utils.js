@@ -46,12 +46,10 @@ const isAuth = (req, res, next) => {
     //토큰없음
   }
 };
-const isSocialAuth = async (req, res, next) => {
+const isSocialAuth = (req, res, next) => {
   const authorization = req.headers.authorization;
-  const socialData = await SocialUser.findOne({ kakaotoken: authorization });
-  //kakaoUser
-  if (socialData) {
-    const token = socialData.kakaoToken.slice(7, authorization.length); // Bearer XXXXXXX
+  if (authorization) {
+    const token = authorization.slice(7, authorization.length); // Bearer XXXXXXX
     jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
       if (err) {
         res.status(401).send({
@@ -60,8 +58,7 @@ const isSocialAuth = async (req, res, next) => {
           decode,
         });
       } else {
-        socialData.kakaoToken = decode;
-        res.send({ ...socialData });
+        req.socialUser = decode;
         next();
       }
     });
