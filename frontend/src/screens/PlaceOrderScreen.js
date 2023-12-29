@@ -1,5 +1,5 @@
 import Axios from "axios";
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
@@ -27,7 +27,7 @@ const reducer = (state, action) => {
 
 export default function PlaceOrderScreen() {
   const navigate = useNavigate();
-  const [getToken, setGetToken] = useState("");
+
   const [{ loading }, dispatch] = useReducer(reducer, {
     loading: false,
   });
@@ -47,16 +47,6 @@ export default function PlaceOrderScreen() {
 
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
 
-  useEffect(() => {
-    if (kakaoUser) {
-      setGetToken(kakaoUser.kakaoToken);
-    } else if (userInfo) {
-      setGetToken(userInfo.token);
-    }
-  }, [kakaoUser, userInfo]);
-
-  console.log(userInfo);
-  console.log("getToken:", getToken);
   const placeOrderHandler = async () => {
     if (!userInfo || !userInfo.token) {
       if (!kakaoUser || !kakaoUser.kakaoToken) {
@@ -81,34 +71,65 @@ export default function PlaceOrderScreen() {
     }));
 
     try {
-      dispatch({ type: "CREATE_REQUEST" });
+      if (userInfo) {
+        dispatch({ type: "CREATE_REQUEST" });
 
-      const { data } = await Axios.post(
-        `/api/orders`,
-        {
-          orderItems: updatedOrderItems,
-          shippingAddress: cart.shippingAddress,
-          detailAddress: cart.detailAddress,
-          paymentMethod: cart.paymentMethod,
-          itemsPrice: cart.itemsPrice,
-          shippingPrice: cart.shippingPrice,
-          totalPrice: cart.totalPrice,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${getToken}`,
+        const { data } = await Axios.post(
+          `/api/orders`,
+          {
+            orderItems: updatedOrderItems,
+            shippingAddress: cart.shippingAddress,
+            detailAddress: cart.detailAddress,
+            paymentMethod: cart.paymentMethod,
+            itemsPrice: cart.itemsPrice,
+            shippingPrice: cart.shippingPrice,
+            totalPrice: cart.totalPrice,
           },
-          withCredentials: true,
-        }
-      );
-      ctxDispatch({ type: "CART_CLEAR" });
-      dispatch({ type: "CREATE_SUCCESS" });
-      localStorage.removeItem("cartItems");
-      navigate(`/order/${data.order._id}`, {
-        state: {
-          colorName: updatedOrderItems.map((item) => item.color.selectColor),
-        },
-      });
+          {
+            headers: {
+              Authorization: `Bearer ${userInfo.token}`,
+            },
+            withCredentials: true,
+          }
+        );
+        ctxDispatch({ type: "CART_CLEAR" });
+        dispatch({ type: "CREATE_SUCCESS" });
+        localStorage.removeItem("cartItems");
+        navigate(`/order/${data.order._id}`, {
+          state: {
+            colorName: updatedOrderItems.map((item) => item.color.selectColor),
+          },
+        });
+      } else if (kakaoUser) {
+        dispatch({ type: "CREATE_REQUEST" });
+
+        const { data } = await Axios.post(
+          `/api/orders/socialOrder`,
+          {
+            orderItems: updatedOrderItems,
+            shippingAddress: cart.shippingAddress,
+            detailAddress: cart.detailAddress,
+            paymentMethod: cart.paymentMethod,
+            itemsPrice: cart.itemsPrice,
+            shippingPrice: cart.shippingPrice,
+            totalPrice: cart.totalPrice,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${kakaoUser.kakaoToken}`,
+            },
+            withCredentials: true,
+          }
+        );
+        ctxDispatch({ type: "CART_CLEAR" });
+        dispatch({ type: "CREATE_SUCCESS" });
+        localStorage.removeItem("cartItems");
+        navigate(`/order/${data.order._id}`, {
+          state: {
+            colorName: updatedOrderItems.map((item) => item.color.selectColor),
+          },
+        });
+      }
     } catch (err) {
       dispatch({ type: "CREATE_FAIL" });
       toast.error(getError(err));
