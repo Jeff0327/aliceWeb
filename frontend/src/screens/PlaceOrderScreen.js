@@ -91,9 +91,7 @@ export default function PlaceOrderScreen() {
           totalPrice: cart.totalPrice,
         },
         {
-          headers: {
-            Authorization: `Bearer ${headers}`,
-          },
+          headers,
           withCredentials: true,
         }
       );
