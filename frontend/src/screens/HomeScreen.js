@@ -33,8 +33,6 @@ export default function HomeScreen() {
     error: "",
   });
 
-  console.log("isMobile:", isMobile);
-  console.log("IPHONE:", IPHONE_SE);
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });

@@ -48,7 +48,7 @@ const isAuth = (req, res, next) => {
 };
 const isSocialAuth = async (req, res, next) => {
   const authorization = req.headers.authorization;
-  const socialData = SocialUser.findOne({ token: authorization });
+  const socialData = await SocialUser.findOne({ kakaotoken: authorization });
   //kakaoUser
   if (socialData) {
     const token = socialData.kakaoToken.slice(7, authorization.length); // Bearer XXXXXXX
