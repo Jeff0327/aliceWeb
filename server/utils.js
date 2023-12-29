@@ -52,10 +52,10 @@ const isSocialAuth = (req, res, next) => {
     const token = authorization.slice(7, authorization.length); // Bearer XXXXXXX
     jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
       if (err) {
+        console.error(err);
         res.status(401).send({
           message: "인증이 만료되었습니다. [error code:021]",
-          err,
-          decode,
+          error: err.message,
         });
       } else {
         req.kakaoUser = decode;
