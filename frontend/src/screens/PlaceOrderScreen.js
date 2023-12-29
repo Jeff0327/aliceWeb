@@ -52,9 +52,10 @@ export default function PlaceOrderScreen() {
     if (userInfo) {
       setGetToken(userInfo.token);
     } else if (kakaoUser) {
-      setGetToken(kakaoUser.kakaToken);
+      setGetToken(kakaoUser.kakaoToken);
     }
-  }, [userInfo, kakaoUser]);
+  }, [userInfo, kakaoUser, getToken]);
+  console.log(getToken);
   const placeOrderHandler = async () => {
     if (!userInfo || !userInfo.token) {
       if (!kakaoUser || !kakaoUser.kakaoToken) {
