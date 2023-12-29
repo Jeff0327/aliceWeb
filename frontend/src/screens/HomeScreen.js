@@ -23,13 +23,18 @@ const reducer = (state, action) => {
 };
 
 export default function HomeScreen() {
-  const isMobile = useMediaQuery({ maxWidth: 767 });
+  const isMobile = useMediaQuery({ maxHeight: 665 });
+  const IPHONE_SE = useMediaQuery({ maxHeight: 667 });
+  const isMobileALL = useMediaQuery({ maxWidth: 767 });
+  const IPHONE_PRO = useMediaQuery({ maxWidth: 430 });
   const [{ loading, error, products }, dispatch] = useReducer(reducer, {
     products: [],
     loading: true,
     error: "",
   });
 
+  console.log("isMobile:", isMobile);
+  console.log("IPHONE:", IPHONE_SE);
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
@@ -66,7 +71,7 @@ export default function HomeScreen() {
                       maxHeight: "500px",
                     }}
                   >
-                    {isMobile
+                    {isMobileALL
                       ? // If isMobile is true, render only the first image
                         product.images.slice(0, 1).map((image, colIndex) => (
                           <Col
@@ -78,7 +83,15 @@ export default function HomeScreen() {
                           >
                             <Link to={`/product/${product.slug}`}>
                               <img
-                                className="carouselImg"
+                                className={`${
+                                  isMobile
+                                    ? "mobile-carouselImg"
+                                    : IPHONE_SE
+                                    ? "iphone-carouselImg"
+                                    : IPHONE_PRO
+                                    ? "iphone-pro-carouselImg"
+                                    : "carouselImg"
+                                }`}
                                 src={`${process.env.PUBLIC_URL}${image}`}
                                 alt={`Event: ${product.name}`}
                               />
@@ -116,7 +129,7 @@ export default function HomeScreen() {
         ) : (
           <Row>
             {products.map((product) => (
-              <Col key={product.slug} xs={6} lg={3} className="mb-3">
+              <Col key={product.slug} xs={6} lg={3} className={"mb-3"}>
                 <Product product={product}></Product>
               </Col>
             ))}

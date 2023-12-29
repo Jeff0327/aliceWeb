@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const mg = require("mailgun-js");
+const { SocialUser } = require("../models/userModel.js");
 const baseUrl = () =>
   process.env.BASE_URL
     ? process.env.BASE_URL
@@ -45,10 +46,12 @@ const isAuth = (req, res, next) => {
     //토큰없음
   }
 };
-const isSocialAuth = (req, res, next) => {
+const isSocialAuth = async (req, res, next) => {
   const authorization = req.headers.authorization;
-  if (authorization) {
-    const token = authorization.slice(7, authorization.length); // Bearer XXXXXXX
+  const socialData = SocialUser.findOne({ token: authorization });
+  //kakaoUser
+  if (socialData) {
+    const token = socialData.kakaoToken.slice(7, authorization.length); // Bearer XXXXXXX
     jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
       if (err) {
         res.status(401).send({
@@ -57,7 +60,8 @@ const isSocialAuth = (req, res, next) => {
           decode,
         });
       } else {
-        req.kakaoUser = decode;
+        socialData.kakaoToken = decode;
+        res.send({ ...socialData });
         next();
       }
     });

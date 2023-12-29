@@ -253,29 +253,6 @@ button.thumbnail {
   font-family: 'Diphylleia', serif;
 }
 
-@media (max-width: 768px) {
-  .cardContainer{
-    display: flex;
-  }
-  .cardImageContainer{
-    height: 45vh; overflow: hidden;
-  }
-  .title-name{
-    font-size: 1rem;
-  }
-  .loading-screen {
-    height: 100vh;
-    background-size: contain; 
-    background-position: center;
-    
-  }
-  .carouselImg{
-    display: flex;
-    width:100%;
-    height:650px;
-    overflow: hidden;
-  }
-} 
 .site-container{
   transition: 0.4s;
 }
@@ -503,4 +480,161 @@ pre{
 }
 hr{
   color:white;
+}
+
+/* iPhone SE and smaller */
+@media (max-width: 320px) {
+  .cardContainer{
+    display: flex;
+  }
+  .cardImageContainer{
+    height: 30vh; overflow: hidden;
+  }
+  .title-name{
+    font-size: 1rem;
+  }
+  .loading-screen {
+    height: 100vh;
+    background-size: contain; 
+    background-position: center;
+    
+  }
+  .iphone-carouselImg{
+    display: flex;
+    width:100%;
+    height:500px;
+    overflow: hidden;
+  }
+  .card-img-top{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+  .event-container {
+    display: flex;
+    
+  }
+}
+
+/* iPhone 6/7/8 and iPhone SE (2nd generation) */
+@media (max-height: 667px) {
+  .card-div{
+    display: flex;
+    flex-direction: row;
+  }
+  .cardContainer-se{
+    display: flex;
+    width:50%;
+    flex-direction: row;
+  }
+  .cardImageContainer-se{
+    overflow: hidden;
+    height: 300px;
+  }
+  .card-img-top-se{
+    object-fit: cover;
+    width: 50%;
+    height: 350px;
+  }
+  .title-name{
+    font-size: 1rem;
+  }
+  .loading-screen {
+    height: 100vh;
+    background-size: contain; 
+    background-position: center;
+  }
+  .iphone-carouselImg{
+    display: flex;
+    width:100%;
+    height:380px;
+    overflow: hidden;
+  }
+  
+  .event-container {
+    display: flex;
+    
+  }
+}
+
+/* iPhone 6/7/8 Plus and iPhone X/XS/11 Pro */
+@media (max-width: 414px) {
+  .cardContainer{
+    display: flex;
+  }
+  .cardImageContainer{
+    height: 30vh; overflow: hidden;
+  }
+  .title-name{
+    font-size: 1rem;
+  }
+  .loading-screen {
+    height: 100vh;
+    background-size: contain; 
+    background-position: center;
+    
+  }
+  .iphone-carouselImg{
+    display: flex;
+    object-fit: cover;
+    width:100%;
+    height:480px;
+    overflow: hidden;
+  }
+  .event-container {
+    display: flex;
+    
+  }
+}
+@media (max-width: 768px) {
+  .cardContainer{
+    display: flex;
+  }
+  .cardImageContainer{
+    height: 45vh; overflow: hidden;
+  }
+  .title-name{
+    font-size: 1rem;
+  }
+  .loading-screen {
+    height: 100vh;
+    background-size: contain; 
+    background-position: center;
+    
+  }
+  .mobile-carouselImg{
+    display: flex;
+    width:100%;
+    height:650px;
+    overflow: hidden;
+  }
+  
+} 
+/* IPHONE PRO */
+@media (max-width: 430px) {
+  .cardContainer{
+    display: flex;
+  }
+  .cardImageContainer{
+    height: 30vh; overflow: hidden;
+  }
+  .title-name{
+    font-size: 1rem;
+  }
+  .loading-screen {
+    height: 100vh;
+    background-size: contain; 
+    background-position: center;
+    
+  }
+  .iphone-pro-carouselImg{
+    display: flex;
+    object-fit: cover;
+    width:100%;
+    height:580px;
+    overflow: hidden;
+  }
+  .event-container {
+    display: flex;
+  }
 }
