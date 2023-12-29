@@ -28,18 +28,16 @@ const isAuth = (req, res, next) => {
     const token = authorization.slice(7, authorization.length); // Bearer XXXXXXX
     jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
       if (err) {
-        res
-          .status(401)
-          .send({
-            message: "인증이 만료되었습니다. [error code:021]",
-            err,
-            decode,
-          });
+        res.status(401).send({
+          message: "인증이 만료되었습니다. [error code:021]",
+          err,
+          decode,
+        });
       } else {
-        if (decode.kakaoUser) {
-          req.kakaoUser = decode.kakaoUser; // Adjust this line based on the structure of your decoded token
-        } else if (decode.socialUser) {
-          req.socialUser = decode.socialUser; // Adjust this line based on the structure of your decoded token
+        if (req.kakaoUser) {
+          req.kakaoUser = decode;
+        } else if (req.socialUser) {
+          req.socialUser = decode;
         } else {
           req.user = decode;
         }

@@ -8,7 +8,7 @@ export default function Product(props) {
   return (
     <Card className="cardContainer">
       <Link to={`/product/${product.slug}`}>
-        <div style={{ height: "300px", overflow: "hidden" }}>
+        <div className="cardImageContainer">
           <img
             src={product.image}
             className="card-img-top"
