@@ -58,7 +58,7 @@ const isSocialAuth = (req, res, next) => {
           decode,
         });
       } else {
-        req.socialUser = decode;
+        req.kakaoUser = decode;
         next();
       }
     });
