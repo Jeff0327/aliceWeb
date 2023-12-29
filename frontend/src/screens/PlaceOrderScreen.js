@@ -57,11 +57,9 @@ export default function PlaceOrderScreen() {
   }, [userInfo, kakaoUser, getToken]);
   console.log(getToken);
   const placeOrderHandler = async () => {
-    if (!userInfo || !userInfo.token) {
-      if (!kakaoUser || !kakaoUser.kakaoToken) {
-        navigate("/login");
-        return;
-      }
+    if (!getToken) {
+      navigate("/login");
+      return;
     }
 
     if (loading) {
