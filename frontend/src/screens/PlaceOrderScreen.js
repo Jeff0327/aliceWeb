@@ -48,9 +48,11 @@ export default function PlaceOrderScreen() {
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
 
   const placeOrderHandler = async () => {
-    if (!userInfo || !kakaoUser) {
-      navigate("/login");
-      return;
+    if (!userInfo || !userInfo.token) {
+      if (!kakaoUser || !kakaoUser.kakaoToken) {
+        navigate("/login");
+        return;
+      }
     }
 
     if (loading) {
