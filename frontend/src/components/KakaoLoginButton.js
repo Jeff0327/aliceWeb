@@ -28,7 +28,7 @@ const KakaoLoginButton = () => {
           has_email: response.data.kakao_account.has_email,
           kakaoToken: `${window.Kakao.Auth.getAccessToken()}`,
         });
-        console.log(data);
+
         ctxDispatch({
           type: "KAKAO_SIGNIN",
           payload: {

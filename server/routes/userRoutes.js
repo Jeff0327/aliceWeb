@@ -141,27 +141,25 @@ userRouter.post(
   })
 );
 // 구글 로그인
-userRouter.get(
-  "/googlelogin",
-  expressAsyncHandler(async (req, res) => {
-    try {
-      const oAuth2Client = new OAuth2Client(
-        process.env.GOOGLE_CLIENT_ID,
-        process.env.GOOGLE_CLIENT_SECRET_PASSWORD,
-        "postmessage"
-      );
-      const { tokens } = await oAuth2Client.getToken(req.body.res); // exchange code for tokens
-      console.log(tokens);
+// userRouter.get(
+//   "/googlelogin",
+//   expressAsyncHandler(async (req, res) => {
+//     try {
+//       const oAuth2Client = new OAuth2Client(
+//         process.env.GOOGLE_CLIENT_ID,
+//         process.env.GOOGLE_CLIENT_SECRET_PASSWORD,
+//         "postmessage"
+//       );
+//       const { tokens } = await oAuth2Client.getToken(req.body.res); // exchange code for tokens
+//       console.log(tokens);
 
-      res.json(tokens);
-    } catch (err) {
-      console.log(err);
-    }
-  })
-);
-userRouter.get("google/callback", (req, res) => {
-  res.send({ token: "test" });
-});
+//       res.json(tokens);
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   })
+// );
+
 // Naver Callback Route
 // userRouter.get(
 //   "/naverlogin",
@@ -181,50 +179,50 @@ userRouter.get("google/callback", (req, res) => {
 //     }
 //   })
 // );
-userRouter.get("/getUserInfo", async (req, res) => {
-  const { accessToken } = req.query;
+// userRouter.get("/getUserInfo", async (req, res) => {
+//   const { accessToken } = req.query;
 
-  try {
-    const response = await axios.get(
-      "https://www.googleapis.com/oauth2/v2/userinfo",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+//   try {
+//     const response = await axios.get(
+//       "https://www.googleapis.com/oauth2/v2/userinfo",
+//       {
+//         headers: {
+//           Authorization: `Bearer ${accessToken}`,
+//         },
+//       }
+//     );
 
-    res.send({ userInfo: response.data });
-  } catch (error) {
-    console.error("Error fetching user information:", error);
+//     res.send({ userInfo: response.data });
+//   } catch (error) {
+//     console.error("Error fetching user information:", error);
 
-    // Return a meaningful error response
-    res.status(error.response?.status || 500).json({
-      error: "Failed to fetch user information",
-      details: error.message,
-    });
-  }
-});
-userRouter.get("/googleclientId", (req, res) => {
-  const { clientId } =
-    "258796595331-7cb6sehma9pnihkr8dkhth4apjlkd37j.apps.googleusercontent.com";
-  res.send({ clientId });
-});
-userRouter.get("/naver/login", async (req, res) => {
-  const { state } = req.query;
-  const REDIRECT_URI = encodeURIComponent(
-    "https://rosemarry.kr/api/users/naver/login"
-  );
-  const naverAuthorizeUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.NAVER_CLIENT_ID}&state=${state}&redirect_uri=${REDIRECT_URI}`;
+//     // Return a meaningful error response
+//     res.status(error.response?.status || 500).json({
+//       error: "Failed to fetch user information",
+//       details: error.message,
+//     });
+//   }
+// });
+// userRouter.get("/googleclientId", (req, res) => {
+//   const { clientId } =
+//     "258796595331-7cb6sehma9pnihkr8dkhth4apjlkd37j.apps.googleusercontent.com";
+//   res.send({ clientId });
+// });
+// userRouter.get("/naver/login", async (req, res) => {
+//   const { state } = req.query;
+//   const REDIRECT_URI = encodeURIComponent(
+//     "https://rosemarry.kr/api/users/naver/login"
+//   );
+//   const naverAuthorizeUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.NAVER_CLIENT_ID}&state=${state}&redirect_uri=${REDIRECT_URI}`;
 
-  try {
-    const response = await axios.get(naverAuthorizeUrl);
-    res.redirect(response.data);
-  } catch (error) {
-    console.error("Error calling Naver authorization:", error);
-    res.status(500).send({ message: "Internal Server Error" });
-  }
-});
+//   try {
+//     const response = await axios.get(naverAuthorizeUrl);
+//     res.redirect(response.data);
+//   } catch (error) {
+//     console.error("Error calling Naver authorization:", error);
+//     res.status(500).send({ message: "Internal Server Error" });
+//   }
+// });
 // userRouter.get("/naver/callback", async (req, res) => {
 //   try {
 //     const { code, state } = req.query;

@@ -50,23 +50,8 @@ const isSocialAuth = (req, res, next) => {
   const authorization = req.headers.authorization;
   if (authorization) {
     const token = authorization.slice(7, authorization.length); // Bearer XXXXXXX
-    jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
-      if (err) {
-        console.error(err);
-        res.status(401).send({
-          message: "인증이 만료되었습니다. [error code:021]",
-          error: err.message,
-        });
-      } else {
-        req.kakaoUser = decode;
-        next();
-      }
-    });
-  } else {
-    res
-      .status(401)
-      .send({ message: "인증이 만료되었습니다.[error code:022]", err });
-    //토큰없음
+    req.kakaoUser = token;
+    next();
   }
 };
 const isAdmin = (req, res, next) => {
