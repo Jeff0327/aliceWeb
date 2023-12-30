@@ -232,7 +232,7 @@ export default function ProductScreen() {
                         borderColor: "black",
                       }}
                     ></div>
-                    <div>{color.name}</div>
+                    <div style={{ textAlign: "center" }}>{color.name}</div>
                   </Button>
                 ))}
               </div>
