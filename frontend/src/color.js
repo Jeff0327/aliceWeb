@@ -131,4 +131,10 @@ export const colors = [
     count: "",
     check: false,
   },
+  {
+    name: "네이비",
+    value: "#000080",
+    count: "",
+    check: false,
+  },
 ];
