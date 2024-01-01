@@ -83,13 +83,15 @@ export default function ProductEditScreen() {
         setBrand(data.brand);
         setDescription(data.description);
 
-        const updatedColors = colors.map((color) => ({
-          ...color,
-          count:
-            data.color.find((c) => c.name === color.name)?.count ||
-            color.count ||
-            "",
-        }));
+        const updatedColors = colors.map((color) => {
+          const checkedColor = data.color.find((c) => c.check === color.check);
+          return {
+            ...color,
+            check: checkedColor ? checkedColor.check : false,
+            count: checkedColor ? checkedColor.count : "",
+          };
+        });
+
         setColor(updatedColors);
         dispatch({ type: "FETCH_SUCCESS" });
       } catch (err) {
