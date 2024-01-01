@@ -67,6 +67,7 @@ export default function ProductEditScreen() {
     [...colors].map((color) => ({ ...color, count: "" }))
   );
 
+  console.log(color);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -103,7 +104,7 @@ export default function ProductEditScreen() {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    const checkboxHandler = colors.some((c) => c.check);
+    const checkboxHandler = colors.filter((c) => c.check);
     if (!checkboxHandler) {
       toast.error("색상을 선택해주세요");
       return;
@@ -123,7 +124,7 @@ export default function ProductEditScreen() {
           category,
           brand,
           description,
-          color,
+          color: checkboxHandler,
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
