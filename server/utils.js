@@ -135,5 +135,4 @@ module.exports = {
   mailgun,
   payOrderEmailTemplate,
   baseUrl,
-  isSocialAuth,
 };

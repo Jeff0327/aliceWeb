@@ -2,7 +2,7 @@ const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
 const {
   isAuth,
-  isSocialAuth,
+
   isAdmin,
   mailgun,
   payOrderEmailTemplate,
@@ -54,32 +54,7 @@ orderRouter.post(
     }
   })
 );
-orderRouter.post(
-  "/socialOrder",
-  isSocialAuth,
-  expressAsyncHandler(async (req, res) => {
-    try {
-      const newOrder = new Order({
-        orderItems: req.body.orderItems.map((x) => ({
-          ...x,
-          product: x._id,
-        })),
-        shippingAddress: req.body.shippingAddress,
-        detailAddress: req.body.detailAddress,
-        paymentMethod: req.body.paymentMethod,
-        itemsPrice: req.body.itemsPrice,
-        shippingPrice: req.body.shippingPrice,
-        totalPrice: req.body.totalPrice,
-        socialUser: req.body.kakaoUser,
-      });
-      const order = await newOrder.save();
 
-      res.status(201).send({ message: "주문되었습니다.", order });
-    } catch (err) {
-      console.log(err);
-    }
-  })
-);
 orderRouter.get(
   "/summary",
   isAuth,
