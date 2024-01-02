@@ -48,6 +48,8 @@ export default function PlaceOrderScreen() {
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
 
   const placeOrderHandler = async () => {
+    console.log(userInfo === true);
+    console.log(kakaoUser === true);
     if (!userInfo || !kakaoUser) {
       navigate("/login");
       return;
@@ -227,9 +229,9 @@ export default function PlaceOrderScreen() {
                   <Row>
                     <Col>배송료</Col>
                     <Col>
-                      {cart.shippingPrice > 50000
-                        ? "5만원이상 배송비무료"
-                        : `${cart.shippingPrice.toLocaleString()}원`}
+                      {cart.shippingPrice < 50000
+                        ? `${cart.shippingPrice.toLocaleString()}원`
+                        : `5만원이상 결제 배송비무료`}
                     </Col>
                   </Row>
                 </ListGroup.Item>
