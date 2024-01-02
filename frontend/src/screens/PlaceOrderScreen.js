@@ -47,8 +47,6 @@ export default function PlaceOrderScreen() {
 
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
 
-  console.log("kakaoUser:", kakaoUser);
-  console.log("userInfo:", userInfo);
   useEffect(() => {
     if (userInfo) {
       setInfoToken({ token: userInfo.token, isSocial: false });
@@ -95,7 +93,6 @@ export default function PlaceOrderScreen() {
         {
           headers: {
             Authorization: `Bearer ${infoToken.token}`,
-            isSocial: `${infoToken.isSocial}`,
           },
           withCredentials: true,
         }
