@@ -25,13 +25,6 @@ orderRouter.post(
   "/",
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const account = "";
-    if (req.user) {
-      account = req.user;
-    } else if (req.kakaoUser) {
-      account = req.kakaoUser;
-    }
-
     try {
       const newOrder = new Order({
         orderItems: req.body.orderItems.map((x) => ({
@@ -44,7 +37,7 @@ orderRouter.post(
         itemsPrice: req.body.itemsPrice,
         shippingPrice: req.body.shippingPrice,
         totalPrice: req.body.totalPrice,
-        user: account,
+        user: req.user,
       });
       const order = await newOrder.save();
 

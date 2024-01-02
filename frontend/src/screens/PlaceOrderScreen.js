@@ -27,7 +27,7 @@ const reducer = (state, action) => {
 
 export default function PlaceOrderScreen() {
   const navigate = useNavigate();
-  const [infoToken, setInfoToken] = useState("");
+  const [infoToken, setInfoToken] = useState({ token: "", isSocial: Boolean });
   const [{ loading }, dispatch] = useReducer(reducer, {
     loading: false,
   });
@@ -56,6 +56,7 @@ export default function PlaceOrderScreen() {
       setInfoToken({ token: kakaoUser.kakaoToken, isSocial: true });
     }
   }, [userInfo, kakaoUser]);
+  console.log(infoToken);
   const placeOrderHandler = async () => {
     if (!userInfo && !kakaoUser) {
       navigate("/login");
@@ -94,7 +95,7 @@ export default function PlaceOrderScreen() {
         {
           headers: {
             Authorization: `Bearer ${infoToken.token}`,
-            isSocial: infoToken.isSocial,
+            isSocial: `${infoToken.isSocial}`,
           },
           withCredentials: true,
         }
