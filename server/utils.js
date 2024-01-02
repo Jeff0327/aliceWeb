@@ -27,7 +27,7 @@ const isAuth = (req, res, next) => {
   const authorization = req.headers.authorization;
   const isSocial = req.headers.isSocial;
   const token = authorization.slice(7, authorization.length);
-  if (authorization && !isSocial) {
+  if (authorization && isSocial === false) {
     jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
       if (err) {
         res.status(401).send({
@@ -36,13 +36,11 @@ const isAuth = (req, res, next) => {
           decode,
         });
       } else {
-        if (req.user) {
-          req.user = decode;
-          next();
-        }
+        req.user = decode;
+        next();
       }
     });
-  } else if (authorization && isSocial) {
+  } else if (authorization && isSocial === true) {
     req.user = token;
   } else {
     res
