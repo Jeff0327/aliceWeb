@@ -113,6 +113,7 @@ export default function PlaceOrderScreen() {
             itemsPrice: cart.itemsPrice,
             shippingPrice: cart.shippingPrice,
             totalPrice: cart.totalPrice,
+            socialUser: kakaoUser,
           },
           {
             headers: {
