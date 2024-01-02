@@ -49,6 +49,9 @@ orderRouter.post(
         console.log(err);
       }
     } else if (kakaoUser) {
+      const kakaoUserToken = SocialUser.findOne({
+        kakaoToken: req.kakaoUser.kakaoToken,
+      });
       try {
         const newOrder = new Order({
           orderItems: req.body.orderItems.map((x) => ({
@@ -61,7 +64,7 @@ orderRouter.post(
           itemsPrice: req.body.itemsPrice,
           shippingPrice: req.body.shippingPrice,
           totalPrice: req.body.totalPrice,
-          user: kakaoUser,
+          user: kakaoUserToken,
         });
         const order = await newOrder.save();
 
