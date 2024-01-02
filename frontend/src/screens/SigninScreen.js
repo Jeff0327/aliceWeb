@@ -1,4 +1,4 @@
-import { GoogleOAuthProvider } from "@react-oauth/google";
+// import { GoogleOAuthProvider } from "@react-oauth/google";
 import Axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
@@ -8,9 +8,10 @@ import { Helmet } from "react-helmet-async";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Store } from "../Store";
-import GoogleLogin from "../components/GoogleLogin";
+
 import KakaoLogin from "../components/KakaoLoginButton";
-import NaverLogin from "../components/NaverLogin";
+// import NaverLogin from "../components/NaverLogin";
+// import GoogleLogin from "../components/GoogleLogin";
 import { getError } from "../utils";
 export default function SigninScreen() {
   const navigate = useNavigate();
@@ -23,8 +24,8 @@ export default function SigninScreen() {
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
-  const client_id =
-    "258796595331-7cb6sehma9pnihkr8dkhth4apjlkd37j.apps.googleusercontent.com";
+  // const client_id =
+  //   "258796595331-7cb6sehma9pnihkr8dkhth4apjlkd37j.apps.googleusercontent.com";
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -88,10 +89,10 @@ export default function SigninScreen() {
 
         <Form.Group className="mb-3">
           <KakaoLogin />
-          <NaverLogin />
+          {/* <NaverLogin />
           <GoogleOAuthProvider clientId={client_id}>
             <GoogleLogin />
-          </GoogleOAuthProvider>
+          </GoogleOAuthProvider> */}
         </Form.Group>
       </Form>
     </Container>
