@@ -47,6 +47,8 @@ export default function PlaceOrderScreen() {
 
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
 
+  console.log("kakaoUser:", kakaoUser);
+  console.log("userInfo:", userInfo);
   const placeOrderHandler = async () => {
     if (!userInfo && !kakaoUser) {
       navigate("/login");
