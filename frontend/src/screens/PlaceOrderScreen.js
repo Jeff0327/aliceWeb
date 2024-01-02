@@ -1,5 +1,5 @@
 import Axios from "axios";
-import React, { useContext, useEffect, useReducer } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
@@ -27,7 +27,7 @@ const reducer = (state, action) => {
 
 export default function PlaceOrderScreen() {
   const navigate = useNavigate();
-
+  const [infoToken, setInfoToken] = useState("");
   const [{ loading }, dispatch] = useReducer(reducer, {
     loading: false,
   });
@@ -49,6 +49,13 @@ export default function PlaceOrderScreen() {
 
   console.log("kakaoUser:", kakaoUser);
   console.log("userInfo:", userInfo);
+  useEffect(() => {
+    if (userInfo) {
+      setInfoToken(userInfo.token);
+    } else if (kakaoUser) {
+      setInfoToken(kakaoUser.kakaoToken);
+    }
+  }, [userInfo, kakaoUser]);
   const placeOrderHandler = async () => {
     if (!userInfo && !kakaoUser) {
       navigate("/login");
@@ -71,66 +78,34 @@ export default function PlaceOrderScreen() {
     }));
 
     try {
-      if (userInfo) {
-        dispatch({ type: "CREATE_REQUEST" });
+      dispatch({ type: "CREATE_REQUEST" });
 
-        const { data } = await Axios.post(
-          `/api/orders`,
-          {
-            orderItems: updatedOrderItems,
-            shippingAddress: cart.shippingAddress,
-            detailAddress: cart.detailAddress,
-            paymentMethod: cart.paymentMethod,
-            itemsPrice: cart.itemsPrice,
-            shippingPrice: cart.shippingPrice,
-            totalPrice: cart.totalPrice,
+      const { data } = await Axios.post(
+        `/api/orders`,
+        {
+          orderItems: updatedOrderItems,
+          shippingAddress: cart.shippingAddress,
+          detailAddress: cart.detailAddress,
+          paymentMethod: cart.paymentMethod,
+          itemsPrice: cart.itemsPrice,
+          shippingPrice: cart.shippingPrice,
+          totalPrice: cart.totalPrice,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${infoToken}`,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${userInfo.token}`,
-            },
-            withCredentials: true,
-          }
-        );
-        ctxDispatch({ type: "CART_CLEAR" });
-        dispatch({ type: "CREATE_SUCCESS" });
-        localStorage.removeItem("cartItems");
-        navigate(`/order/${data.order._id}`, {
-          state: {
-            colorName: updatedOrderItems.map((item) => item.color.selectColor),
-          },
-        });
-      } else if (kakaoUser) {
-        dispatch({ type: "CREATE_REQUEST" });
-
-        const { data } = await Axios.post(
-          `/api/orders/socialOrder`,
-          {
-            orderItems: updatedOrderItems,
-            shippingAddress: cart.shippingAddress,
-            detailAddress: cart.detailAddress,
-            paymentMethod: cart.paymentMethod,
-            itemsPrice: cart.itemsPrice,
-            shippingPrice: cart.shippingPrice,
-            totalPrice: cart.totalPrice,
-            socialUser: kakaoUser,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${kakaoUser.kakaoToken}`,
-            },
-            withCredentials: true,
-          }
-        );
-        ctxDispatch({ type: "CART_CLEAR" });
-        dispatch({ type: "CREATE_SUCCESS" });
-        localStorage.removeItem("cartItems");
-        navigate(`/order/${data.order._id}`, {
-          state: {
-            colorName: updatedOrderItems.map((item) => item.color.selectColor),
-          },
-        });
-      }
+          withCredentials: true,
+        }
+      );
+      ctxDispatch({ type: "CART_CLEAR" });
+      dispatch({ type: "CREATE_SUCCESS" });
+      localStorage.removeItem("cartItems");
+      navigate(`/order/${data.order._id}`, {
+        state: {
+          colorName: updatedOrderItems.map((item) => item.color.selectColor),
+        },
+      });
     } catch (err) {
       dispatch({ type: "CREATE_FAIL" });
       toast.error(getError(err));

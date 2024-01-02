@@ -35,7 +35,11 @@ const isAuth = (req, res, next) => {
           decode,
         });
       } else {
-        req.user = decode;
+        if (req.user) {
+          req.user = decode;
+        } else if (req.kakaoUser) {
+          req.kakaoUser = decode;
+        }
         next();
       }
     });
@@ -46,14 +50,7 @@ const isAuth = (req, res, next) => {
     //토큰없음
   }
 };
-const isSocialAuth = (req, res, next) => {
-  const authorization = req.headers.authorization;
-  if (authorization) {
-    const token = authorization.slice(7, authorization.length); // Bearer XXXXXXX
-    req.kakaoUser = token;
-    next();
-  }
-};
+
 const isAdmin = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
     next();
