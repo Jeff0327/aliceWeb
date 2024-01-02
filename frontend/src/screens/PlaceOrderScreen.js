@@ -43,16 +43,14 @@ export default function PlaceOrderScreen() {
       0
     )
   );
-  cart.shippingPrice = cart.itemsPrice > 50000 ? 0 : 0; //5만원 이상 결제시 배송료 무료 5만원미만 결제시 배송료 2500
+  cart.shippingPrice = cart.itemsPrice > 50000 ? 0 : 2500; //5만원 이상 결제시 배송료 무료 5만원미만 결제시 배송료 2500
 
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
 
   const placeOrderHandler = async () => {
-    if (!userInfo || !userInfo.token) {
-      if (!kakaoUser || !kakaoUser.kakaoToken) {
-        navigate("/login");
-        return;
-      }
+    if (!userInfo || !userInfo.token || !kakaoUser || !kakaoUser.kakaoToken) {
+      navigate("/login");
+      return;
     }
 
     if (loading) {
@@ -228,7 +226,11 @@ export default function PlaceOrderScreen() {
                 <ListGroup.Item>
                   <Row>
                     <Col>배송료</Col>
-                    <Col>{cart.shippingPrice.toLocaleString()}원</Col>
+                    <Col>
+                      {cart.shippingPrice > 50000
+                        ? "5만원이상 배송비무료"
+                        : `${cart.shippingPrice.toLocaleString()}원`}
+                    </Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
