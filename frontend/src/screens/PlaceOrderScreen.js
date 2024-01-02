@@ -54,7 +54,7 @@ export default function PlaceOrderScreen() {
       setInfoToken({ token: kakaoUser.kakaoToken, isSocial: true });
     }
   }, [userInfo, kakaoUser]);
-  console.log(infoToken);
+
   const placeOrderHandler = async () => {
     if (!userInfo && !kakaoUser) {
       navigate("/login");
@@ -192,6 +192,7 @@ export default function PlaceOrderScreen() {
           <Card>
             <Card.Body>
               <Card.Title>주문정보</Card.Title>
+
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <Row>
@@ -202,10 +203,13 @@ export default function PlaceOrderScreen() {
                 <ListGroup.Item>
                   <Row>
                     <Col>배송료</Col>
+
                     <Col>
-                      {cart.shippingPrice < 50000
-                        ? `${cart.shippingPrice.toLocaleString()}원`
-                        : `5만원이상 결제 배송비무료`}
+                      {cart.itemsPrice > 50000 ? (
+                        <Card.Subtitle>5만원이상 배송비무료</Card.Subtitle>
+                      ) : (
+                        `${cart.shippingPrice.toLocaleString()}원`
+                      )}
                     </Col>
                   </Row>
                 </ListGroup.Item>

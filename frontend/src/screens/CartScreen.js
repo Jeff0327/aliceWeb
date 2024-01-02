@@ -18,7 +18,6 @@ export default function CartScreen() {
     cart: { cartItems },
   } = state;
 
-  console.log(kakaoUser);
   const updateCartHandler = (item, quantity) => {
     if (item.color.selectColor.count < quantity) {
       toast.error("재고가 없습니다");
