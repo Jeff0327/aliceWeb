@@ -24,14 +24,15 @@ const generateToken = (user) => {
 };
 
 const isAuth = (req, res, next) => {
-  const authorization = req.headers.authorization;
+  const authorization = req.headers.authorization.slice(
+    7,
+    authorization.length
+  );
   if (authorization === req.kakaoUser.kakaoToken) {
-    const token = authorization.slice(7, authorization.length);
-    req.kakaoUser.kakaoToken = token;
+    req.kakaoUser.kakaoToken = authorization;
     next();
   } else if (authorization === req.userInfo.token) {
-    const token = authorization.slice(7, authorization.length); // Bearer XXXXXXX
-    jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
+    jwt.verify(authorization, process.env.JWT_SECRET, (err, decode) => {
       if (err) {
         res.status(401).send({
           message: "인증이 만료되었습니다. [error code:021]",
@@ -41,10 +42,8 @@ const isAuth = (req, res, next) => {
       } else {
         if (req.user) {
           req.user = decode;
-        } else if (req.kakaoUser) {
-          req.kakaoUser = decode;
+          next();
         }
-        next();
       }
     });
   } else {
