@@ -51,9 +51,9 @@ export default function PlaceOrderScreen() {
   console.log("userInfo:", userInfo);
   useEffect(() => {
     if (userInfo) {
-      setInfoToken(userInfo.token);
+      setInfoToken({ token: userInfo.token, isSocial: false });
     } else if (kakaoUser) {
-      setInfoToken(kakaoUser.kakaoToken);
+      setInfoToken({ token: kakaoUser.kakaoToken, isSocial: true });
     }
   }, [userInfo, kakaoUser]);
   const placeOrderHandler = async () => {
@@ -93,7 +93,8 @@ export default function PlaceOrderScreen() {
         },
         {
           headers: {
-            Authorization: `Bearer ${infoToken}`,
+            Authorization: `Bearer ${infoToken.token}`,
+            isSocial: infoToken.isSocial,
           },
           withCredentials: true,
         }

@@ -24,15 +24,11 @@ const generateToken = (user) => {
 };
 
 const isAuth = (req, res, next) => {
-  const authorization = req.headers.authorization.slice(
-    7,
-    authorization.length
-  );
-  if (authorization === req.kakaoUser.kakaoToken) {
-    req.kakaoUser.kakaoToken = authorization;
-    next();
-  } else if (authorization === req.userInfo.token) {
-    jwt.verify(authorization, process.env.JWT_SECRET, (err, decode) => {
+  const authorization = req.headers.authorization;
+  const isSocial = req.headers.isSocial;
+  if (authorization && !isSocial) {
+    const token = authorization.slice(7, authorization.length);
+    jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
       if (err) {
         res.status(401).send({
           message: "인증이 만료되었습니다. [error code:021]",
@@ -46,6 +42,8 @@ const isAuth = (req, res, next) => {
         }
       }
     });
+  } else if (authorization && isSocial) {
+    req.kakaoUser = token;
   } else {
     res
       .status(401)
