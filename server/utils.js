@@ -25,7 +25,11 @@ const generateToken = (user) => {
 
 const isAuth = (req, res, next) => {
   const authorization = req.headers.authorization;
-  if (authorization) {
+  if (authorization === req.kakaoUser.kakaoToken) {
+    const token = authorization.slice(7, authorization.length);
+    req.kakaoUser.kakaoToken = token;
+    next();
+  } else if (authorization === req.userInfo.token) {
     const token = authorization.slice(7, authorization.length); // Bearer XXXXXXX
     jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
       if (err) {
