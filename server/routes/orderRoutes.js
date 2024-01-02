@@ -25,8 +25,8 @@ orderRouter.post(
   "/",
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const user = req.user ? req.user : req.kakaoUser ? req.kakaoUser : null;
-
+    const user = req.user;
+    const kakaoUser = req.kakaoUser;
     if (user) {
       try {
         const newOrder = new Order({
@@ -41,6 +41,27 @@ orderRouter.post(
           shippingPrice: req.body.shippingPrice,
           totalPrice: req.body.totalPrice,
           user: user,
+        });
+        const order = await newOrder.save();
+
+        res.status(201).send({ message: "주문되었습니다.", order });
+      } catch (err) {
+        console.log(err);
+      }
+    } else if (kakaoUser) {
+      try {
+        const newOrder = new Order({
+          orderItems: req.body.orderItems.map((x) => ({
+            ...x,
+            product: x._id,
+          })),
+          shippingAddress: req.body.shippingAddress,
+          detailAddress: req.body.detailAddress,
+          paymentMethod: req.body.paymentMethod,
+          itemsPrice: req.body.itemsPrice,
+          shippingPrice: req.body.shippingPrice,
+          totalPrice: req.body.totalPrice,
+          user: kakaoUser,
         });
         const order = await newOrder.save();
 
