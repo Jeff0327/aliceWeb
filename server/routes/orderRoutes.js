@@ -25,7 +25,7 @@ orderRouter.post(
   "/",
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    let account;
+    const account = "";
     if (req.user) {
       account = req.user;
     } else if (req.kakaoUser) {
