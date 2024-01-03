@@ -215,8 +215,12 @@ export default function OrderScreen() {
       successDeliver ||
       (order._id && order._id !== orderId)
     ) {
-      fetchOrder();
-      fetchSocialOrder();
+      if (!kakaoUser) {
+        fetchOrder();
+      } else if (!userInfo) {
+        fetchSocialOrder();
+      }
+
       if (successPay) {
         dispatch({ type: "PAY_RESET" });
       }
