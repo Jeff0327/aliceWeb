@@ -103,6 +103,7 @@ export default function OrderListScreen() {
           <tbody>
             {orders.map((order) => (
               <tr key={order._id}>
+                <h1>{order}</h1>
                 <td>{order._id}</td>
                 <td>{order.user ? order.user.name : "삭제된 유저"}</td>
                 <td>{order.createdAt.substring(0, 10)}</td>
