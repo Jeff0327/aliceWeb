@@ -139,7 +139,7 @@ orderRouter.get(
   })
 );
 orderRouter.get(
-  "socialOrder/:id",
+  "/socialOrder/:id",
   isSocialAuth,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
