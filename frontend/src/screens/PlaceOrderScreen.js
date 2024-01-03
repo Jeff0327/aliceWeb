@@ -134,6 +134,7 @@ export default function PlaceOrderScreen() {
         ctxDispatch({ type: "CART_CLEAR" });
         dispatch({ type: "CREATE_SUCCESS" });
         localStorage.removeItem("cartItems");
+        console.log(data);
         navigate(`/order/${data.order._id}`, {
           state: {
             colorName: updatedOrderItems.map((item) => item.color.selectColor),
