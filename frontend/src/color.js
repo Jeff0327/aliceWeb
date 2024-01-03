@@ -137,4 +137,10 @@ export const colors = [
     count: "",
     check: false,
   },
+  {
+    name: "초콜렛",
+    value: "#443731",
+    count: "",
+    check: false,
+  },
 ];
