@@ -15,7 +15,12 @@ orderRouter.get(
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
-    const orders = await Order.find().populate("user", "name");
+    const orders = await Order.find({
+      $or: [{ user: { $exists: true } }, { kakaoUser: { $exists: true } }],
+    })
+      .populate("user", "name")
+      .populate("kakaoUser", "name");
+
     res.send(orders);
   })
 );
