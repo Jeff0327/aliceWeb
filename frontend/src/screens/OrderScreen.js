@@ -76,7 +76,7 @@ export default function OrderScreen() {
   });
 
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
-
+  console.log(order);
   function createOrder(data, actions) {
     return actions.order
       .create({
@@ -118,7 +118,6 @@ export default function OrderScreen() {
       const response = await Bootpay.requestPayment({
         application_id: `655c7fea00c78a001aaf57ac`,
         price: order.totalPrice,
-
         order_name: `${order.orderItems.map((e) => e.name)}`,
         order_id: `${order.orderItems.map((e) => e._id)}`,
         user: {
@@ -389,14 +388,14 @@ export default function OrderScreen() {
                           ></PayPalButtons>
                         ) : (
                           <div className="d-grid">
-                            <Button
+                            {/* <Button
                               type="button"
                               variant="success"
                               className="btn btn-success btn-width"
                               onClick={bootpayhandler}
                             >
                               결제하기
-                            </Button>
+                            </Button> */}
                           </div>
                         )}
                       </div>
