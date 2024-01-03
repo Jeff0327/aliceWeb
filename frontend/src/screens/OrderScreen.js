@@ -392,14 +392,14 @@ export default function OrderScreen() {
                           ></PayPalButtons>
                         ) : (
                           <div className="d-grid">
-                            {/* <Button
+                            <Button
                               type="button"
                               variant="success"
                               className="btn btn-success btn-width"
                               onClick={bootpayhandler}
                             >
                               결제하기
-                            </Button> */}
+                            </Button>
                           </div>
                         )}
                       </div>
