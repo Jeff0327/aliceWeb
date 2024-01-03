@@ -136,7 +136,17 @@ orderRouter.get(
     }
   })
 );
-
+orderRouter.get(
+  "socialOrder/:id",
+  expressAsyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+    if (order) {
+      res.send(order);
+    } else {
+      res.status(404).send({ message: "주문을 찾을 수 없습니다." });
+    }
+  })
+);
 orderRouter.put(
   "/:id/deliver",
   isAuth,

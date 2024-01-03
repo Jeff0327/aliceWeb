@@ -56,10 +56,10 @@ export default function PlaceOrderScreen() {
   }, [userInfo, kakaoUser]);
 
   const placeOrderHandler = async () => {
-    // if (!userInfo && !kakaoUser) {
-    //   navigate("/login");
-    //   return;
-    // }
+    if (!userInfo && !kakaoUser) {
+      navigate("/login");
+      return;
+    }
 
     if (loading) {
       return;
@@ -125,7 +125,7 @@ export default function PlaceOrderScreen() {
         ctxDispatch({ type: "CART_CLEAR" });
         dispatch({ type: "CREATE_SUCCESS" });
         localStorage.removeItem("cartItems");
-        navigate(`/order/${data.order._id}`, {
+        navigate(`/order/socialOrder${data.order._id}`, {
           state: {
             colorName: updatedOrderItems.map((item) => item.color.selectColor),
           },

@@ -50,7 +50,7 @@ function reducer(state, action) {
 
 export default function OrderScreen() {
   const { state } = useContext(Store);
-  const { userInfo } = state;
+  const { userInfo, kakaoUser } = state;
 
   const params = useParams();
   const { id: orderId } = params;
@@ -198,8 +198,16 @@ export default function OrderScreen() {
         dispatch({ type: "FETCH_FAIL", payload: getError(err) });
       }
     };
-
-    if (!userInfo) {
+    const fetchSocialOrder = async () => {
+      try {
+        dispatch({ type: "FETCH_REQUEST" });
+        const { data } = await axios.get(`/api/orders/socialOrder/${orderId}`);
+        dispatch({ type: "FETCH_SUCCESS", payload: data });
+      } catch (err) {
+        dispatch({ type: "FETCH_FAIL", payload: getError(err) });
+      }
+    };
+    if (!userInfo && !kakaoUser) {
       return navigate("/login");
     }
     if (
@@ -209,6 +217,7 @@ export default function OrderScreen() {
       (order._id && order._id !== orderId)
     ) {
       fetchOrder();
+      fetchSocialOrder();
       if (successPay) {
         dispatch({ type: "PAY_RESET" });
       }
@@ -234,6 +243,7 @@ export default function OrderScreen() {
   }, [
     order,
     userInfo,
+    kakaoUser,
     orderId,
     navigate,
     paypalDispatch,
