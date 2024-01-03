@@ -48,7 +48,7 @@ orderRouter.post(
   })
 );
 orderRouter.post(
-  "/",
+  "/socialOrder",
   isSocialAuth,
   expressAsyncHandler(async (req, res) => {
     try {
