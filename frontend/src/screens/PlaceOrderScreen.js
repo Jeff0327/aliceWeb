@@ -121,7 +121,6 @@ export default function PlaceOrderScreen() {
           itemsPrice: cart.itemsPrice,
           shippingPrice: cart.shippingPrice,
           totalPrice: cart.totalPrice,
-          kakaoUser: kakaoUser,
         });
         ctxDispatch({ type: "CART_CLEAR" });
         dispatch({ type: "CREATE_SUCCESS" });
