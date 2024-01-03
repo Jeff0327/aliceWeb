@@ -52,7 +52,7 @@ const isSocialAuth = (req, res, next) => {
   const token = authorization.slice(7, authorization.length);
   const kakaoUser = SocialUser.findOne({ kakaoToken: token });
   if (authorization) {
-    res.send(kakaoUser);
+    res.send({ kakaoUser });
     next();
   } else {
     res
