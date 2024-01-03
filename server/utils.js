@@ -47,10 +47,10 @@ const isAuth = (req, res, next) => {
     //토큰없음
   }
 };
-const isSocialAuth = (req, res, next) => {
+const isSocialAuth = async (req, res, next) => {
   const authorization = req.headers.authorization;
   const token = authorization.slice(7, authorization.length);
-  const kakaoUser = SocialUser.findOne({ kakaoToken: token });
+  const kakaoUser = await SocialUser.findOne({ kakaoToken: token });
   if (authorization) {
     res.send({ kakaoUser });
     next();
