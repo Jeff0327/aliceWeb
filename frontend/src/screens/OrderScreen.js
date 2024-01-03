@@ -253,7 +253,6 @@ export default function OrderScreen() {
     successPay,
     successDeliver,
   ]);
-
   async function deliverOrderHandler() {
     try {
       dispatch({ type: "DELIVER_REQUEST" });
