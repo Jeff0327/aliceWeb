@@ -56,10 +56,10 @@ export default function PlaceOrderScreen() {
   }, [userInfo, kakaoUser]);
 
   const placeOrderHandler = async () => {
-    if (!userInfo && !kakaoUser) {
-      navigate("/login");
-      return;
-    }
+    // if (!userInfo && !kakaoUser) {
+    //   navigate("/login");
+    //   return;
+    // }
 
     if (loading) {
       return;
