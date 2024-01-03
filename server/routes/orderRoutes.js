@@ -2,7 +2,6 @@ const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
 const {
   isAuth,
-  isSocialAuth,
   isAdmin,
   mailgun,
   payOrderEmailTemplate,
@@ -49,7 +48,6 @@ orderRouter.post(
 );
 orderRouter.post(
   "/socialOrder",
-  isSocialAuth,
   expressAsyncHandler(async (req, res) => {
     try {
       const newOrder = new Order({
