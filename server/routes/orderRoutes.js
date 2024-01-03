@@ -2,6 +2,7 @@ const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
 const {
   isAuth,
+  isSocialAuth,
   isAdmin,
   mailgun,
   payOrderEmailTemplate,
@@ -48,6 +49,7 @@ orderRouter.post(
 );
 orderRouter.post(
   "/socialOrder",
+  isSocialAuth,
   expressAsyncHandler(async (req, res) => {
     try {
       const newOrder = new Order({
@@ -61,7 +63,7 @@ orderRouter.post(
         itemsPrice: req.body.itemsPrice,
         shippingPrice: req.body.shippingPrice,
         totalPrice: req.body.totalPrice,
-        kakaoUser: { _id: kakaoUser._id, name: kakaoUser.email },
+        kakaoUser: { _id: req.kakaoUser._id, name: kakaoUser.email },
       });
       const order = await newOrder.save();
 
@@ -138,6 +140,7 @@ orderRouter.get(
 );
 orderRouter.get(
   "socialOrder/:id",
+  isSocialAuth,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
     if (order) {

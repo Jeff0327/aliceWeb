@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const mg = require("mailgun-js");
+const { kakaoUser, SocialUser } = require("./models/userModel");
 const baseUrl = () =>
   process.env.BASE_URL
     ? process.env.BASE_URL
@@ -46,7 +47,20 @@ const isAuth = (req, res, next) => {
     //토큰없음
   }
 };
-
+const isSocialAuth = (req, res, next) => {
+  const authorization = req.headers.authorization;
+  const token = authorization.slice(7, authorization.length);
+  const kakaoUser = SocialUser.findOne({ kakaoToken: token });
+  if (authorization) {
+    res.send(kakaoUser);
+    next();
+  } else {
+    res
+      .status(401)
+      .send({ message: "인증이 만료되었습니다.[error code:022]", err });
+    //토큰없음
+  }
+};
 const isAdmin = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
     next();
@@ -126,6 +140,7 @@ const payOrderEmailTemplate = (order) => {
 };
 module.exports = {
   isAuth,
+  isSocialAuth,
   generateToken,
   isAdmin,
   mailgun,

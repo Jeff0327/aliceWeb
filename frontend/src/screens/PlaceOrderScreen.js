@@ -113,19 +113,28 @@ export default function PlaceOrderScreen() {
       try {
         dispatch({ type: "CREATE_REQUEST" });
 
-        const { data } = await Axios.post(`/api/orders/socialOrder`, {
-          orderItems: updatedOrderItems,
-          shippingAddress: cart.shippingAddress,
-          detailAddress: cart.detailAddress,
-          paymentMethod: cart.paymentMethod,
-          itemsPrice: cart.itemsPrice,
-          shippingPrice: cart.shippingPrice,
-          totalPrice: cart.totalPrice,
-        });
+        const { data } = await Axios.post(
+          `/api/orders/socialOrder`,
+          {
+            orderItems: updatedOrderItems,
+            shippingAddress: cart.shippingAddress,
+            detailAddress: cart.detailAddress,
+            paymentMethod: cart.paymentMethod,
+            itemsPrice: cart.itemsPrice,
+            shippingPrice: cart.shippingPrice,
+            totalPrice: cart.totalPrice,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${infoToken.token}`,
+            },
+            withCredentials: true,
+          }
+        );
         ctxDispatch({ type: "CART_CLEAR" });
         dispatch({ type: "CREATE_SUCCESS" });
         localStorage.removeItem("cartItems");
-        navigate(`/order/socialOrder${data.order._id}`, {
+        navigate(`/order/socialOrder/${data.order._id}`, {
           state: {
             colorName: updatedOrderItems.map((item) => item.color.selectColor),
           },
