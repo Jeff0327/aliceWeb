@@ -55,7 +55,7 @@ orderRouter.post(
       const newOrder = new Order({
         orderItems: req.body.orderItems.map((x) => ({
           ...x,
-          product: x.product._id,
+          product: x._id,
         })),
         shippingAddress: req.body.shippingAddress,
         detailAddress: req.body.detailAddress,
@@ -139,7 +139,7 @@ orderRouter.get(
   })
 );
 orderRouter.get(
-  "/socialOrder/:id",
+  "/:id",
   isSocialAuth,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
