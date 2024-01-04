@@ -55,7 +55,7 @@ orderRouter.post(
       const newOrder = new Order({
         orderItems: req.body.orderItems.map((x) => ({
           ...x,
-          product: x._id,
+          product: x.product._id,
         })),
         shippingAddress: req.body.shippingAddress,
         detailAddress: req.body.detailAddress,
