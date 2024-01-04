@@ -7,7 +7,7 @@ const productRouter = require("./routes/productRoutes.js");
 const userRouter = require("./routes/userRoutes.js");
 const orderRouter = require("./routes/orderRoutes.js");
 const uploadRouter = require("./routes/uploadRoutes.js");
-
+const socialOrderRouter = require("./routes/socialOrderRoutes.js");
 const port = process.env.PORT || 3000;
 const cors = require("cors");
 
@@ -67,6 +67,7 @@ app.use("/api/seed", seedRouter);
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
+app.use("/api/socialOrders", socialOrderRouter);
 app.use(express.static(path.join(__dirname, "../frontend/build")));
 
 app.get("*", (req, res) =>

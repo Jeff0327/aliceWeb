@@ -2,6 +2,7 @@ const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
 const {
   isAuth,
+  isSocialAuth,
   isAdmin,
   mailgun,
   payOrderEmailTemplate,
@@ -9,20 +10,11 @@ const {
 const Order = require("../models/orderModel.js");
 const { User } = require("../models/userModel.js");
 const Product = require("../models/productModel.js");
-const orderRouter = express.Router();
-orderRouter.get(
-  "/",
-  isAuth,
-  isAdmin,
-  expressAsyncHandler(async (req, res) => {
-    const orders = await Order.find().populate("user", "name");
-    res.send(orders);
-  })
-);
+const socialOrderRouter = express.Router();
 
-orderRouter.post(
+socialOrderRouter.post(
   "/",
-  isAuth,
+  isSocialAuth,
   expressAsyncHandler(async (req, res) => {
     try {
       const newOrder = new Order({
@@ -46,62 +38,45 @@ orderRouter.post(
     }
   })
 );
-
-orderRouter.get(
-  "/summary",
-  isAuth,
-  isAdmin,
+socialOrderRouter.post(
+  "/socialOrder",
+  isSocialAuth,
   expressAsyncHandler(async (req, res) => {
-    const orders = await Order.aggregate([
-      {
-        $group: {
-          _id: null,
-          numOrders: { $sum: 1 },
-          totalSales: { $sum: "$totalPrice" },
-        },
-      },
-    ]);
-    const users = await User.aggregate([
-      {
-        $group: {
-          _id: null,
-          numUsers: { $sum: 1 },
-        },
-      },
-    ]);
-    const dailyOrders = await Order.aggregate([
-      {
-        $group: {
-          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
-          orders: { $sum: 1 },
-          sales: { $sum: "$totalPrice" },
-        },
-      },
-      { $sort: { _id: 1 } },
-    ]);
-    const productCategories = await Product.aggregate([
-      {
-        $group: {
-          _id: "$category",
-          count: { $sum: 1 },
-        },
-      },
-    ]);
-    res.send({ users, orders, dailyOrders, productCategories });
+    try {
+      const newOrder = new Order({
+        orderItems: req.body.orderItems.map((x) => ({
+          ...x,
+          product: x._id,
+        })),
+        shippingAddress: req.body.shippingAddress,
+        detailAddress: req.body.detailAddress,
+        paymentMethod: req.body.paymentMethod,
+        itemsPrice: req.body.itemsPrice,
+        shippingPrice: req.body.shippingPrice,
+        totalPrice: req.body.totalPrice,
+        kakaoUser: req.kakaoUser,
+      });
+      const order = await newOrder.save();
+
+      res.status(201).send({ message: "주문되었습니다.", order });
+    } catch (err) {
+      console.log(err);
+    }
   })
 );
-orderRouter.get(
+
+socialOrderRouter.get(
   "/mine",
-  isAuth,
+  isSocialAuth,
   expressAsyncHandler(async (req, res) => {
     const orders = await Order.find({ user: req.user._id });
     res.send(orders);
   })
 );
 
-orderRouter.get(
+socialOrderRouter.get(
   "/:id",
-  isAuth,
+  isSocialAuth,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
     if (order) {
@@ -111,10 +86,21 @@ orderRouter.get(
     }
   })
 );
-
-orderRouter.put(
+socialOrderRouter.get(
+  "/:id",
+  isSocialAuth,
+  expressAsyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+    if (order) {
+      res.send(order);
+    } else {
+      res.status(404).send({ message: "주문을 찾을 수 없습니다." });
+    }
+  })
+);
+socialOrderRouter.put(
   "/:id/deliver",
-  isAuth,
+  isSocialAuth,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
     if (order) {
@@ -128,9 +114,9 @@ orderRouter.put(
   })
 );
 
-orderRouter.put(
+socialOrderRouter.put(
   "/:id/bootpay",
-  isAuth,
+  isSocialAuth,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
     const payId = await req.body;
@@ -168,9 +154,9 @@ orderRouter.put(
     }
   })
 );
-orderRouter.put(
+socialOrderRouter.put(
   "/:id/pay",
-  isAuth,
+  isSocialAuth,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id).populate(
       "user",
@@ -212,18 +198,4 @@ orderRouter.put(
   })
 );
 
-orderRouter.delete(
-  "/:id",
-  isAuth,
-  isAdmin,
-  expressAsyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id);
-    if (order) {
-      await order.deleteOne();
-      res.send({ message: "주문이 삭제되었습니다." });
-    } else {
-      res.status(404).send({ message: "주문을 찾을 수 없습니다." });
-    }
-  })
-);
-module.exports = orderRouter;
+module.exports = socialOrderRouter;
