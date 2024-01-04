@@ -1,15 +1,7 @@
 const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
-const {
-  isAuth,
-  isSocialAuth,
-  isAdmin,
-  mailgun,
-  payOrderEmailTemplate,
-} = require("../utils.js");
+const { isSocialAuth, mailgun, payOrderEmailTemplate } = require("../utils.js");
 const Order = require("../models/orderModel.js");
-const { User } = require("../models/userModel.js");
-const Product = require("../models/productModel.js");
 const socialOrderRouter = express.Router();
 
 socialOrderRouter.post(
@@ -28,7 +20,7 @@ socialOrderRouter.post(
         itemsPrice: req.body.itemsPrice,
         shippingPrice: req.body.shippingPrice,
         totalPrice: req.body.totalPrice,
-        user: req.user,
+        kakaoUser: req.kakaoUser,
       });
       const order = await newOrder.save();
 
@@ -69,7 +61,7 @@ socialOrderRouter.get(
   "/mine",
   isSocialAuth,
   expressAsyncHandler(async (req, res) => {
-    const orders = await Order.find({ user: req.user._id });
+    const orders = await Order.find({ kakaoUser: req.kakaoUser._id });
     res.send(orders);
   })
 );
@@ -86,18 +78,7 @@ socialOrderRouter.get(
     }
   })
 );
-socialOrderRouter.get(
-  "/:id",
-  isSocialAuth,
-  expressAsyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id);
-    if (order) {
-      res.send(order);
-    } else {
-      res.status(404).send({ message: "주문을 찾을 수 없습니다." });
-    }
-  })
-);
+
 socialOrderRouter.put(
   "/:id/deliver",
   isSocialAuth,
@@ -126,9 +107,8 @@ socialOrderRouter.put(
       order.paidAt = Date.now();
       order.paymentResult = {
         id: req.body.id,
-        status: req.body.status,
         update_time: req.body.update_time,
-        email_address: req.body.email_address,
+        email: req.body.email,
       };
       const updatedOrder = await order.save();
       mailgun()
@@ -136,7 +116,7 @@ socialOrderRouter.put(
         .send(
           {
             from: `RoseMarry <cocacola158500@gmail.com>`,
-            to: `${order.user.name} <${order.user.email}>`,
+            to: `${order.kakaoUser.email}`,
             subject: `구매해주셔서 감사합니다.  주문번호:[${order._id}]`,
             html: payOrderEmailTemplate(order),
           },
@@ -159,8 +139,8 @@ socialOrderRouter.put(
   isSocialAuth,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id).populate(
-      "user",
-      "email name"
+      "socialUser",
+      "email"
     );
     if (order) {
       order.isPaid = true;
@@ -178,7 +158,7 @@ socialOrderRouter.put(
         .send(
           {
             from: `RoseMarry <cocacola158500@gmail.com>`,
-            to: `${order.user.name} <${order.user.email}>`,
+            to: `${order.kakaoUser.email}`,
             subject: `구매해주셔서 감사합니다.  주문번호:[${order._id}]`,
             html: payOrderEmailTemplate(order),
           },
