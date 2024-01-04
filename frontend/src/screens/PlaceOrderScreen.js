@@ -1,5 +1,5 @@
 import Axios from "axios";
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
@@ -27,7 +27,7 @@ const reducer = (state, action) => {
 
 export default function PlaceOrderScreen() {
   const navigate = useNavigate();
-  const [infoToken, setInfoToken] = useState({ token: "", isSocial: Boolean });
+
   const [{ loading }, dispatch] = useReducer(reducer, {
     loading: false,
   });
@@ -46,14 +46,6 @@ export default function PlaceOrderScreen() {
   cart.shippingPrice = cart.itemsPrice > 50000 ? 0 : 2500; //5만원 이상 결제시 배송료 무료 5만원미만 결제시 배송료 2500
 
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
-
-  useEffect(() => {
-    if (userInfo) {
-      setInfoToken({ token: userInfo.token, isSocial: false });
-    } else if (kakaoUser) {
-      setInfoToken({ token: kakaoUser.kakaoToken, isSocial: true });
-    }
-  }, [userInfo, kakaoUser]);
 
   const placeOrderHandler = async () => {
     if (!userInfo && !kakaoUser) {
@@ -75,7 +67,7 @@ export default function PlaceOrderScreen() {
         },
       ],
     }));
-    if (infoToken.isSocial === false) {
+    if (userInfo) {
       try {
         dispatch({ type: "CREATE_REQUEST" });
 
@@ -92,7 +84,7 @@ export default function PlaceOrderScreen() {
           },
           {
             headers: {
-              Authorization: `Bearer ${infoToken.token}`,
+              Authorization: `Bearer ${userInfo.token}`,
             },
             withCredentials: true,
           }
@@ -109,7 +101,7 @@ export default function PlaceOrderScreen() {
         dispatch({ type: "CREATE_FAIL" });
         toast.error(getError(err));
       }
-    } else if (infoToken.isSocial === true) {
+    } else if (kakaoUser) {
       try {
         dispatch({ type: "CREATE_REQUEST" });
 
@@ -126,7 +118,7 @@ export default function PlaceOrderScreen() {
           },
           {
             headers: {
-              Authorization: `Bearer ${infoToken.token}`,
+              Authorization: `Bearer ${kakaoUser.kakaoToken}`,
             },
             withCredentials: true,
           }

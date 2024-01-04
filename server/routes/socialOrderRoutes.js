@@ -3,7 +3,7 @@ const expressAsyncHandler = require("express-async-handler");
 const { isSocialAuth, mailgun, payOrderEmailTemplate } = require("../utils.js");
 const Order = require("../models/orderModel.js");
 const socialOrderRouter = express.Router();
-
+const Product = require("../models/productModel.js");
 socialOrderRouter.post(
   "/",
   isSocialAuth,

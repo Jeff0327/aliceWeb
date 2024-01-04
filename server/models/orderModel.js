@@ -46,9 +46,9 @@ const orderSchema = new mongoose.Schema(
       ref: "User",
       required: false,
     },
-    kakaoUser: {
+    socialUser: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "kakaoUser",
+      ref: "SocialUser",
       required: false,
     },
     isPaid: { type: Boolean, default: false },
