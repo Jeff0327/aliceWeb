@@ -6,7 +6,7 @@ const socialOrderRouter = express.Router();
 const Product = require("../models/productModel.js");
 socialOrderRouter.post(
   "/",
-
+  isSocialAuth,
   expressAsyncHandler(async (req, res) => {
     try {
       const newOrder = new Order({
@@ -20,7 +20,7 @@ socialOrderRouter.post(
         itemsPrice: req.body.itemsPrice,
         shippingPrice: req.body.shippingPrice,
         totalPrice: req.body.totalPrice,
-        kakaoUser: req.body.kakaoUser,
+        kakaoUser: req.kakaoUser,
       });
       const order = await newOrder.save();
 

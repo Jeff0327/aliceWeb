@@ -107,16 +107,24 @@ export default function PlaceOrderScreen() {
       try {
         dispatch({ type: "CREATE_REQUEST" });
 
-        const { data } = await Axios.post(`/api/socialOrders`, {
-          orderItems: updatedOrderItems,
-          shippingAddress: cart.shippingAddress,
-          detailAddress: cart.detailAddress,
-          paymentMethod: cart.paymentMethod,
-          itemsPrice: cart.itemsPrice,
-          shippingPrice: cart.shippingPrice,
-          totalPrice: cart.totalPrice,
-          kakaoUser: kakaoUser,
-        });
+        const { data } = await Axios.post(
+          `/api/socialOrders`,
+          {
+            orderItems: updatedOrderItems,
+            shippingAddress: cart.shippingAddress,
+            detailAddress: cart.detailAddress,
+            paymentMethod: cart.paymentMethod,
+            itemsPrice: cart.itemsPrice,
+            shippingPrice: cart.shippingPrice,
+            totalPrice: cart.totalPrice,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${kakaoUser.kakaoToken}`,
+            },
+            withCredentials: true,
+          }
+        );
         ctxDispatch({ type: "CART_CLEAR" });
         dispatch({ type: "CREATE_SUCCESS" });
         localStorage.removeItem("cartItems");
