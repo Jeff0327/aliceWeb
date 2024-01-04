@@ -36,6 +36,7 @@ export default function PlaceOrderScreen() {
 
   const { cart, userInfo, kakaoUser } = state;
 
+  console.log(cart);
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100; // 123.2345 => 123.23
   cart.itemsPrice = round2(
     cart.cartItems.reduce(
@@ -106,24 +107,16 @@ export default function PlaceOrderScreen() {
       try {
         dispatch({ type: "CREATE_REQUEST" });
 
-        const { data } = await Axios.post(
-          `/api/socialOrders`,
-          {
-            orderItems: updatedOrderItems,
-            shippingAddress: cart.shippingAddress,
-            detailAddress: cart.detailAddress,
-            paymentMethod: cart.paymentMethod,
-            itemsPrice: cart.itemsPrice,
-            shippingPrice: cart.shippingPrice,
-            totalPrice: cart.totalPrice,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${kakaoUser.kakaoToken}`,
-            },
-            withCredentials: true,
-          }
-        );
+        const { data } = await Axios.post(`/api/socialOrders`, {
+          orderItems: updatedOrderItems,
+          shippingAddress: cart.shippingAddress,
+          detailAddress: cart.detailAddress,
+          paymentMethod: cart.paymentMethod,
+          itemsPrice: cart.itemsPrice,
+          shippingPrice: cart.shippingPrice,
+          totalPrice: cart.totalPrice,
+          kakaoUser: kakaoUser,
+        });
         ctxDispatch({ type: "CART_CLEAR" });
         dispatch({ type: "CREATE_SUCCESS" });
         localStorage.removeItem("cartItems");
