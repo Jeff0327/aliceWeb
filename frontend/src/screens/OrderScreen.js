@@ -200,7 +200,7 @@ export default function OrderScreen() {
     const fetchSocialOrder = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
-        const { data } = await axios.get(`/api/orders/socialOrder/${orderId}`);
+        const { data } = await axios.get(`/api/socialOrders/${orderId}`);
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
         dispatch({ type: "FETCH_FAIL", payload: getError(err) });

@@ -93,12 +93,11 @@ export default function PlaceOrderScreen() {
         ctxDispatch({ type: "CART_CLEAR" });
         dispatch({ type: "CREATE_SUCCESS" });
         localStorage.removeItem("cartItems");
-        console.log("data:", data);
-        // navigate(`/order/${data.order._id}`, {
-        //   state: {
-        //     colorName: updatedOrderItems.map((item) => item.color.selectColor),
-        //   },
-        // });
+        navigate(`/order/${data.order._id}`, {
+          state: {
+            colorName: updatedOrderItems.map((item) => item.color.selectColor),
+          },
+        });
       } catch (err) {
         dispatch({ type: "CREATE_FAIL" });
         toast.error(getError(err));
