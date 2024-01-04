@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const mg = require("mailgun-js");
-const { kakaoUser, SocialUser } = require("./models/userModel");
+const { SocialUser } = require("./models/userModel");
 const baseUrl = () =>
   process.env.BASE_URL
     ? process.env.BASE_URL
