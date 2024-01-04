@@ -114,7 +114,7 @@ export default function PlaceOrderScreen() {
         dispatch({ type: "CREATE_REQUEST" });
 
         const { data } = await Axios.post(
-          `/api/orders/socialOrder`,
+          `/api/socialOrders`,
           {
             orderItems: updatedOrderItems,
             shippingAddress: cart.shippingAddress,
