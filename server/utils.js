@@ -53,7 +53,11 @@ const isSocialAuth = async (req, res, next) => {
   if (authorization) {
     const token = authorization.slice(7, authorization.length);
     const kakaoUser = await SocialUser.findOne({ kakaoToken: token });
-    if (kakaoUser) {
+    if (!kakaoUser) {
+      res
+        .status(401)
+        .send({ message: "소셜인증이 만료되었습니다.[error code:025]" });
+    } else {
       req.kakaoUser = kakaoUser;
       next();
     }
