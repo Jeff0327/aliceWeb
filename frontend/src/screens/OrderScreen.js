@@ -114,74 +114,146 @@ export default function OrderScreen() {
     toast.error(getError(err));
   }
   const bootpayhandler = async () => {
-    try {
-      const response = await Bootpay.requestPayment({
-        application_id: `655c7fea00c78a001aaf57ac`,
-        price: order.totalPrice,
-        order_name: `${order.orderItems.map((e) => e.name)}`,
-        order_id: `${order.orderItems.map((e) => e._id)}`,
-        user: {
-          id: `${userInfo._id}`,
-          username: `${order.shippingAddress.fullName}`,
-          phone: `${order.shippingAddress.phoneNumber}`,
-          email: `${userInfo.email}`,
-        },
+    if (userInfo) {
+      try {
+        const response = await Bootpay.requestPayment({
+          application_id: `655c7fea00c78a001aaf57ac`,
+          price: order.totalPrice,
+          order_name: `${order.orderItems.map((e) => e.name)}`,
+          order_id: `${order.orderItems.map((e) => e._id)}`,
+          user: {
+            id: `${userInfo._id}`,
+            username: `${order.shippingAddress.fullName}`,
+            phone: `${order.shippingAddress.phoneNumber}`,
+            email: `${userInfo.email}`,
+          },
 
-        extra: {
-          open_type: "iframe",
-          card_quota: "0,2,3",
-          escrow: false,
-        },
-      });
-      switch (response.event) {
-        case "issued":
-          // 가상계좌 입금 완료 처리
-          break;
-        case "done":
-          try {
-            dispatch({ type: "PAY_REQUEST" });
+          extra: {
+            open_type: "iframe",
+            card_quota: "0,2,3",
+            escrow: false,
+          },
+        });
+        switch (response.event) {
+          case "issued":
+            // 가상계좌 입금 완료 처리
+            break;
+          case "done":
+            try {
+              dispatch({ type: "PAY_REQUEST" });
 
-            const payId = response.order_id;
-            dispatch({ type: "PAY_REQUEST" });
-            const { data } = await axios.put(
-              `/api/orders/${order._id}/bootpay`,
-              payId,
-              {
-                headers: { Authorization: `Bearer ${userInfo.token}` },
-              }
-            );
-            dispatch({ type: "PAY_SUCCESS", payload: data });
-            toast.success("결제가 완료되었습니다.");
-          } catch (err) {
-            dispatch({ type: "PAY_FAIL", payload: getError(err) });
-            toast.error(getError(err));
-          }
+              const payId = response.order_id;
+              dispatch({ type: "PAY_REQUEST" });
+              const { data } = await axios.put(
+                `/api/orders/${order._id}/bootpay`,
+                payId,
+                {
+                  headers: { Authorization: `Bearer ${userInfo.token}` },
+                }
+              );
+              dispatch({ type: "PAY_SUCCESS", payload: data });
+              toast.success("결제가 완료되었습니다.");
+            } catch (err) {
+              dispatch({ type: "PAY_FAIL", payload: getError(err) });
+              toast.error(getError(err));
+            }
 
-          // 결제 완료 처리
-          break;
-        case "confirm": //payload.extra.separately_confirmed = true; 일 경우 승인 전 해당 이벤트가 호출됨
-          console.log(response.receipt_id);
-          /**
-           * 1. 클라이언트 승인을 하고자 할때
-           * // validationQuantityFromServer(); //예시) 재고확인과 같은 내부 로직을 처리하기 한다.
-           */
+            // 결제 완료 처리
+            break;
+          case "confirm": //payload.extra.separately_confirmed = true; 일 경우 승인 전 해당 이벤트가 호출됨
+            console.log(response.receipt_id);
+            /**
+             * 1. 클라이언트 승인을 하고자 할때
+             * // validationQuantityFromServer(); //예시) 재고확인과 같은 내부 로직을 처리하기 한다.
+             */
 
-          const confirmedData = await Bootpay.confirm(); //결제를 승인한다
-          if (confirmedData.event === "done") {
-            //결제성공
-          }
-          /**
-           * 2. 서버 승인을 하고자 할때
-           * // requestServerConfirm(); //예시) 서버 승인을 할 수 있도록  API를 호출한다. 서버에서는 재고확인과 로직 검증 후 서버승인을 요청한다.
-          Bootpay.destroy(); 
-           */
-          break;
-        default:
-          // 기본값 호출
-          break;
+            const confirmedData = await Bootpay.confirm(); //결제를 승인한다
+            if (confirmedData.event === "done") {
+              //결제성공
+            }
+            /**
+             * 2. 서버 승인을 하고자 할때
+             * // requestServerConfirm(); //예시) 서버 승인을 할 수 있도록  API를 호출한다. 서버에서는 재고확인과 로직 검증 후 서버승인을 요청한다.
+            Bootpay.destroy(); 
+             */
+            break;
+          default:
+            // 기본값 호출
+            break;
+        }
+      } catch (err) {
+        console.log("bootpayhandlerError:", err);
       }
-    } catch (err) {
-      console.log("bootpayhandlerError:", err);
+    } else if (kakaoUser) {
+      try {
+        const response = await Bootpay.requestPayment({
+          application_id: `655c7fea00c78a001aaf57ac`,
+          price: order.totalPrice,
+          order_name: `${order.orderItems.map((e) => e.name)}`,
+          order_id: `${order.orderItems.map((e) => e._id)}`,
+          socialUser: {
+            id: `${kakaoUser._id}`,
+            username: `${order.shippingAddress.fullName}`,
+            phone: `${order.shippingAddress.phoneNumber}`,
+            email: `${kakaoUser.email}`,
+          },
+
+          extra: {
+            open_type: "iframe",
+            card_quota: "0,2,3",
+            escrow: false,
+          },
+        });
+        switch (response.event) {
+          case "issued":
+            // 가상계좌 입금 완료 처리
+            break;
+          case "done":
+            try {
+              dispatch({ type: "PAY_REQUEST" });
+
+              const payId = response.order_id;
+              dispatch({ type: "PAY_REQUEST" });
+              const { data } = await axios.put(
+                `/api/socialOrders/${order._id}/bootpay`,
+                payId,
+                {
+                  headers: { Authorization: `Bearer ${kakaoUser.kakaoToken}` },
+                }
+              );
+              dispatch({ type: "PAY_SUCCESS", payload: data });
+              toast.success("결제가 완료되었습니다.");
+            } catch (err) {
+              dispatch({ type: "PAY_FAIL", payload: getError(err) });
+              toast.error(getError(err));
+            }
+
+            // 결제 완료 처리
+            break;
+          case "confirm": //payload.extra.separately_confirmed = true; 일 경우 승인 전 해당 이벤트가 호출됨
+            console.log(response.receipt_id);
+            /**
+             * 1. 클라이언트 승인을 하고자 할때
+             * // validationQuantityFromServer(); //예시) 재고확인과 같은 내부 로직을 처리하기 한다.
+             */
+
+            const confirmedData = await Bootpay.confirm(); //결제를 승인한다
+            if (confirmedData.event === "done") {
+              //결제성공
+            }
+            /**
+             * 2. 서버 승인을 하고자 할때
+             * // requestServerConfirm(); //예시) 서버 승인을 할 수 있도록  API를 호출한다. 서버에서는 재고확인과 로직 검증 후 서버승인을 요청한다.
+            Bootpay.destroy(); 
+             */
+            break;
+          default:
+            // 기본값 호출
+            break;
+        }
+      } catch (err) {
+        console.log("bootpayhandlerError:", err);
+      }
     }
   };
 
@@ -258,13 +330,9 @@ export default function OrderScreen() {
   async function deliverOrderHandler() {
     try {
       dispatch({ type: "DELIVER_REQUEST" });
-      const { data } = await axios.put(
-        `/api/orders/${order._id}/deliver`,
-        {},
-        {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        }
-      );
+      const { data } = await axios.put(`/api/orders/${order._id}/deliver`, {
+        headers: { authorization: `Bearer ${userInfo.token}` },
+      });
       dispatch({ type: "DELIVER_SUCCESS", payload: data });
       toast.success("주문이 배송되었습니다.");
     } catch (err) {
