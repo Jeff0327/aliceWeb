@@ -20,7 +20,7 @@ socialOrderRouter.post(
         itemsPrice: req.body.itemsPrice,
         shippingPrice: req.body.shippingPrice,
         totalPrice: req.body.totalPrice,
-        socialUser: req.kakaoUser,
+        socialUser: { _id: req.kakaoUser._id, email: req.kakaoUser.email },
       });
       const order = await newOrder.save();
 

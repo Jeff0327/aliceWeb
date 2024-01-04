@@ -47,9 +47,8 @@ const orderSchema = new mongoose.Schema(
       required: false,
     },
     socialUser: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "SocialUser",
-      required: false,
+      _id: String,
+      email: String,
     },
     isPaid: { type: Boolean, default: false },
     paidAt: { type: Date },
