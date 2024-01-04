@@ -49,11 +49,14 @@ const isAuth = (req, res, next) => {
 };
 const isSocialAuth = async (req, res, next) => {
   const authorization = req.headers.authorization;
-  const token = authorization.slice(7, authorization.length);
-  const kakaoUser = await SocialUser.findOne({ kakaoToken: token });
+
   if (authorization) {
-    req.kakaoUser = kakaoUser;
-    next();
+    const token = authorization.slice(7, authorization.length);
+    const kakaoUser = await SocialUser.findOne({ kakaoToken: token });
+    if (kakaoUser) {
+      req.kakaoUser = kakaoUser;
+      next();
+    }
   } else {
     res
       .status(401)
