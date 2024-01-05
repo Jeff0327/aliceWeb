@@ -55,7 +55,7 @@ export default function OrderScreen() {
   const params = useParams();
   const { id: orderId } = params;
   const navigate = useNavigate();
-
+  console.log(orderId);
   const [
     {
       loading,

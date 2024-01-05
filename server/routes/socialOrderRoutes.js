@@ -68,7 +68,32 @@ socialOrderRouter.put(
     }
   })
 );
+socialOrderRouter.put(
+  "/:id/pay",
+  isSocialAuth,
+  expressAsyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id).populate(
+      "socialUser",
+      "email"
+    );
+    if (order) {
+      order.isPaid = true;
+      order.paidAt = Date.now();
+      order.paymentResult = {
+        id: req.body.id,
+        status: req.body.status,
+        update_time: req.body.update_time,
+        email_address: req.body.email_address,
+      };
 
+      const updatedOrder = await order.save();
+
+      res.send({ message: "주문 완료", order: updatedOrder });
+    } else {
+      res.status(404).send({ message: "주문을 찾을 수 없습니다." });
+    }
+  })
+);
 socialOrderRouter.put(
   "/:id/bootpay",
   isSocialAuth,
@@ -85,23 +110,7 @@ socialOrderRouter.put(
         email: req.body.email,
       };
       const updatedOrder = await order.save();
-      mailgun()
-        .messages()
-        .send(
-          {
-            from: `RoseMarry <cocacola158500@gmail.com>`,
-            to: `${order.kakaoUser.email}`,
-            subject: `구매해주셔서 감사합니다.  주문번호:[${order._id}]`,
-            html: payOrderEmailTemplate(order),
-          },
-          (error, body) => {
-            if (error) {
-              console.log(error);
-            } else {
-              console.log(body);
-            }
-          }
-        );
+
       res.send({ message: "주문 완료", order: updatedOrder });
     } else {
       res.status(404).send({ message: "주문을 찾을 수 없습니다." });
