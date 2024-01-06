@@ -90,12 +90,12 @@ export default function OrderHistoryScreen() {
         <table className="table">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>DATE</th>
-              <th>TOTAL</th>
-              <th>PAID</th>
-              <th>DELIVERED</th>
-              <th>ACTIONS</th>
+              <th>주문ID</th>
+              <th>날짜</th>
+              <th>결제금액</th>
+              <th>결제상태</th>
+              <th>배송상태</th>
+              <th>기타</th>
             </tr>
           </thead>
           <tbody>

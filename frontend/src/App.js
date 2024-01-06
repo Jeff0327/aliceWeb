@@ -267,7 +267,7 @@ function App() {
               </Nav.Item>
             ))}
           </div>
-          <main>
+          <main style={{ display: "flex", minHeight: "80vh" }}>
             <Container className="mt-3">
               <Routes>
                 <Route path="/product/:slug" element={<ProductScreen />} />
