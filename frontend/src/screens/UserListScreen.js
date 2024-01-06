@@ -14,6 +14,8 @@ const reducer = (state, action) => {
       return { ...state, loading: true };
     case "FETCH_SUCCESS":
       return { ...state, loading: false, users: action.payload };
+    case "SOCIAL_FETCH_SUCCESS":
+      return { ...state, loading: false, socialUsers: action.payload };
     case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
     case "DELETE_REQUEST":
@@ -31,13 +33,15 @@ const reducer = (state, action) => {
 export default function UserListScreen() {
   const navigate = useNavigate();
 
-  const [{ loading, error, users, loadingDelete, successDelete }, dispatch] =
-    useReducer(reducer, {
-      loading: true,
-      error: "",
-    });
+  const [
+    { loading, error, users, loadingDelete, successDelete, socialUsers },
+    dispatch,
+  ] = useReducer(reducer, {
+    loading: true,
+    error: "",
+  });
   const { state } = useContext(Store);
-  const { userInfo } = state;
+  const { userInfo, kakaoUser } = state;
 
   useEffect(() => {
     // let getToken;
@@ -46,7 +50,18 @@ export default function UserListScreen() {
     // } else if (kakaoUser.kakaoToken) {
     //   getToken = kakaoUser.kakaoToken;
     // }
-
+    const fetchSocialData = async () => {
+      try {
+        dispatch({ type: "FETCH_REQUEST" });
+        const { data } = await axios.get(`/api/users/socialsignup`);
+        dispatch({ type: "SOCIAL_FETCH_SUCCESS", payload: data });
+      } catch (err) {
+        dispatch({
+          type: "FETCH_FAIL",
+          payload: getError(err),
+        });
+      }
+    };
     const fetchData = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
@@ -65,8 +80,9 @@ export default function UserListScreen() {
       dispatch({ type: "DELETE_RESET" });
     } else {
       fetchData();
+      fetchSocialData();
     }
-  }, [userInfo, successDelete]);
+  }, [userInfo, successDelete, kakaoUser]);
   const deleteHandler = async (user) => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
       try {
@@ -90,7 +106,7 @@ export default function UserListScreen() {
       <Helmet>
         <title>RoseMarry</title>
       </Helmet>
-      <h1>Users</h1>
+      <h1>유저목록</h1>
       {loadingDelete && <LoadingBox></LoadingBox>}
       {loading ? (
         <LoadingBox></LoadingBox>
@@ -108,6 +124,7 @@ export default function UserListScreen() {
             </tr>
           </thead>
           <tbody>
+            {socialUsers.map((socialUser) => console.log(socialUser))}
             {users.map((user) => (
               <tr key={user._id}>
                 <td>{user._id}</td>

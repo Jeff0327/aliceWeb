@@ -162,6 +162,29 @@ orderRouter.put(
             }
           }
         );
+      mailgun()
+        .messages()
+        .send(
+          {
+            from: `RoseMarry`,
+            to: `${process.env.ADMIN_EMAIL}`,
+            subject: `결제된 상품이있습니다.  
+            주문번호:[${order._id}]
+            주문자:[${order.shippingAddress.fullName}] 
+            주소:[${order.shippingAddress.address}] 
+            상세주소:[${order.shippingAddress.detailAddress}]
+            연락처:[${order.shippingAddress.phoneNumber}] 
+            우편번호:[${order.shippingAddress.postalCode}]`,
+            html: payOrderEmailTemplate(order),
+          },
+          (error, body) => {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log(body);
+            }
+          }
+        );
       res.send({ message: "주문 완료", order: updatedOrder });
     } else {
       res.status(404).send({ message: "주문을 찾을 수 없습니다." });
