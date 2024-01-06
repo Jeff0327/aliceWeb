@@ -36,7 +36,6 @@ export default function PlaceOrderScreen() {
 
   const { cart, userInfo, kakaoUser } = state;
 
-  console.log(cart);
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100; // 123.2345 => 123.23
   cart.itemsPrice = round2(
     cart.cartItems.reduce(
@@ -127,7 +126,7 @@ export default function PlaceOrderScreen() {
         ctxDispatch({ type: "CART_CLEAR" });
         dispatch({ type: "CREATE_SUCCESS" });
         localStorage.removeItem("cartItems");
-        console.log("data:", data);
+
         navigate(`/order/${data.order._id}`, {
           state: {
             colorName: updatedOrderItems.map((item) => item.color.selectColor),

@@ -76,7 +76,7 @@ export default function OrderScreen() {
   });
 
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
-  console.log("order:", order);
+
   function createOrder(data, actions) {
     return actions.order
       .create({
