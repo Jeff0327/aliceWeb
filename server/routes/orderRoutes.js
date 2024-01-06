@@ -15,7 +15,9 @@ orderRouter.get(
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
-    const orders = await Order.find().populate("user", "name");
+    const userOrders = await Order.find().populate("user", "name");
+    const socialOrders = await Order.find().populate("socialUser", "email");
+    const orders = { userOrders: userOrders, socialOrders: socialOrders };
     res.send(orders);
   })
 );

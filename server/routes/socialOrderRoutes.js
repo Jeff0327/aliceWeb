@@ -1,6 +1,11 @@
 const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
-const { isSocialAuth, mailgun, payOrderEmailTemplate } = require("../utils.js");
+const {
+  isSocialAuth,
+  mailgun,
+  payOrderEmailTemplate,
+  isAuth,
+} = require("../utils.js");
 const Order = require("../models/orderModel.js");
 const socialOrderRouter = express.Router();
 const Product = require("../models/productModel.js");
@@ -145,7 +150,7 @@ socialOrderRouter.put(
 );
 socialOrderRouter.put(
   "/:id/deliver",
-  isSocialAuth,
+  isAuth,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
     if (order) {

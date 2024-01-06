@@ -363,28 +363,30 @@ export default function OrderScreen() {
     successDeliver,
   ]);
   async function deliverOrderHandler() {
-    if (userInfo) {
+    if (order.user) {
       try {
         dispatch({ type: "DELIVER_REQUEST" });
         const { data } = await axios.put(`/api/orders/${order._id}/deliver`, {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
         dispatch({ type: "DELIVER_SUCCESS", payload: data });
+
         toast.success("주문이 배송되었습니다.");
       } catch (err) {
         toast.error(getError(err));
         dispatch({ type: "DELIVER_FAIL" });
       }
-    } else if (kakaoUser) {
+    } else if (order.socialUser) {
       try {
         dispatch({ type: "DELIVER_REQUEST" });
         const { data } = await axios.put(
           `/api/socialOrders/${order._id}/deliver`,
           {
-            headers: { authorization: `Bearer ${kakaoUser.kakaoToken}` },
+            headers: { authorization: `Bearer ${userInfo.token}` },
           }
         );
         dispatch({ type: "DELIVER_SUCCESS", payload: data });
+
         toast.success("주문이 배송되었습니다.");
       } catch (err) {
         toast.error(getError(err));
