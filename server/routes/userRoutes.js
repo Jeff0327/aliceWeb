@@ -19,8 +19,9 @@ userRouter.get(
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
-    const users = await User.find({});
-    // const socialUsers = await kakaoUser.find({}); //kakaoUser
+    const isUsers = await User.find({});
+    const socialUsers = await SocialUser.find({});
+    const users = { users: isUsers, socialUsers: socialUsers };
     res.send(users);
   })
 );
@@ -312,6 +313,7 @@ userRouter.post(
     });
   })
 );
+
 userRouter.post(
   "/socialsignup",
   expressAsyncHandler(async (req, res) => {

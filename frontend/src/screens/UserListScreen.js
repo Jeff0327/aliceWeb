@@ -50,18 +50,7 @@ export default function UserListScreen() {
     // } else if (kakaoUser.kakaoToken) {
     //   getToken = kakaoUser.kakaoToken;
     // }
-    const fetchSocialData = async () => {
-      try {
-        dispatch({ type: "FETCH_REQUEST" });
-        const { data } = await axios.get(`/api/users/socialsignup`);
-        dispatch({ type: "SOCIAL_FETCH_SUCCESS", payload: data });
-      } catch (err) {
-        dispatch({
-          type: "FETCH_FAIL",
-          payload: getError(err),
-        });
-      }
-    };
+
     const fetchData = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
@@ -80,9 +69,8 @@ export default function UserListScreen() {
       dispatch({ type: "DELETE_RESET" });
     } else {
       fetchData();
-      fetchSocialData();
     }
-  }, [userInfo, successDelete, kakaoUser]);
+  }, [userInfo, successDelete]);
   const deleteHandler = async (user) => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
       try {
@@ -124,7 +112,7 @@ export default function UserListScreen() {
             </tr>
           </thead>
           <tbody>
-            {socialUsers.map((socialUser) => console.log(socialUser))}
+            {console.log(users)}
             {users.map((user) => (
               <tr key={user._id}>
                 <td>{user._id}</td>
