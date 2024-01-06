@@ -41,7 +41,7 @@ export default function UserListScreen() {
     error: "",
   });
   const { state } = useContext(Store);
-  const { userInfo, kakaoUser } = state;
+  const { userInfo } = state;
 
   useEffect(() => {
     // let getToken;
@@ -105,6 +105,18 @@ export default function UserListScreen() {
           <thead>
             <tr>
               <th>ID</th>
+              <th>EMAIL</th>
+            </tr>
+          </thead>
+          {users.socialUsers.map((socialUser) => (
+            <tr key={socialUser._id}>
+              <td>{socialUser._id}</td>
+              <td>{socialUser.email}</td>
+            </tr>
+          ))}
+          <thead>
+            <tr>
+              <th>ID</th>
               <th>닉네임</th>
               <th>EMAIL</th>
               <th>관리자</th>
@@ -113,7 +125,8 @@ export default function UserListScreen() {
           </thead>
           <tbody>
             {console.log(users)}
-            {users.map((user) => (
+
+            {users.users.map((user) => (
               <tr key={user._id}>
                 <td>{user._id}</td>
                 <td>{user.name}</td>
