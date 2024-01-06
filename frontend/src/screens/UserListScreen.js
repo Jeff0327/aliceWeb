@@ -33,13 +33,11 @@ const reducer = (state, action) => {
 export default function UserListScreen() {
   const navigate = useNavigate();
 
-  const [
-    { loading, error, users, loadingDelete, successDelete, socialUsers },
-    dispatch,
-  ] = useReducer(reducer, {
-    loading: true,
-    error: "",
-  });
+  const [{ loading, error, users, loadingDelete, successDelete }, dispatch] =
+    useReducer(reducer, {
+      loading: true,
+      error: "",
+    });
   const { state } = useContext(Store);
   const { userInfo } = state;
 
@@ -124,8 +122,6 @@ export default function UserListScreen() {
             </tr>
           </thead>
           <tbody>
-            {console.log(users)}
-
             {users.users.map((user) => (
               <tr key={user._id}>
                 <td>{user._id}</td>
