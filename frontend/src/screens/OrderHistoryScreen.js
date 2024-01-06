@@ -99,7 +99,7 @@ export default function OrderHistoryScreen() {
             </tr>
           </thead>
           <tbody>
-            {orders}
+            {console.log(orders)}
             {orders.map((order) => (
               <tr key={order._id}>
                 <td>{order._id}</td>
