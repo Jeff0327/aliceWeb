@@ -517,16 +517,20 @@ export default function OrderScreen() {
                   </ListGroup.Item>
                 )}
 
-                {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
-                  <ListGroup.Item>
-                    {loadingDeliver && <LoadingBox></LoadingBox>}
-                    <div className="d-grid">
-                      <Button type="button" onClick={deliverOrderHandler}>
-                        배송하기
-                      </Button>
-                    </div>
-                  </ListGroup.Item>
-                )}
+                {userInfo
+                  ? userInfo.isAdmin &&
+                    order.isPaid &&
+                    !order.isDelivered && (
+                      <ListGroup.Item>
+                        {loadingDeliver && <LoadingBox></LoadingBox>}
+                        <div className="d-grid">
+                          <Button type="button" onClick={deliverOrderHandler}>
+                            배송하기
+                          </Button>
+                        </div>
+                      </ListGroup.Item>
+                    )
+                  : null}
               </ListGroup>
             </Card.Body>
           </Card>

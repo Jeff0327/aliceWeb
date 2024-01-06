@@ -9,7 +9,6 @@ const orderRouter = require("./routes/orderRoutes.js");
 const uploadRouter = require("./routes/uploadRoutes.js");
 const socialOrderRouter = require("./routes/socialOrderRoutes.js");
 const port = process.env.PORT || 3000;
-const cors = require("cors");
 
 mongoose
   .connect(process.env.MONGODB_URL_ATLAS)
@@ -20,15 +19,6 @@ mongoose
     console.log(err.message);
   });
 const app = express();
-
-// app.use(
-//   cors({
-//     origin: "*",
-//     methods: "*",
-//     credentials: true,
-//     allowedHeaders: ["Content-Type", "Authorization"],
-//   })
-// );
 
 app.use((req, res, next) => {
   const allowedOrigins = [

@@ -55,16 +55,12 @@ export default function OrderHistoryScreen() {
     const fetchSocialData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const { data } = await axios.get(
-          "/api/socialOrders/mine",
-
-          {
-            headers: {
-              Authorization: `Bearer ${kakaoUser.kakaoToken}`,
-              withCredentials: true,
-            },
-          }
-        );
+        const { data } = await axios.get("/api/socialOrders/mine", {
+          headers: {
+            Authorization: `Bearer ${kakaoUser.kakaoToken}`,
+            withCredentials: true,
+          },
+        });
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (error) {
         dispatch({
