@@ -142,7 +142,7 @@ export default function OrderScreen() {
             try {
               dispatch({ type: "PAY_REQUEST" });
 
-              const payId = response.order._id;
+              const payId = response.order_id;
               dispatch({ type: "PAY_REQUEST" });
               const { data } = await axios.put(
                 `/api/orders/${order._id}/bootpay`,
@@ -212,7 +212,7 @@ export default function OrderScreen() {
             try {
               dispatch({ type: "PAY_REQUEST" });
 
-              const payId = response.order._id;
+              const payId = response.order_id;
               dispatch({ type: "PAY_REQUEST" });
               const { data } = await axios.put(
                 `/api/socialOrders/${order._id}/bootpay`,
