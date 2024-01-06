@@ -35,7 +35,7 @@ socialOrderRouter.get(
   "/mine",
   isSocialAuth,
   expressAsyncHandler(async (req, res) => {
-    const orders = await Order.find({ kakaoUser: req.kakaoUser._id });
+    const orders = await Order.find({ socialUser: req.kakaoUser._id });
     res.send(orders);
   })
 );
@@ -136,23 +136,6 @@ socialOrderRouter.put(
       };
 
       const updatedOrder = await order.save();
-      mailgun()
-        .messages()
-        .send(
-          {
-            from: `RoseMarry <cocacola158500@gmail.com>`,
-            to: `${order.kakaoUser.email}`,
-            subject: `구매해주셔서 감사합니다.  주문번호:[${order._id}]`,
-            html: payOrderEmailTemplate(order),
-          },
-          (error, body) => {
-            if (error) {
-              console.log(error);
-            } else {
-              console.log(body);
-            }
-          }
-        );
 
       res.send({ message: "주문 완료", order: updatedOrder });
     } else {

@@ -23,7 +23,7 @@ const reducer = (state, action) => {
 
 export default function OrderHistoryScreen() {
   const { state } = useContext(Store);
-  const { userInfo } = state;
+  const { userInfo, kakaoUser } = state;
   const navigate = useNavigate();
 
   const [{ loading, error, orders }, dispatch] = useReducer(reducer, {
@@ -52,15 +52,40 @@ export default function OrderHistoryScreen() {
         });
       }
     };
-    fetchData();
-  }, [userInfo]);
+    const fetchSocialData = async () => {
+      dispatch({ type: "FETCH_REQUEST" });
+      try {
+        const { data } = await axios.get(
+          "/api/socialOrders/mine",
+
+          {
+            headers: {
+              Authorization: `Bearer ${kakaoUser.kakaoToken}`,
+              withCredentials: true,
+            },
+          }
+        );
+        dispatch({ type: "FETCH_SUCCESS", payload: data });
+      } catch (error) {
+        dispatch({
+          type: "FETCH_FAIL",
+          payload: getError(error),
+        });
+      }
+    };
+    if (userInfo) {
+      fetchData();
+    } else if (kakaoUser) {
+      fetchSocialData();
+    }
+  }, [userInfo, kakaoUser]);
   return (
     <div>
       <Helmet>
-        <title>Order History</title>
+        <title>주문내역</title>
       </Helmet>
 
-      <h1>Order History</h1>
+      <h1>주문내역</h1>
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (

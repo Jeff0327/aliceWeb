@@ -93,20 +93,38 @@ export default function OrderScreen() {
 
   function onApprove(data, actions) {
     return actions.order.capture().then(async function (details) {
-      try {
-        dispatch({ type: "PAY_REQUEST" });
-        const { data } = await axios.put(
-          `/api/orders/${order._id}/pay`,
-          details,
-          {
-            headers: { authorization: `Bearer ${userInfo.token}` },
-          }
-        );
-        dispatch({ type: "PAY_SUCCESS", payload: data });
-        toast.success("결제가 완료되었습니다.");
-      } catch (err) {
-        dispatch({ type: "PAY_FAIL", payload: getError(err) });
-        toast.error(getError(err));
+      if (userInfo) {
+        try {
+          dispatch({ type: "PAY_REQUEST" });
+          const { data } = await axios.put(
+            `/api/orders/${order._id}/pay`,
+            details,
+            {
+              headers: { authorization: `Bearer ${userInfo.token}` },
+            }
+          );
+          dispatch({ type: "PAY_SUCCESS", payload: data });
+          toast.success("결제가 완료되었습니다.");
+        } catch (err) {
+          dispatch({ type: "PAY_FAIL", payload: getError(err) });
+          toast.error(getError(err));
+        }
+      } else if (kakaoUser) {
+        try {
+          dispatch({ type: "PAY_REQUEST" });
+          const { data } = await axios.put(
+            `/api/socialOrders/${order._id}/pay`,
+            details,
+            {
+              headers: { authorization: `Bearer ${kakaoUser.kakaoToken}` },
+            }
+          );
+          dispatch({ type: "PAY_SUCCESS", payload: data });
+          toast.success("결제가 완료되었습니다.");
+        } catch (err) {
+          dispatch({ type: "PAY_FAIL", payload: getError(err) });
+          toast.error(getError(err));
+        }
       }
     });
   }
