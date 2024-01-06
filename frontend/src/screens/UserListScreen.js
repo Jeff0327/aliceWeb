@@ -105,7 +105,7 @@ export default function UserListScreen() {
           <thead>
             <tr>
               <th>ID</th>
-              <th>EMAIL</th>
+              <th>카카오 EMAIL</th>
             </tr>
           </thead>
           {users.socialUsers.map((socialUser) => (

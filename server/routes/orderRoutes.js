@@ -7,7 +7,7 @@ const {
   payOrderEmailTemplate,
 } = require("../utils.js");
 const Order = require("../models/orderModel.js");
-const { User } = require("../models/userModel.js");
+const { User, SocialUser } = require("../models/userModel.js");
 const Product = require("../models/productModel.js");
 const orderRouter = express.Router();
 orderRouter.get(
@@ -69,6 +69,14 @@ orderRouter.get(
         },
       },
     ]);
+    const socialUsers = await SocialUser.aggregate([
+      {
+        $group: {
+          _id: null,
+          numSocialUsers: { $sum: 1 },
+        },
+      },
+    ]);
     const dailyOrders = await Order.aggregate([
       {
         $group: {
@@ -87,7 +95,7 @@ orderRouter.get(
         },
       },
     ]);
-    res.send({ users, orders, dailyOrders, productCategories });
+    res.send({ users, orders, dailyOrders, productCategories, socialUsers });
   })
 );
 orderRouter.get(
