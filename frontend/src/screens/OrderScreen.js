@@ -320,20 +320,37 @@ export default function OrderScreen() {
         dispatch({ type: "DELIVER_RESET" });
       }
     } else {
-      const loadPaypalScript = async () => {
-        const { data: clientId } = await axios.get("/api/keys/paypal", {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
-        paypalDispatch({
-          type: "resetOptions",
-          value: {
-            "client-id": clientId,
-            currency: "USD",
-          },
-        });
-        paypalDispatch({ type: "setLoadingStatus", value: "pending" });
-      };
-      loadPaypalScript();
+      if (userInfo) {
+        const loadPaypalScript = async () => {
+          const { data: clientId } = await axios.get("/api/keys/paypal", {
+            headers: { authorization: `Bearer ${userInfo.token}` },
+          });
+          paypalDispatch({
+            type: "resetOptions",
+            value: {
+              "client-id": clientId,
+              currency: "USD",
+            },
+          });
+          paypalDispatch({ type: "setLoadingStatus", value: "pending" });
+        };
+        loadPaypalScript();
+      } else if (kakaoUser) {
+        const loadPaypalScript = async () => {
+          const { data: clientId } = await axios.get("/api/keys/paypal", {
+            headers: { authorization: `Bearer ${kakaoUser.kakaoToken}` },
+          });
+          paypalDispatch({
+            type: "resetOptions",
+            value: {
+              "client-id": clientId,
+              currency: "USD",
+            },
+          });
+          paypalDispatch({ type: "setLoadingStatus", value: "pending" });
+        };
+        loadPaypalScript();
+      }
     }
   }, [
     order,
