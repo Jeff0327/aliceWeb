@@ -105,7 +105,13 @@ export default function OrderListScreen() {
             {orders.map((order) => (
               <tr key={order._id}>
                 <td>{order._id}</td>
-                <td>{order.user ? order.user.name : "삭제된 유저"}</td>
+                <td>
+                  {order.user
+                    ? order.user.name
+                    : order.socialUser
+                    ? order.socialUser.email
+                    : "삭제된 유저"}
+                </td>
                 <td>{order.createdAt.substring(0, 10)}</td>
                 <td>{order.totalPrice.toLocaleString()}</td>
                 <td>{order.isPaid ? order.paidAt.substring(0, 10) : "No"}</td>

@@ -55,7 +55,7 @@ export default function OrderScreen() {
   const params = useParams();
   const { id: orderId } = params;
   const navigate = useNavigate();
-  console.log(orderId);
+
   const [
     {
       loading,
@@ -76,7 +76,7 @@ export default function OrderScreen() {
   });
 
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
-  console.log(order);
+  console.log("order:", order);
   function createOrder(data, actions) {
     return actions.order
       .create({
@@ -179,7 +179,7 @@ export default function OrderScreen() {
             // 결제 완료 처리
             break;
           case "confirm": //payload.extra.separately_confirmed = true; 일 경우 승인 전 해당 이벤트가 호출됨
-            console.log(response.receipt_id);
+            console.log("response.receipt_id:", response.receipt_id);
             /**
              * 1. 클라이언트 승인을 하고자 할때
              * // validationQuantityFromServer(); //예시) 재고확인과 같은 내부 로직을 처리하기 한다.
@@ -363,16 +363,33 @@ export default function OrderScreen() {
     successDeliver,
   ]);
   async function deliverOrderHandler() {
-    try {
-      dispatch({ type: "DELIVER_REQUEST" });
-      const { data } = await axios.put(`/api/orders/${order._id}/deliver`, {
-        headers: { authorization: `Bearer ${userInfo.token}` },
-      });
-      dispatch({ type: "DELIVER_SUCCESS", payload: data });
-      toast.success("주문이 배송되었습니다.");
-    } catch (err) {
-      toast.error(getError(err));
-      dispatch({ type: "DELIVER_FAIL" });
+    if (userInfo) {
+      try {
+        dispatch({ type: "DELIVER_REQUEST" });
+        const { data } = await axios.put(`/api/orders/${order._id}/deliver`, {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
+        dispatch({ type: "DELIVER_SUCCESS", payload: data });
+        toast.success("주문이 배송되었습니다.");
+      } catch (err) {
+        toast.error(getError(err));
+        dispatch({ type: "DELIVER_FAIL" });
+      }
+    } else if (kakaoUser) {
+      try {
+        dispatch({ type: "DELIVER_REQUEST" });
+        const { data } = await axios.put(
+          `/api/socialOrders/${order._id}/deliver`,
+          {
+            headers: { authorization: `Bearer ${kakaoUser.kakaoToken}` },
+          }
+        );
+        dispatch({ type: "DELIVER_SUCCESS", payload: data });
+        toast.success("주문이 배송되었습니다.");
+      } catch (err) {
+        toast.error(getError(err));
+        dispatch({ type: "DELIVER_FAIL" });
+      }
     }
   }
 
