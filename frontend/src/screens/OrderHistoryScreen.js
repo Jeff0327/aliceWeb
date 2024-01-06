@@ -14,6 +14,8 @@ const reducer = (state, action) => {
       return { ...state, loading: true };
     case "FETCH_SUCCESS":
       return { ...state, orders: action.payload, loading: false };
+    case "SOCIAL_FETCH_SUCCESS":
+      return { ...state, orders: action.payload, loading: false };
     case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
     default:
@@ -55,13 +57,17 @@ export default function OrderHistoryScreen() {
     const fetchSocialData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const { data } = await axios.get("/api/socialOrders/mine", {
-          headers: {
-            Authorization: `Bearer ${kakaoUser.kakaoToken}`,
-            withCredentials: true,
-          },
-        });
-        dispatch({ type: "FETCH_SUCCESS", payload: data });
+        const { data } = await axios.get(
+          "/api/socialOrders/mine",
+
+          {
+            headers: {
+              Authorization: `Bearer ${kakaoUser.kakaoToken}`,
+              withCredentials: true,
+            },
+          }
+        );
+        dispatch({ type: "SOCIAL_FETCH_SUCCESS", payload: data });
       } catch (error) {
         dispatch({
           type: "FETCH_FAIL",
