@@ -30,7 +30,9 @@ export default function Product(props) {
             </Card.Title>
           </Link>
           <Rating rating={product.rating} numReviews={product.numReviews} />
-          <Card.Text>{product.price.toLocaleString()}원</Card.Text>
+          <Card.Text className="priceText">
+            {product.price.toLocaleString()}원
+          </Card.Text>
         </Card.Body>
       </Card>
     </div>

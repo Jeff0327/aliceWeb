@@ -152,7 +152,8 @@ function App() {
                 {/*오른쪽 사이드버튼 */}
                 <Navbar.Collapse id="basic-navbar-nav">
                   <SearchBox />
-                  <Nav className="me-auto  w-100  justify-content-end">
+
+                  <Nav className="me-auto  w-100  justify-content-end align-items-center d-flex">
                     <Link to="/cart" className="nav-link">
                       <img
                         src={`${process.env.PUBLIC_URL}/images/cartImg.png`}
@@ -174,11 +175,12 @@ function App() {
                         </Badge>
                       )}
                     </Link>
-                    <Link to="/service" className="nav-link">
+                    <Link to="/service" className="nav-link text-bold">
                       도움말
                     </Link>
                     {userInfo ? (
                       <NavDropdown
+                        className="userInfoText"
                         title={userInfo.name}
                         id="basic-nav-dropdown"
                       >
@@ -262,7 +264,9 @@ function App() {
                     search: `category=${category}`,
                   }}
                 >
-                  <Nav.Link className="font-size-10">{category}</Nav.Link>
+                  <Nav.Link>
+                    <p className="categoryText">{category}</p>
+                  </Nav.Link>
                 </LinkContainer>
               </Nav.Item>
             ))}

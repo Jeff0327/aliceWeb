@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Hahmlet:wght@200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Grandiflora+One&family=Hahmlet:wght@200&display=swap');
 /*loading background*/
 @keyframes fadeOut {
   0% {
@@ -51,7 +51,18 @@ main {
   font-size:x-large;
   font-family: 'Hahmlet', serif;
 }
-
+.helpText{
+  font-family: 'Grandiflora One', cursive;
+  color:#000000;
+  font-size:medium;
+  font-weight: 700;
+  
+}
+.userInfoText{
+  font-family: 'Hahmlet', serif;
+  color:#000000;
+  font-size:medium;
+}
 .mainImage{
   justify-content: center;
   
@@ -68,6 +79,12 @@ display: flex;
 }
 .categoryItem{
   margin:10px;
+}
+.categoryText{
+  font-family: 'Grandiflora One', cursive;
+  color:#000000;
+  font-size:medium;
+  font-weight: 700;
 }
 .event-container {
   display: flex;
@@ -116,7 +133,17 @@ display: flex;
   margin: 1rem;
 }
 .productName{
-  font-family: 'Gowun Dodum', sans-serif;
+  font-family: 'Grandiflora One', cursive;
+  color:#000000;
+  font-size:medium;
+  font-weight: 700;
+  
+}
+.priceText{
+  font-family: 'Black Han Sans', sans-serif;
+  color:#303030;
+  font-size:medium;
+  font-weight: 100;
 }
 .product img {
   width: 100%;
