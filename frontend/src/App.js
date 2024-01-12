@@ -72,7 +72,7 @@ function App() {
   };
 
   const [categories, setCategories] = useState([]);
-  const [showLoading, setShowLoading] = useState(true);
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -84,11 +84,6 @@ function App() {
       } catch (err) {
         dispatch({ type: "FETCH_FAIL", payload: getError(err) });
         toast.error(getError(err));
-      } finally {
-        // Hide loading screen after 3 seconds
-        setTimeout(() => {
-          setShowLoading(false);
-        }, 3500);
       }
     };
     fetchCategories();
@@ -128,18 +123,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      {showLoading && !loading ? (
-        <div
-          className="loading-screen fade-out"
-          style={{
-            backgroundColor: "#36352D",
-            backgroundSize: "contain",
-            backgroundImage: `url(${process.env.PUBLIC_URL}/images/backImg.png)`,
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-          }}
-        ></div>
-      ) : (
+      {!loading && (
         <div>
           <ToastContainer position="bottom-center" limit={1} />
           <header>
@@ -230,7 +214,7 @@ function App() {
                         </NavDropdown>
                       </div>
                     ) : (
-                      <Link className="nav-link" to="/signin">
+                      <Link className="nav-link loginText" to="/signin">
                         로그인
                       </Link>
                     )}
